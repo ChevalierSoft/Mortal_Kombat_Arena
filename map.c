@@ -26,8 +26,8 @@ void afficher_map(carellage_t map[N][N]){
 }
 
 
-void init_map(){  //Initialise une map par défault
-  carellage_t map[N][N];
+void init_map_1(carellage_t map[N][N]){  //Initialise une map par défault
+
   int i,j;
 
   for(i=0;i<N;i++){
@@ -37,15 +37,25 @@ void init_map(){  //Initialise une map par défault
     }
   }
 
-  afficher_map(map);
+
 
 }
 
-/*void init_map_f(){  //Initialise une map depuis un fichier
-  carellage_t map[N][N];
+void init_map_f(carellage_t map[N][N]){  //Initialise une map depuis un fichier
+  init_map_1(map);
+  int x,y,l;
+
+  FILE * sauvegarde;
+
+  sauvegarde = fopen("save.txt","r");
+
+      while(!feof(sauvegarde)){
+          fscanf(sauvegarde,"%d %d %d",&x,&y,&l);
+          
+          map[y][x].land = l;
+
+      }
 
 
-  afficher_map(map);
 
 }
-*/
