@@ -9,3 +9,7 @@ void charge_test(void){
 void  test_pull(){
   printf("teste du pull\n" );
 }
+
+void  test_pull(){
+  printf("teste du pull\n" );
+}

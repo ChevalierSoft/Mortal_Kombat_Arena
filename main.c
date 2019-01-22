@@ -12,6 +12,10 @@ int main(int argc, char const *argv[]) {
 
   printf("ça marche\n");
   test_pull();
+<<<<<<< HEAD
 
+=======
+printf("OMEGAPOG\n");
+>>>>>>> 3f1a61a70bb58fef46546944dc601afcd5ee85ed
   return 0;
 }
