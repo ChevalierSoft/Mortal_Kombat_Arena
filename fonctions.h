@@ -14,7 +14,7 @@ struct mage_s{
 */
 
 void charge_test(void);
-void  test_pull();
+void  test_pull(void);
 
 
 
