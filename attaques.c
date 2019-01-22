@@ -1,8 +1,9 @@
 /*extern*/
 #include "fonctions.h"
+#include "personnage.h"
 
-void charge_test(){
-  printf("charge. là.\n" );
+void charge_test(void){
+
 }
 
 void  test_pull(){
