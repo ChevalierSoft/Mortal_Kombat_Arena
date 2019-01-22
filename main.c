@@ -2,6 +2,6 @@
 
 int main(int argc, char const *argv[]) {
   printf("ça marche\n");
-  charge_test();
+  test_pull();
   return 0;
 }
