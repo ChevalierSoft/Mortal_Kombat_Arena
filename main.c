@@ -1,5 +1,5 @@
 #include "fonctions.h"
-#include "structure.h"
+#include "personnage.h"
 
 int main(int argc, char const *argv[]) {
   mage_t * marvin = malloc(sizeof(mage_t)); // creer une structure marvin qui est un mage

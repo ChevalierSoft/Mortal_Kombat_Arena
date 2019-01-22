@@ -1,6 +1,6 @@
 /*extern*/
 #include "fonctions.h"
-#include "structure.h"
+#include "personnage.h"
 
 void charge_test(void){
 

@@ -1,5 +1,5 @@
 #include "fonctions.h"
-#include "structure.h"
+#include "personnage.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
