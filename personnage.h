@@ -10,6 +10,7 @@ typedef struct mage{
   int py;
   int pv;
   int force;
+  char * pp;
 
 }mage_t;
 
