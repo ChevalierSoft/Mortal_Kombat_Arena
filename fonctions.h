@@ -8,7 +8,7 @@
 
 void charge_test(void);
 void  test_pull(void);
-void init_mage(mage_t *m, int a, int  b, int c, int d, char * e);
+void init_mage(mage_t *m, int a, int  b, int c, int d, char * e, char *f);
 void afficher_mage(mage_t * marvin);
 
 #endif
