@@ -17,9 +17,10 @@ void afficher_map(carellage_t map[N][N]){
         case 3: printf(RED"%d "RESET,map[i][j].land);break;
         case 4: printf(MAG"%d "RESET,map[i][j].land);break;
         case 5: printf(YEL"%d "RESET,map[i][j].land);break;
+        default: printf(WHT"%d"RESET,map[i][j].land);break;
       }
     }
-    printf("          " );
+    printf("          ");
 
     for(j=0;j<N;j++){
       if(map[i][j].personnage == NULL)
