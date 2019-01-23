@@ -10,13 +10,22 @@ void afficher_map(carellage_t map[N][N]){
   printf("Matrice terrain             Matrice pointeur perso\n");
   for(i=0;i<N;i++){
     for(j=0;j<N;j++){
-      printf("%d ",map[i][j].land);
-
+      switch (map[i][j].land) {
+        case 0: printf(BLK"%d "RESET,map[i][j].land);break;
+        case 1: printf(GRN"%d "RESET,map[i][j].land);break;
+        case 2: printf(BLU"%d "RESET,map[i][j].land);break;
+        case 3: printf(RED"%d "RESET,map[i][j].land);break;
+        case 4: printf(MAG"%d "RESET,map[i][j].land);break;
+        case 5: printf(YEL"%d "RESET,map[i][j].land);break;
+      }
     }
     printf("          " );
 
     for(j=0;j<N;j++){
-      printf("%u ",map[i][j].personnage);
+      if(map[i][j].personnage == NULL)
+        printf("NULL");
+      else
+        printf("%s",map[i][j].personnage->pp);
 
     }
 
