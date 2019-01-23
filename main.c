@@ -4,7 +4,7 @@
 #define N 10
 
 int main(int argc, char const *argv[]) {
-  printf(RED"\n+++++++++++++++ M K Arena +++++++++++++++\n"RESET);
+  printf(RED"\n++++++++++++++++++++ M K Arena ++++++++++++++++++++\n"RESET);
   carellage_t map1[N][N];
   //on crée un mage de chiansse ici (c'est zéro mais, mais.)
   mage_t * marvin = malloc(sizeof(mage_t)); // creer une structure marvin qui est un mage
@@ -18,6 +18,6 @@ int main(int argc, char const *argv[]) {
   init_map_f(map1);
   afficher_map(map1);
 
-  printf(RED"\n+++++++++++++++++++++++++++++++++++++++++++++++\n"RESET);
+  printf(RED"\n+++++++++++++++++++++++++++++++++++++++++++++++++++\n"RESET);
   return 0;
 }
