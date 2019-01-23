@@ -9,21 +9,18 @@ int main(int argc, char const *argv[]) {
   carellage_t map1[N][N];
   //on crée le plateau de jeu (#ez)
   init_map_f(map1);
-  afficher_map(map1);
 
   //on crée un mage de chiansse ici (c'est zéro mais, mais.)
   mage_t * marvin = malloc(sizeof(mage_t)); // creer une structure marvin qui est un mage
-  init_mage(marvin,1,1,1,2,1,"marvin","🔥",map1); // on initit la structure marvin avec les stats précédentes
+  //_mage, _force,  _PV, _px, _py,  _pm,  _nom, *_pp
+  init_mage(marvin,1,10,1,2,1,"marvin","🔥",map1); // on initit la structure marvin avec les stats précédentes
   info_mage(marvin);
   //un deuxieme
   mage_t * Zeddicus_Zul_Zorander = malloc(sizeof(mage_t));
-  init_mage(Zeddicus_Zul_Zorander,2,2,3,4,2,"Zeddicus Zul'Zorander","🔮",map1);
-  info_mage(Zeddicus_Zul_Zorander);
+  init_mage(Zeddicus_Zul_Zorander,2,11,3,4,2,"Zeddicus Zul'Zorander","🔮",map1);
 
 
-  afficher_map(map1);
-
-  kombat(marvin, Zeddicus_Zul_Zorander);
+  kombat(marvin, Zeddicus_Zul_Zorander,map1);
 
 
 

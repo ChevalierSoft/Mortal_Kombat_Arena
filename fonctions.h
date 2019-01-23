@@ -9,15 +9,13 @@
 #include "couleur.h"
 #include "map.h"
 
-
-
-void boule_feux(mage_t *m);
-void init_mage(mage_t *m, int a, int  b, int c, int d, int g, char * e, char *f,carellage_t n[N][N]);
+void boule_feux(mage_t *m,carellage_t n[N][N]);
+void init_mage(mage_t * _mage, int _force, int  _PV, int _px, int _py, int _pm, char * _nom, char * _pp, carellage_t map[N][N]);
 void afficher_mage(mage_t * marvin);
 
 void pas_fini(void);
-void menu_choix(mage_t * m);
+void menu_choix(mage_t * m, carellage_t map[N][N]);
 void info_mage(mage_t *m);
-void kombat(mage_t * m1, mage_t * m2);
+void kombat(mage_t * m1, mage_t * m2,carellage_t map1[N][N]);
 
 #endif

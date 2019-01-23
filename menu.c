@@ -7,6 +7,9 @@ void pas_fini(){
 
 void menu_choix(mage_t * m, carellage_t map[N][N]){
   int choix=-1;
+    printf(MAG"+++++++++++++++++++\n" RESET);
+    printf(MAG"%s\n" RESET, m->nom);
+    printf(MAG"+++++++++++++++++++\n" RESET);
     printf(RED"+++++++++++++++++++\n" );
     printf("+ 1) boule de feu \n");
     printf("+ 2) make america great again \n");
@@ -14,13 +17,13 @@ void menu_choix(mage_t * m, carellage_t map[N][N]){
     printf("++++++++++++++++++\n" RESET);
 
     while (choix <1 || choix >3) {
-      scanf("%d\n",&choix);
+      scanf("%d",&choix);
     }
 
     switch(choix){
       case 1: boule_feux(m,map);break;
       case 2: pas_fini();break;
-      case 3: pas_fini();break;
+      case 3: printf("%s passe son tour", m->nom);break;
       default: pas_fini();break;
     }
 
@@ -38,12 +41,36 @@ void info_mage(mage_t *m){
   printf("+++++++++++++++++++\n"RESET);
 }
 
+/*
+void player(){
+}
+*/
 
-void kombat(mage_t * m1, mage_t * m2, carellage_t map[][]){
-  while (m1->pv>0 && m1->pv>0 ){
-    menu_choix(m1);
-    menu_choix(m2);
+void kombat(mage_t * m1, mage_t * m2, carellage_t map[N][N]){
+  while (m1->pv>0 && m2->pv>0 ){
+    if (m1->pv > 0 ){
+      afficher_map(map);
+      info_mage(m1);
+      info_mage(m2);
+      menu_choix(m1,map);
+    }
+    else{
+      printf("%s est mort\n", m1->nom);
+    }
+    if (m2->pv > 0 ){
+      afficher_map(map);
+      info_mage(m1);
+      info_mage(m2);
+      menu_choix(m2,map);
+    }
+    else{
+      printf("%s est mort\n", m2->nom);
+    }
+    /*afficher_map(map);*/
   }
+  afficher_map(map);
+  info_mage(m1);
+  info_mage(m2);
 }
 
 
