@@ -5,7 +5,7 @@ void pas_fini(){
   printf(YEL"%s\n", "sort non castable avant la prochaine lune \n"RESET);
 }
 
-void menu_choix(mage_t * m){
+void menu_choix(mage_t * m, carellage_t map[N][N]){
   int choix=-1;
     printf(RED"+++++++++++++++++++\n" );
     printf("+ 1) boule de feu \n");
@@ -18,13 +18,14 @@ void menu_choix(mage_t * m){
     }
 
     switch(choix){
-      case 1: boule_feux(m);break;
+      case 1: boule_feux(m,map);break;
       case 2: pas_fini();break;
       case 3: pas_fini();break;
       default: pas_fini();break;
     }
 
 }
+
 
 void info_mage(mage_t *m){
   printf(CYN"+++++++++++++++++++\n" );
@@ -38,9 +39,40 @@ void info_mage(mage_t *m){
 }
 
 
-void kombat(mage_t * m1, mage_t * m2){
+void kombat(mage_t * m1, mage_t * m2, carellage_t map[][]){
   while (m1->pv>0 && m1->pv>0 ){
     menu_choix(m1);
     menu_choix(m2);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**/
