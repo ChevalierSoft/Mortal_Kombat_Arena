@@ -25,6 +25,8 @@ void afficher_map(carellage_t map[N][N]){
     for(j=0;j<N;j++){
       if(map[i][j].personnage == NULL)
         printf(BLK"🔳"RESET);
+
+        
       else
         printf("%s",map[i][j].personnage->pp);
 
