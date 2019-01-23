@@ -9,6 +9,7 @@ typedef struct mage{
   int px;
   int py;
   int pv;
+  int pm;
   int force;
   char * pp;
 

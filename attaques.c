@@ -2,10 +2,15 @@
 #include "fonctions.h"
 #include "personnage.h"
 
-void charge_test(void){
+void boule_feux(mage_t *m){
+  int range = 0;
+  int cout = 1;
+  int type = 1;
 
-}
-
-void  test_pull(){
-  printf("teste du pull\n" );
+  if(m->pm > cout){
+    m->pm = m->pm - cout;
+  }
+  else {
+    printf("\nmana insuffisant\n");
+  }
 }
