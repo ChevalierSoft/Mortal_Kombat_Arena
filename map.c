@@ -49,13 +49,10 @@ void init_map_f(carellage_t map[N][N]){  //Initialise une map depuis un fichier
 
   sauvegarde = fopen("save.txt","r");
 
-      while(!feof(sauvegarde)){
-          fscanf(sauvegarde,"%d %d %d",&x,&y,&l);
-          
-          map[y][x].land = l;
-
-      }
-
+  while(!feof(sauvegarde)){
+    fscanf(sauvegarde,"%d %d %d",&x,&y,&l);
+    map[y][x].land = l;
+  }
 
 
 }

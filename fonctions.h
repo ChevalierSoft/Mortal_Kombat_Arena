@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "personnage.h"
+#include "couleur.h"
+#include "map.h"
+
 
 void charge_test(void);
 void  test_pull(void);

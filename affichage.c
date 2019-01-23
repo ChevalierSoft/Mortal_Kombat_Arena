@@ -1,8 +1,6 @@
 #include "fonctions.h"
 #include "personnage.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "couleur.h"
 
 void afficher_mage(mage_t * marvin){
   printf("\npv :%d\n", marvin->pv);
