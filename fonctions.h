@@ -9,7 +9,7 @@
 #include "couleur.h"
 #include "map.h"
 
-void boule_feux(mage_t *m,carellage_t n[N][N]);
+void boule_de_feu(mage_t *m,carellage_t n[N][N]);
 void init_mage(mage_t * _mage, int _force, int  _PV, int _px, int _py, int _pm, char * _nom, char * _pp, carellage_t map[N][N]);
 void afficher_mage(mage_t * marvin);
 

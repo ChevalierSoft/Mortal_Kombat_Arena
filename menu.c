@@ -21,7 +21,7 @@ void menu_choix(mage_t * m, carellage_t map[N][N]){
     }
 
     switch(choix){
-      case 1: boule_feux(m,map);break;
+      case 1: boule_de_feu(m,map);break;
       case 2: pas_fini();break;
       case 3: printf("%s passe son tour", m->nom);break;
       default: pas_fini();break;

@@ -2,7 +2,7 @@
 #include "fonctions.h"
 #include "personnage.h"
 
-void boule_feux(mage_t *m,carellage_t n[N][N]){
+void boule_de_feu(mage_t *m,carellage_t n[N][N]){
 
   int x,y;
   int dommage = 2;
@@ -13,8 +13,9 @@ void boule_feux(mage_t *m,carellage_t n[N][N]){
   scanf("%d",&y);
 
   if(n[y][x].personnage != NULL){
-    printf("\n%s est ciblé\n",n[y][x].personnage->nom);
+    printf(YEL"\n%s cible %s \n"RESET, m->nom, n[y][x].personnage->nom);
     n[y][x].personnage->pv -= m->force + dommage;
+    printf(YEL"%s prend %d dommages\n"RESET, n[y][x].personnage->nom, m->force + dommage );
   }
 
 }
