@@ -4,31 +4,35 @@
 #define N 10
 
 
-void afficher_map(carellage_t map[N][N]){
+void afficher_map(carte_t * pt_m){
   int i,j;
+
 
   printf("Matrice terrain             Matrice pointeur perso\n");
   for(i=0;i<N;i++){
+
+
     for(j=0;j<N;j++){
-      switch (map[i][j].land) {
-        case 0: printf(BLK"%d "RESET,map[i][j].land);break;
-        case 1: printf(GRN"%d "RESET,map[i][j].land);break;
-        case 2: printf(BLU"%d "RESET,map[i][j].land);break;
-        case 3: printf(RED"%d "RESET,map[i][j].land);break;
-        case 4: printf(MAG"%d "RESET,map[i][j].land);break;
-        case 5: printf(YEL"%d "RESET,map[i][j].land);break;
-        default: printf(WHT"%d"RESET,map[i][j].land);break;
+
+      switch ((pt_m)->map[i][j]->land) {
+        case 0: printf(BLK"%d "RESET,(pt_m)->map[i][j]->land);break;
+        case 1: printf(GRN"%d "RESET,(pt_m)->map[i][j]->land);break;
+        case 2: printf(BLU"%d "RESET,(pt_m)->map[i][j]->land);break;
+        case 3: printf(RED"%d "RESET,(pt_m)->map[i][j]->land);break;
+        case 4: printf(MAG"%d "RESET,(pt_m)->map[i][j]->land);break;
+        case 5: printf(YEL"%d "RESET,(pt_m)->map[i][j]->land);break;
+        default: printf(WHT"%d"RESET,(pt_m)->map[i][j]->land);break;
       }
     }
     printf("          ");
 
     for(j=0;j<N;j++){
-      if(map[i][j].personnage == NULL)
+      if((pt_m)->map[i][j]->personnage == NULL)
         printf(BLK"🔳"RESET);
 
-        
+
       else
-        printf("%s",map[i][j].personnage->pp);
+        printf("%s",(pt_m)->map[i][j]->personnage->pp);
 
     }
 
@@ -38,24 +42,26 @@ void afficher_map(carellage_t map[N][N]){
 }
 
 
-void init_map_1(carellage_t map[N][N]){  //Initialise une map par défault
-
+void init_map(carte_t * pt_m){
   int i,j;
+  
+
 
   for(i=0;i<N;i++){
     for(j=0;j<N;j++){
-      map[i][j].land = 1;
-      map[i][j].personnage=NULL;
+      (pt_m)->map[i][j] = malloc(sizeof(dalle_t));
+      (pt_m)->map[i][j]->land = 1;
+      (pt_m)->map[i][j]->personnage=NULL;
+
     }
   }
 
-
-
 }
 
-void init_map_f(carellage_t map[N][N]){  //Initialise une map depuis un fichier
-  init_map_1(map);
-  int x,y,l;
+void charger_partie(carte_t * pt_m){
+  printf("Debut charger partie\n");  //Charge un etat de la map depuis un fichier
+  init_map(pt_m);
+  /*int x,y,l;
 
   FILE * sauvegarde;
 
@@ -63,8 +69,8 @@ void init_map_f(carellage_t map[N][N]){  //Initialise une map depuis un fichier
 
   while(!feof(sauvegarde)){
     fscanf(sauvegarde,"%d %d %d",&x,&y,&l);
-    map[y][x].land = l;
+    pt_m[y][x]->land = l;
   }
 
-
+*/
 }

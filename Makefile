@@ -8,8 +8,8 @@ init_structure.o : init_structure.c fonctions.h personnage.h
 	gcc -o init_structure.o -c init_structure.c
 menu.o : menu.c fonctions.h personnage.h
 	gcc -o menu.o -c menu.c -Wall -pedantic -ansi
-
 map.o : map.c fonctions.h map.h
 	gcc -o map.o -c map.c
+	
 clean:
 	rm -rf *.o

@@ -1,11 +1,11 @@
 #include "fonctions.h"
 #include "personnage.h"
-  afficher_map
+  
 void pas_fini(){
   printf(YEL"%s\n", "sort non castable avant la prochaine lune \n"RESET);
 }
 
-void cast_mage_noir(personnage_t * m, carte_t pt_m){
+void cast_mage_noir(personnage_t * m, carte_t * pt_m){
   int choix=-1;
 
   printf(MAG"+++++++++++++++++++\n" RESET);
@@ -29,7 +29,7 @@ void cast_mage_noir(personnage_t * m, carte_t pt_m){
   }
 }
 
-void cast_mage_blanc(personnage_t * m, carte_t pt_m){
+void cast_mage_blanc(personnage_t * m, carte_t * pt_m){
   int choix=-1;
   printf(MAG"+++++++++++++++++++\n" RESET);
   printf(MAG"%s\n" RESET, m->nom);
@@ -52,7 +52,7 @@ void cast_mage_blanc(personnage_t * m, carte_t pt_m){
   }
 }
 
-void menu_choix(personnage_t * m, carte_t pt_m){
+void menu_choix(personnage_t * m, carte_t * pt_m){
 
   switch (m->classe) {
     case mage_noir: cast_mage_noir(m,pt_m); break;
@@ -80,7 +80,7 @@ void player(){
 }
 */
 
-void kombat(personnage_t * m1, personnage_t * m2, carte_t pt_m){
+void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
   while (m1->pv>0 && m2->pv>0 ){
     if (m1->pv > 0 ){
       afficher_map(pt_m);

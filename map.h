@@ -6,13 +6,18 @@
 
 #define N 10
 
-typedef struct carellage_s{
+typedef struct dalle_s{
   int land;
-  mage_t * personnage;
-}carellage_t;
+  personnage_t * personnage;
+}dalle_t;
 
-void init_map(carellage_t map[N][N]);
-void afficher_map();
-void init_map_f(carellage_t map[N][N]);
+typedef struct carte_s{
+  int nb_dalles;
+  dalle_t * map[N][N];
+}carte_t;
+
+void init_map(carte_t * pt_m);
+void afficher_map(carte_t * pt_m);
+void charger_partie(carte_t * pt_m);
 
 #endif
