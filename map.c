@@ -44,7 +44,7 @@ void afficher_map(carte_t * pt_m){
 
 void init_map(carte_t * pt_m){
   int i,j;
-  
+
 
 
   for(i=0;i<N;i++){
@@ -59,7 +59,7 @@ void init_map(carte_t * pt_m){
 }
 
 void charger_partie(carte_t * pt_m){
-  printf("Debut charger partie\n");  //Charge un etat de la map depuis un fichier
+  //Charge un etat de la map depuis un fichier
   init_map(pt_m);
   /*int x,y,l;
 

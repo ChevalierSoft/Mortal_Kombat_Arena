@@ -9,7 +9,7 @@ int main(int argc, char const *argv[]) {
   carte_t * pt_m= malloc(sizeof(carte_t));
 
   //on crée le plateau de jeu (#ez)
-  printf("Avant charger partie \n");
+  
   charger_partie(pt_m);
 
 
