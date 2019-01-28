@@ -3,8 +3,9 @@
 
 #include "fonctions.h"
 
+typedef enum {mage_blanc,mage_noir,chevalier,necromencien,tacticien}heros_classes;
 
-typedef struct mage{
+typedef struct personnage{
   char * nom;
   int px;
   int py;
@@ -12,8 +13,10 @@ typedef struct mage{
   int pm;
   int force;
   char * pp;
+  int classe;
 
-}mage_t;
+
+}personnage_t;
 
 
 
