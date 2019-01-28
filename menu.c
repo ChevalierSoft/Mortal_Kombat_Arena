@@ -1,11 +1,11 @@
 #include "fonctions.h"
 #include "personnage.h"
-
+  afficher_map
 void pas_fini(){
   printf(YEL"%s\n", "sort non castable avant la prochaine lune \n"RESET);
 }
 
-void cast_mage_noir(mage_t * m, carellage_t map[N][N]){
+void cast_mage_noir(personnage_t * m, carte_t pt_m){
   int choix=-1;
 
   printf(MAG"+++++++++++++++++++\n" RESET);
@@ -22,14 +22,14 @@ void cast_mage_noir(mage_t * m, carellage_t map[N][N]){
   }
 
   switch(choix){
-    case 1: boule_de_feu(m,map);break;
+    case 1: boule_de_feu(m,pt_m);break;
     case 2: pas_fini();break;
     case 3: printf("%s passe son tour", m->nom);break;
     default: pas_fini();break;
   }
 }
 
-void cast_mage_blanc(mage_t * m, carellage_t map[N][N]){
+void cast_mage_blanc(personnage_t * m, carte_t pt_m){
   int choix=-1;
   printf(MAG"+++++++++++++++++++\n" RESET);
   printf(MAG"%s\n" RESET, m->nom);
@@ -52,11 +52,11 @@ void cast_mage_blanc(mage_t * m, carellage_t map[N][N]){
   }
 }
 
-void menu_choix(mage_t * m, carellage_t map[N][N]){
+void menu_choix(personnage_t * m, carte_t pt_m){
 
   switch (m->classe) {
-    case mage_noir: cast_mage_noir(m,map); break;
-    case mage_blanc: cast_mage_blanc(m,map); break;
+    case mage_noir: cast_mage_noir(m,pt_m); break;
+    case mage_blanc: cast_mage_blanc(m,pt_m); break;
     default: printf(YEL"\nclasse non répertorié\ndsl\n" RESET );
   }
 
@@ -64,7 +64,7 @@ void menu_choix(mage_t * m, carellage_t map[N][N]){
 }
 
 
-void info_mage(mage_t *m){
+void info_mage(personnage_t *m){
   printf(CYN"+++++++++++++++++++\n" );
   printf("+ Nom   : %s \n", m->nom);
   printf("+ PV    : %d \n", m->pv);
@@ -80,29 +80,29 @@ void player(){
 }
 */
 
-void kombat(mage_t * m1, mage_t * m2, carellage_t map[N][N]){
+void kombat(personnage_t * m1, personnage_t * m2, carte_t pt_m){
   while (m1->pv>0 && m2->pv>0 ){
     if (m1->pv > 0 ){
-      afficher_map(map);
+      afficher_map(pt_m);
       info_mage(m1);
       info_mage(m2);
-      menu_choix(m1,map);
+      menu_choix(m1,pt_m);
     }
     else{
       printf("%s est mort\n", m1->nom);
     }
     if (m2->pv > 0 ){
-      afficher_map(map);
+      afficher_map(pt_m);
       info_mage(m1);
       info_mage(m2);
-      menu_choix(m2,map);
+      menu_choix(m2,pt_m);
     }
     else{
       printf("%s est mort\n", m2->nom);
     }
-    /*afficher_map(map);*/
+
   }
-  afficher_map(map);
+  afficher_map(pt_m);
   info_mage(m1);
   info_mage(m2);
 }
