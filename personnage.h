@@ -14,8 +14,13 @@ typedef struct personnage{
   int force;
   char * pp;
   int classe;
-
-
+  /*
+	int est_empoisoné;
+	int est_mort;
+	int est_enfeu;
+	int intel;
+	int chance;		// pour les critiques
+  */
 }personnage_t;
 
 

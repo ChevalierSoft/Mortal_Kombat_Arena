@@ -29,10 +29,10 @@ void cast_mage_noir(personnage_t * m, carte_t * pt_m){
   }
 }
 
-void cast_mage_blanc(personnage_t * m, carte_t * pt_m){
+void cast_mage_blanc(personnage_t * _personnage, carte_t * pt_m){
   int choix=-1;
   printf(MAG"+++++++++++++++++++\n" RESET);
-  printf(MAG"%s\n" RESET, m->nom);
+  printf(MAG"%s\n" RESET, _personnage->nom);
   printf(MAG"+++++++++++++++++++\n" RESET);
   printf(RED"+++++++++++++++++++\n" );
   printf("+ 1) soin \n");
@@ -45,18 +45,18 @@ void cast_mage_blanc(personnage_t * m, carte_t * pt_m){
   }
 
   switch(choix){
-    case 1: pas_fini();break;
+    case 1: soin(_personnage, pt_m);break;
     case 2: pas_fini();break;
-    case 3: printf("%s passe son tour", m->nom);break;
+    case 3: printf("%s passe son tour", _personnage->nom);break;
     default: pas_fini();break;
   }
 }
 
-void menu_choix(personnage_t * m, carte_t * pt_m){
+void menu_choix(personnage_t * _personnage, carte_t * pt_m){
 
-  switch (m->classe) {
-    case mage_noir: cast_mage_noir(m,pt_m); break;
-    case mage_blanc: cast_mage_blanc(m,pt_m); break;
+  switch (_personnage->classe) {
+    case mage_noir: cast_mage_noir(_personnage,pt_m); break;
+    case mage_blanc: cast_mage_blanc(_personnage,pt_m); break;
     default: printf(YEL"\nclasse non répertorié\ndsl\n" RESET );
   }
 
@@ -64,7 +64,7 @@ void menu_choix(personnage_t * m, carte_t * pt_m){
 }
 
 
-void info_mage(personnage_t *m){
+void info_personnage(personnage_t *m){
   printf(CYN"+++++++++++++++++++\n" );
   printf("+ Nom   : %s \n", m->nom);
   printf("+ PV    : %d \n", m->pv);
@@ -84,8 +84,8 @@ void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
   while (m1->pv>0 && m2->pv>0 ){
     if (m1->pv > 0 ){
       afficher_map(pt_m);
-      info_mage(m1);
-      info_mage(m2);
+      info_personnage(m1);
+      info_personnage(m2);
       menu_choix(m1,pt_m);
     }
     else{
@@ -93,8 +93,8 @@ void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
     }
     if (m2->pv > 0 ){
       afficher_map(pt_m);
-      info_mage(m1);
-      info_mage(m2);
+      info_personnage(m1);
+      info_personnage(m2);
       menu_choix(m2,pt_m);
     }
     else{
@@ -103,8 +103,8 @@ void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
 
   }
   afficher_map(pt_m);
-  info_mage(m1);
-  info_mage(m2);
+  info_personnage(m1);
+  info_personnage(m2);
 }
 
 

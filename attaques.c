@@ -2,7 +2,7 @@
 #include "fonctions.h"
 #include "personnage.h"
 
-void boule_de_feu(personnage_t *_personnage,carte_t * pt_m){
+void boule_de_feu(personnage_t *_personnage, carte_t * pt_m){
 
   int x,y;
   int dommage = 2;
@@ -20,9 +20,9 @@ void boule_de_feu(personnage_t *_personnage,carte_t * pt_m){
 
 }
 
-void soin(personnage_t *_personnage,carte_t * pt_m){
+void soin(personnage_t *_personnage, carte_t * pt_m){
   int x,y;
-  int soin = 2;
+  int soin = 3;
 
   printf("X :");
   scanf("%d",&x);
@@ -31,8 +31,8 @@ void soin(personnage_t *_personnage,carte_t * pt_m){
 
   if(pt_m->map[x][y]->personnage != NULL){
     printf(YEL"\n%s cible %s \n"RESET, _personnage->nom, pt_m->map[x][y]->personnage->nom);
-    pt_m->map[x][y]->personnage->pv -= _personnage->pv + soin;
-    printf(YEL"%s se soigne de %d points de vies\n"RESET, pt_m->map[x][y]->personnage->nom, _personnage->pv + soin );
+    pt_m->map[x][y]->personnage->pv += soin;
+    printf(YEL"%s se soigne de %d points de vies\n"RESET, pt_m->map[x][y]->personnage->nom, soin );
 
   }
 }
