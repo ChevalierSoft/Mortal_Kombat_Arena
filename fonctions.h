@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <math.h> 
 #include "personnage.h"
 #include "couleur.h"
 #include "map.h"
@@ -18,5 +19,7 @@ void pas_fini(void);
 void menu_choix(personnage_t * _personnage, carte_t * pt_m);
 void info_mage(personnage_t *_personnage);
 void kombat(personnage_t * _personnage1, personnage_t * _personnage2,carte_t * pt_m);
+int deplacement(personnage_t *_personnage, carellage_t map[N][N]);
+int range_detection(personnage_t *_personnage,int range,int x,int y);
 
 #endif
