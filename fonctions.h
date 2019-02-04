@@ -5,16 +5,17 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <math.h> 
+#include <math.h>
 #include "personnage.h"
 #include "couleur.h"
 #include "map.h"
 
-void boule_de_feu(personnage_t *_personnage,carte_t * pt_m);
 void init_hero(personnage_t * _personnage, int _force, int  _PV, int _px, int _py, int _pm, char * _nom, char * _pp, carte_t * pt_m,int classe);
 void afficher_mage(personnage_t * marvin);
 void soin(personnage_t *_personnage,carte_t * pt_m);
-
+void soin_cb(void *_personnage, void * pt_m);
+void boule_de_feu(personnage_t *_personnage,carte_t * pt_m);
+void boule_de_feu_cb(void *_personnage,void * pt_m);
 void pas_fini(void);
 void menu_choix(personnage_t * _personnage, carte_t * pt_m);
 void info_mage(personnage_t *_personnage);

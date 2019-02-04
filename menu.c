@@ -45,7 +45,7 @@ void cast_mage_blanc(personnage_t * _personnage, carte_t * pt_m){
   }
 
   switch(choix){
-    case 1: soin(_personnage, pt_m);break;
+    case 1: _personnage->f1(_personnage, pt_m);break;
     case 2: pas_fini();break;
     case 3: printf("%s passe son tour", _personnage->nom);break;
     default: pas_fini();break;

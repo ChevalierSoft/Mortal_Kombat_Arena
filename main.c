@@ -12,9 +12,6 @@ int main(int argc, char const *argv[]) {
 
   charger_partie(pt_m);
 
-
-  afficher_map(pt_m);
-
   //on crée un mage de chiansse ici (c'est zéro mais, mais.)
   personnage_t * marvin = malloc(sizeof(personnage_t)); // creer une structure marvin qui est un mage
   //_mage, _force,  _PV, _px, _py,  _pm,  _nom, *_pp

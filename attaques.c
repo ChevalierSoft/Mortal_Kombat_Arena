@@ -17,6 +17,9 @@ int range_detection(personnage_t *_personnage,int range,int x,int y){
   }
 }
 
+void boule_de_feu_cb(void *_personnage, void * pt_m){
+  boule_de_feu(_personnage, pt_m);
+}
 void boule_de_feu(personnage_t *_personnage, carte_t * pt_m){ // mage noir, mage blanc
 
   int x,y;
@@ -37,6 +40,10 @@ void boule_de_feu(personnage_t *_personnage, carte_t * pt_m){ // mage noir, mage
     else
       printf("\nRange insuffisante.\n");
   }
+}
+
+void soin_cb(void *_personnage, void * pt_m){
+  soin(_personnage,pt_m);
 }
 
 void soin(personnage_t *_personnage, carte_t * pt_m){ //mage blanc
@@ -69,10 +76,8 @@ int deplacement(personnage_t *_personnage, carte_t * pt_m){
   printf("Y :");
   scanf("%d",&y);
   pt_m->map[_personnage->py][_personnage->px]->personnage = NULL;
-  //map[_personnage->py][_personnage->px].personnage = NULL;
 
   _personnage->px =  x;
   _personnage->py =  y;
   pt_m->map[_personnage->py][_personnage->px]->personnage = _personnage;
-  //map[_personnage->py][_personnage->px].personnage = _personnage ;
 }
