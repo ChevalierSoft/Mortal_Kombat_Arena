@@ -19,5 +19,6 @@ typedef struct carte_s{
 void init_map(carte_t * pt_m);
 void afficher_map(carte_t * pt_m);
 void charger_partie(carte_t * pt_m);
+void map_detruire(carte_t ** pt_m);
 
 #endif

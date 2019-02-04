@@ -80,3 +80,16 @@ void charger_partie(carte_t * pt_m){
 
 
 }
+
+void map_detruire(carte_t ** pt_m){
+  int i,j;
+
+  for(j=0;j<N;j++){
+    for(i=0;i<N;i++){
+      free((*pt_m)->map[i][j]);
+      (*pt_m)->map[i][j]=NULL;
+    }
+  }
+  free((*pt_m));
+  (*pt_m) = NULL;
+}

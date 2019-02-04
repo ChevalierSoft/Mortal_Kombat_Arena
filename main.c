@@ -26,8 +26,7 @@ int main(int argc, char const *argv[]) {
 
   kombat(marvin, Zeddicus_Zul_Zorander,pt_m);
 
-  free(pt_m);
-  pt_m = NULL;
+  map_detruire(&pt_m);
   printf(RED"\n+++++++++++++++++++++++++++++++++++++++++++++++++++\n"RESET);
 
   return 0;
