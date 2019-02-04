@@ -20,7 +20,6 @@ int main(int argc, char const *argv[]) {
   personnage_t * Zeddicus_Zul_Zorander = malloc(sizeof(personnage_t));
   init_hero(Zeddicus_Zul_Zorander,2,11,3,4,2,"Zeddicus Zul'Zorander","🧞‍",pt_m,mage_noir);
 
-
   kombat(marvin, Zeddicus_Zul_Zorander,pt_m);
 
   map_detruire(&pt_m);

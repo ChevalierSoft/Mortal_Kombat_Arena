@@ -3,7 +3,7 @@
 
 #include "fonctions.h"
 
-typedef enum {mage_blanc,mage_noir,chevalier,necromencien,tacticien}heros_classes;
+typedef enum {mage_blanc, mage_noir, chevalier, necromencien, tacticien} heros_classes;
 
 /*typedef struct personnage_s personnage_t;*/
 
@@ -17,7 +17,7 @@ typedef struct personnage_s{
   char * pp;
   int classe;
 
-  /*char * f1_nom;*/
+  char * f1_nom;
   void (*f1)(void *_personnage, void * pt_m);
 
 	int est_empoisone;

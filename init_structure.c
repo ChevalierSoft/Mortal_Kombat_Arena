@@ -7,6 +7,8 @@ void placement(personnage_t *_personnage,carte_t * pt_m){
 }
 
 void init_mage_blanc(personnage_t * _mage_blanc ){
+  _mage_blanc->f1_nom = malloc(sizeof(char)*strlen("boule de feu"));
+  strcmp(_mage_blanc->f1_nom, "boule de feu");
   _mage_blanc->f1 = &soin_cb;
 }
 
@@ -47,7 +49,7 @@ void init_hero(personnage_t * _personnage, int _force, int _PV, int _px, int _py
 	_personnage->chance=0;
 
   placement(_personnage, pt_m);
-  
+
   switch(_classe){
     case mage_blanc:init_mage_blanc( _personnage);break;
     case mage_noir:init_mage_noir(_personnage);break;
