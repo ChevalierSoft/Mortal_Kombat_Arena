@@ -9,10 +9,10 @@ void afficher_map(carte_t * pt_m){
 
 
   printf("Matrice terrain             Matrice pointeur perso\n");
-  for(i=0;i<N;i++){
+  for(j=0;j<N;j++){
 
 
-    for(j=0;j<N;j++){
+    for(i=0;i<N;i++){
 
       switch ((pt_m)->map[i][j]->land) {
         case 0: printf(BLK"%d "RESET,(pt_m)->map[i][j]->land);break;
@@ -26,7 +26,7 @@ void afficher_map(carte_t * pt_m){
     }
     printf("          ");
 
-    for(j=0;j<N;j++){
+    for(i=0;i<N;i++){
       if((pt_m)->map[i][j]->personnage == NULL)
         printf(BLK"🔳"RESET);
 
@@ -42,13 +42,14 @@ void afficher_map(carte_t * pt_m){
 }
 
 
+
 void init_map(carte_t * pt_m){
   int i,j;
 
 
 
-  for(i=0;i<N;i++){
-    for(j=0;j<N;j++){
+  for(j=0;j<N;j++){
+    for(i=0;i<N;i++){
       (pt_m)->map[i][j] = malloc(sizeof(dalle_t));
       (pt_m)->map[i][j]->land = 1;
       (pt_m)->map[i][j]->personnage=NULL;
@@ -58,10 +59,15 @@ void init_map(carte_t * pt_m){
 
 }
 
+/*void sauvegarder_partie(carte_t * pt_m){
+
+
+}*/
+
 void charger_partie(carte_t * pt_m){
   //Charge un etat de la map depuis un fichier
   init_map(pt_m);
-  /*int x,y,l;
+  int x,y,l;
 
   FILE * sauvegarde;
 
@@ -69,8 +75,8 @@ void charger_partie(carte_t * pt_m){
 
   while(!feof(sauvegarde)){
     fscanf(sauvegarde,"%d %d %d",&x,&y,&l);
-    pt_m[y][x]->land = l;
+    pt_m->map[x][y]->land = l;
   }
 
-*/
+
 }
