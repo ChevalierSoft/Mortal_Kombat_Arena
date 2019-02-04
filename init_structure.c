@@ -3,7 +3,7 @@
 
 void placement(personnage_t *_personnage,carte_t * pt_m){
   pt_m->map[_personnage->px][_personnage->py]->personnage = _personnage;
-  
+
 }
 
 void init_mage_blanc(personnage_t * _mage_blanc, int _force, int  _PV, int _px, int _py, int _pm, char * _nom, char * _pp, carte_t * pt_m,int _classe ){
@@ -18,6 +18,13 @@ void init_mage_blanc(personnage_t * _mage_blanc, int _force, int  _PV, int _px, 
   strcpy(_mage_blanc->pp, _pp);
   placement(_mage_blanc, pt_m);
   _mage_blanc->classe = _classe;
+
+  _mage_blanc->est_empoisone=0;
+  _mage_blanc->est_mort=0;
+  _mage_blanc->est_enfeu=0;
+  _mage_blanc->intel=0;
+  _mage_blanc->chance=0;
+
 }
 
 void init_mage_noir(personnage_t * _mage_noir, int _force, int  _PV, int _px, int _py, int _pm, char * _nom, char * _pp, carte_t * pt_m,int _classe ){
