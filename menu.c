@@ -1,6 +1,6 @@
 #include "fonctions.h"
 #include "personnage.h"
-  
+
 void pas_fini(){
   printf(YEL"%s\n", "sort non castable avant la prochaine lune \n"RESET);
 }
@@ -36,7 +36,7 @@ void cast_mage_blanc(personnage_t * _personnage, carte_t * pt_m){
   printf(MAG"+++++++++++++++++++\n" RESET);
   printf(RED"+++++++++++++++++++\n" );
   printf("+ 1) soin \n");
-  printf("+ 2) antidote \n");
+  printf("+ 2) cure \n");
   printf("+ 3) passer le tour \n");
   printf("++++++++++++++++++\n" RESET);
 
