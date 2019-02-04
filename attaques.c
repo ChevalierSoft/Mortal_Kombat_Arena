@@ -50,10 +50,10 @@ void soin(personnage_t *_personnage, carte_t * pt_m){ //mage blanc
   scanf("%d",&y);
 
   if(pt_m->map[y][x]->personnage != NULL){
-    if((range_detection(_personnage,range,x,y) == 1)){
+    if((range_detection(_personnage,range,x,y))){
       printf(YEL"\n%s cible %s \n"RESET, _personnage->nom, pt_m->map[y][x]->personnage->nom);
-      pt_m->map[y][x]->personnage->pv -= _personnage->pv + soin;
-      printf(YEL"%s se soigne de %d points de vies\n"RESET, pt_m->map[y][x]->personnage->nom, _personnage->pv + soin );
+      pt_m->map[y][x]->personnage->pv += soin;
+      printf(YEL"%s se soigne de %d points de vies\n"RESET, pt_m->map[y][x]->personnage->nom, soin );
     }
     else
       printf("\nRange insuffisante.\n");
