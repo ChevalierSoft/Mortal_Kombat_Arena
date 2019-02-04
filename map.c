@@ -5,12 +5,12 @@
 
 
 void afficher_map(carte_t * pt_m){
-  int i,j;
+  int i,j,k;
 
 
   printf("Matrice terrain             Matrice pointeur perso\n");
+  printf("                               0 1 2 3 4 5 6 7 8 9\n");
   for(j=0;j<N;j++){
-
 
     for(i=0;i<N;i++){
 
@@ -25,8 +25,10 @@ void afficher_map(carte_t * pt_m){
       }
     }
     printf("          ");
+    printf("%d",j);
 
     for(i=0;i<N;i++){
+      //printf("%d",i);
       if((pt_m)->map[i][j]->personnage == NULL)
         printf(BLK"🔳"RESET);
 
