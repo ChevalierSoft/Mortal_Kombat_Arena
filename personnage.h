@@ -20,6 +20,7 @@ typedef struct personnage_s{
   char * f1_nom;
   void (*f1)(void *_personnage, void * pt_m);
 
+  int est_shield;
 	int est_empoisone;
 	int est_mort;
 	int est_enfeu;

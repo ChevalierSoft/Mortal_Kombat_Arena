@@ -5,61 +5,67 @@ void pas_fini(){
   printf(YEL"%s\n", "sort non castable avant la prochaine lune \n"RESET);
 }
 
-void cast_mage_noir(personnage_t * m, carte_t * pt_m){
-  int choix=-1;
+int phase_premiere(personnage_t * _personnage, carte_t * pt_m){
 
-  printf(MAG"+++++++++++++++++++\n" RESET);
-  printf(MAG"%s\n" RESET, m->nom);
-  printf(MAG"+++++++++++++++++++\n" RESET);
-  printf(RED"+++++++++++++++++++\n" );
-  printf("+ 1) boule de feu \n");
-  printf("+ 2) make america great again \n");
-  printf("+ 3) passer le tour \n");
-  printf("++++++++++++++++++\n" RESET);
+  int choix = -1;
+  do{
+    printf(MAG"+++++++++++++++++++\n" RESET);
+    printf(MAG"%s\n" RESET, _personnage->nom);
+    printf(MAG"+++++++++++++++++++\n" RESET);
+    printf(RED"+++++++++++++++++++\n" );
+    printf("+ 1) Attaquer \n");
+    printf("+ 2) Se Deplacer \n");
+    printf("+ 3) Utiliser un objet \n");
+    printf("+ 4) Passer le tour \n");
+    printf("++++++++++++++++++\n" RESET);
 
-  while (choix <1 || choix >3) {
     scanf("%d",&choix);
-  }
+  }while(choix <1 || choix >3);
 
-  switch(choix){
-    case 1: boule_de_feu(m,pt_m);break;
-    case 2: pas_fini();break;
-    case 3: printf("%s passe son tour", m->nom);break;
-    default: pas_fini();break;
-  }
+  return(choix);
+
 }
 
-void cast_mage_blanc(personnage_t * _personnage, carte_t * pt_m){
-  int choix=-1;
-  printf(MAG"+++++++++++++++++++\n" RESET);
-  printf(MAG"%s\n" RESET, _personnage->nom);
-  printf(MAG"+++++++++++++++++++\n" RESET);
-  printf(RED"+++++++++++++++++++\n" );
-  printf("+ 1) soin \n");
-  printf("+ 2) cure \n");
-  printf("+ 3) passer le tour \n");
-  printf("++++++++++++++++++\n" RESET);
 
-  while (choix <1 || choix >3) {
+int phase_attaque(personnage_t * _personnage, carte_t * pt_m){
+  int choix=-1;
+  do{
+    printf(MAG"+++++++++++++++++++\n" RESET);
+    printf(MAG"%s\n" RESET, _personnage->nom);
+    printf(MAG"+++++++++++++++++++\n" RESET);
+    printf(RED"+++++++++++++++++++\n" );
+    printf("+ 1) %s \n", _personnage->f1_nom);
+    printf("+ 2) cure \n");
+    printf("+ 3) passer le tour \n");
+    printf("++++++++++++++++++\n" RESET);
+   
     scanf("%d",&choix);
+  }while (choix <1 || choix >3) ;
+
+  
+  return(choix);
+}
+
+void menu_choix(personnage_t * _personnage, carte_t * pt_m){
+  int phase1=0, phase2=0;
+
+  phase1 = phase_premiere(_personnage, pt_m);
+
+  switch(phase1){
+    case 1: phase2 = phase_attaque(_personnage, pt_m);break;
+    case 2: deplacement(_personnage, pt_m);break;
+    case 3: pas_fini();break;
+    case 4: printf("%s passe son tour\n", _personnage->nom);break;
+    default: pas_fini();break;
   }
 
-  switch(choix){
+  
+  switch(phase2){
     case 1: _personnage->f1(_personnage, pt_m);break;
     case 2: pas_fini();break;
     case 3: printf("%s passe son tour", _personnage->nom);break;
     default: pas_fini();break;
   }
-}
-
-void menu_choix(personnage_t * _personnage, carte_t * pt_m){
-
-  switch (_personnage->classe) {
-    case mage_noir: cast_mage_noir(_personnage,pt_m); break;
-    case mage_blanc: cast_mage_blanc(_personnage,pt_m); break;
-    default: printf(YEL"\nclasse non répertorié\ndsl\n" RESET );
-  }
-
 
 }
 
@@ -75,10 +81,6 @@ void info_personnage(personnage_t *m){
   printf("+++++++++++++++++++\n"RESET);
 }
 
-/*
-void player(){
-}
-*/
 
 void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
   while (m1->pv>0 && m2->pv>0 ){

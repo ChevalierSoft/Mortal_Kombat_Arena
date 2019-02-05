@@ -75,9 +75,9 @@ int deplacement(personnage_t *_personnage, carte_t * pt_m){
   scanf("%d",&x);
   printf("Y :");
   scanf("%d",&y);
-  pt_m->map[_personnage->py][_personnage->px]->personnage = NULL;
+  pt_m->map[_personnage->px][_personnage->py]->personnage = NULL;
 
   _personnage->px =  x;
   _personnage->py =  y;
-  pt_m->map[_personnage->py][_personnage->px]->personnage = _personnage;
+  pt_m->map[_personnage->px][_personnage->py]->personnage = _personnage;
 }
