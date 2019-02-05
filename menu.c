@@ -6,7 +6,6 @@ void pas_fini(){
 }
 
 int phase_premiere(personnage_t * _personnage, carte_t * pt_m){
-
   int choix = -1;
   do{
     printf(MAG"+++++++++++++++++++\n" RESET);
@@ -20,7 +19,7 @@ int phase_premiere(personnage_t * _personnage, carte_t * pt_m){
     printf("++++++++++++++++++\n" RESET);
 
     scanf("%d",&choix);
-  }while(choix <1 || choix >3);
+  }while(choix <1 || choix >4);
 
   return(choix);
 
@@ -37,10 +36,11 @@ int phase_attaque(personnage_t * _personnage, carte_t * pt_m){
     printf("+ 1) %s \n", _personnage->f1_nom);
     printf("+ 2) cure \n");
     printf("+ 3) passer le tour \n");
+    printf("+ 4) Retour (a coder) \n");
     printf("++++++++++++++++++\n" RESET);
    
     scanf("%d",&choix);
-  }while (choix <1 || choix >3) ;
+  }while (choix <1 || choix >4) ;
 
   
   return(choix);
@@ -52,23 +52,21 @@ void menu_choix(personnage_t * _personnage, carte_t * pt_m){
   phase1 = phase_premiere(_personnage, pt_m);
 
   switch(phase1){
-    case 1: phase2 = phase_attaque(_personnage, pt_m);break;
+    case 1: phase2 = phase_attaque(_personnage, pt_m);
+            switch(phase2){
+              case 1: _personnage->f1(_personnage, pt_m);break;
+              case 2: pas_fini();break;
+              case 3: printf(YEL"%s passe son tour"RESET, _personnage->nom);break;
+              default: pas_fini();break;
+            }
+            break;
     case 2: deplacement(_personnage, pt_m);break;
     case 3: pas_fini();break;
-    case 4: printf("%s passe son tour\n", _personnage->nom);break;
+    case 4: printf(YEL"%s passe son tour\n"RESET, _personnage->nom);break;
     default: pas_fini();break;
-  }
-
-  
-  switch(phase2){
-    case 1: _personnage->f1(_personnage, pt_m);break;
-    case 2: pas_fini();break;
-    case 3: printf("%s passe son tour", _personnage->nom);break;
-    default: pas_fini();break;
-  }
+  }  
 
 }
-
 
 void info_personnage(personnage_t *m){
   printf(CYN"+++++++++++++++++++\n" );
@@ -81,13 +79,12 @@ void info_personnage(personnage_t *m){
   printf("+++++++++++++++++++\n"RESET);
 }
 
-
 void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
   while (m1->pv>0 && m2->pv>0 ){
     if (m1->pv > 0 ){
       afficher_map(pt_m);
       info_personnage(m1);
-      info_personnage(m2);
+      /*info_personnage(m2);*/
       menu_choix(m1,pt_m);
     }
     else{
@@ -95,7 +92,7 @@ void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
     }
     if (m2->pv > 0 ){
       afficher_map(pt_m);
-      info_personnage(m1);
+      /*info_personnage(m1);*/
       info_personnage(m2);
       menu_choix(m2,pt_m);
     }

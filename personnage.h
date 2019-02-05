@@ -18,11 +18,17 @@ typedef struct personnage_s{
   int classe;
 
   char * f1_nom;
+  char * f2_nom;
+  char * f3_nom;
+  char * f4_nom;
   void (*f1)(void *_personnage, void * pt_m);
+  void (*f2)(void *_personnage, void * pt_m);
+  void (*f3)(void *_personnage, void * pt_m);
+  void (*f4)(void *_personnage, void * pt_m);
 
   int est_shield;
-	int est_empoisone;
 	int est_mort;
+  int est_empoisone;
 	int est_enfeu;
 	int intel;
 	int chance;		/* pour les critiques*/

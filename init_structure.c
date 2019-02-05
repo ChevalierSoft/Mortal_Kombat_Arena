@@ -5,11 +5,23 @@ void placement(personnage_t *_personnage,carte_t * pt_m){
   pt_m->map[_personnage->px][_personnage->py]->personnage = _personnage;
 
 }
-
+/*
+void init_spell(personnage_t * p, int n_spell, char * nom, void * spell){
+	_mage_blanc->f_nom[nb] = malloc(sizeof(char)*strlen("Soin"));
+  strcpy(_mage_blanc->f_nom[nb], "Soin");
+  _mage_blanc->f1[nb] = &soin_cb;
+}
+*/
 void init_mage_blanc(personnage_t * _mage_blanc ){
-  _mage_blanc->f1_nom = malloc(sizeof(char)*strlen("Soin"));
+  _mage_blanc->f1_nom = malloc(sizeof(char)*4);
   strcpy(_mage_blanc->f1_nom, "Soin");
   _mage_blanc->f1 = &soin_cb;
+
+  _mage_blanc->f2_nom = malloc(sizeof(char)*4);
+  strcpy(_mage_blanc->f2_nom, "Cure");
+  _mage_blanc->f2 = &cure_cb;
+
+
 }
 
 void init_mage_noir(personnage_t * _mage_noir ){
