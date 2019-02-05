@@ -20,10 +20,11 @@ int range_detection(personnage_t *_personnage,int range,int x,int y){
 void boule_de_feu_cb(void *_personnage, void * pt_m){
   boule_de_feu(_personnage, pt_m);
 }
+
 void boule_de_feu(personnage_t *_personnage, carte_t * pt_m){ // mage noir, mage blanc
 
   int x,y;
-  int dommage = 2;
+  int dommage = 115;
   int range = 5;
 
   printf("X :");
@@ -48,7 +49,7 @@ void soin_cb(void *_personnage, void * pt_m){
 
 void soin(personnage_t *_personnage, carte_t * pt_m){ //mage blanc
   int x,y;
-  int soin = 2;
+  int soin = 160;
   int range = 4;
 
   printf("X :");
@@ -105,3 +106,23 @@ int deplacement(personnage_t *_personnage, carte_t * pt_m){
   _personnage->py =  y;
   pt_m->map[_personnage->px][_personnage->py]->personnage = _personnage;
 }
+/*
+void jet_de_sable(){
+
+}*/
+/*
+void arakiri(personnage_t * personnage, carte_t * pt_m){
+  int range = 2;
+  
+  if(pt_m->map[personnage->px + 1][personnage->py]->personnage != NULL){
+    if(range_detection(personnage,range,y,personnage->px + 1)){
+      printf(YEL"\n%s cible %s \n"RESET, personnage->nom, pt_m->map[x][y]->personnage->nom);
+      pt_m->map[x][y]->personnage->pv -= personnage->force + dommage;
+      printf(YEL"%s prend %d dommages\n"RESET, pt_m->map[x][y]->personnage->nom, personnage->force + dommage );
+    }
+    else
+      printf("\nRange insuffisante.\n");
+  }
+  
+}
+*/

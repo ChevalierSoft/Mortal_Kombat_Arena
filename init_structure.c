@@ -42,6 +42,10 @@ void init_tacticien(personnage_t * _tacticien ){
 
 }
 
+void init_ninja(personnage_t * _ninja ){
+
+}
+
 void init_hero(personnage_t * _personnage, int _force, int _PV, int _px, int _py, int _pm, char * _nom, char * _pp, carte_t * pt_m,int _classe){
 
   _personnage->nom = malloc(sizeof(char)*strlen(_nom));
@@ -71,6 +75,7 @@ void init_hero(personnage_t * _personnage, int _force, int _PV, int _px, int _py
     case chevalier:init_chevalier(_personnage);break;
     case necromencien:init_necromencien(_personnage);break;
     case tacticien:init_tacticien(_personnage);break;
+    case ninja:init_ninja(_personnage);break;
     default:printf("ERROR !!!!!!!!!!!");break;
   }
 }

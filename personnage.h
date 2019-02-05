@@ -3,7 +3,7 @@
 
 #include "fonctions.h"
 
-typedef enum {mage_blanc, mage_noir, chevalier, necromencien, tacticien} heros_classes;
+typedef enum {mage_blanc, mage_noir, chevalier, necromencien, tacticien, ninja} heros_classes;
 
 /*typedef struct personnage_s personnage_t;*/
 
@@ -12,6 +12,7 @@ typedef struct personnage_s{
   int px;
   int py;
   int pv;
+  /*pv_max*/
   int pm;
   int force;
   char * pp;
