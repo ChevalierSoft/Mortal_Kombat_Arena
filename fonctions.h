@@ -6,11 +6,12 @@
 #include <string.h>
 #include <unistd.h>
 #include <math.h>
+#include <stdarg.h>
 #include "personnage.h"
 #include "couleur.h"
 #include "map.h"
 
-void init_hero(personnage_t * _personnage, int _force, int  _PV, int _px, int _py, int _pm, char * _nom, char * _pp, carte_t * pt_m,int classe);
+void init_hero(personnage_t * _personnage, int _force, int  _PV, int _px, int _py, int _pm, char * _nom, char * _pp, int _nb_att, carte_t * pt_m,int classe);
 void afficher_mage(personnage_t * marvin);
 void soin(personnage_t *_personnage,carte_t * pt_m);
 void soin_cb(void *_personnage, void * pt_m);
