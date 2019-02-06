@@ -39,7 +39,7 @@ void boule_de_feu(personnage_t *_personnage, carte_t * pt_m){ // mage noir, mage
       printf(YEL"%s prend %d dommages\n"RESET, pt_m->map[x][y]->personnage->nom, _personnage->force + dommage );
     }
     else
-      printf("\nRange insuffisante.\n");
+      printf(YEL"%s\n"RESET,"Range insuffisante");
   }
 }
 
@@ -64,7 +64,7 @@ void soin(personnage_t *_personnage, carte_t * pt_m){ //mage blanc
       printf(YEL"%s se soigne de %d points de vies\n"RESET, pt_m->map[x][y]->personnage->nom, soin );
     }
     else
-      printf("\nRange insuffisante.\n");
+      printf(YEL"%s\n"RESET,"Range insuffisante");
   }
 }
 void cure_cb(void *_personnage, void * pt_m){
@@ -88,9 +88,182 @@ void cure(personnage_t *_personnage, carte_t * pt_m){
       printf(YEL"%s est gerit de ses alterations d'etat\n"RESET, pt_m->map[x][y]->personnage->nom);
     }
     else
-      printf("\nRange insuffisante.\n");
+    printf(YEL"%s\n"RESET,"Range insuffisante");
   }
 }
+
+void toxicite(personnage_t * personnage,carte_t * pt_m){
+  int x,y;
+  int range = 6;
+
+  printf("X :");
+  scanf("%d",&x);
+  printf("Y :");
+  scanf("%d",&y);
+
+  if(pt_m->map[x][y]->personnage != NULL){
+    if(range_detection(personnage,range,y,x)){
+      printf(YEL"\n%s cible %s \n"RESET, personnage->nom, pt_m->map[x][y]->personnage->nom);
+      pt_m->map[x][y]->personnage->est_empoisone=1;
+      printf(YEL"%s est devenu toxique\n"RESET, pt_m->map[x][y]->personnage->nom);
+
+    }
+    else
+      printf(YEL"%s\n"RESET,"Range insuffisante");
+  }
+}
+
+void toxicite_cb(void * personnage,void * pt_m){
+  toxicite(personnage,pt_m);
+}
+
+void tourbilol(personnage_t * personnage,carte_t * pt_m){ /* pas fini */ /* need detection hors map*/
+
+  int degats = 100;
+  printf(YEL"%s execute un tourbilol !\n"RESET, personnage->nom);
+
+
+  if(pt_m->map[personnage->px+1][personnage->py]->personnage != NULL){
+    pt_m->map[personnage->px+1][personnage->py]->personnage->pv -= personnage->force + degats;
+    printf(YEL"%s a ete blesse\n"RESET, pt_m->map[personnage->px+1][personnage->py]->personnage->nom);
+
+  }
+  if(pt_m->map[personnage->px+1][personnage->py+1]->personnage != NULL){
+    pt_m->map[personnage->px+1][personnage->py+1]->personnage->pv -= personnage->force + degats;
+    printf(YEL"%s a ete blesse\n"RESET, pt_m->map[personnage->px+1][personnage->py+1]->personnage->nom);
+  }
+  if(pt_m->map[personnage->px][personnage->py+1]->personnage != NULL){
+    pt_m->map[personnage->px][personnage->py+1]->personnage->pv -= personnage->force + degats;
+    printf(YEL"%s a ete blesse\n"RESET, pt_m->map[personnage->px][personnage->py+1]->personnage->nom);
+
+  }
+  if(pt_m->map[personnage->px-1][personnage->py]->personnage != NULL){
+    pt_m->map[personnage->px-1][personnage->py]->personnage->pv -= personnage->force + degats;
+    printf(YEL"%s a ete blesse\n"RESET, pt_m->map[personnage->px-1][personnage->py]->personnage->nom);
+
+  }
+  if(pt_m->map[personnage->px-1][personnage->py-1]->personnage != NULL){
+    pt_m->map[personnage->px-1][personnage->py-1]->personnage->pv -= personnage->force + degats;
+    printf(YEL"%s a ete blesse\n"RESET, pt_m->map[personnage->px-1][personnage->py-1]->personnage->nom);
+  }
+  if(pt_m->map[personnage->px][personnage->py-1]->personnage != NULL){
+    pt_m->map[personnage->px][personnage->py-1]->personnage->pv -= personnage->force + degats;
+    printf(YEL"%s a ete blesse\n"RESET, pt_m->map[personnage->px][personnage->py-1]->personnage->nom);
+  }
+  if(pt_m->map[personnage->px+1][personnage->py-1]->personnage != NULL){
+    pt_m->map[personnage->px+1][personnage->py-1]->personnage->pv -= personnage->force + degats;
+    printf(YEL"%s a ete blesse\n"RESET, pt_m->map[personnage->px+1][personnage->py-1]->personnage->nom);
+  }
+  if(pt_m->map[personnage->px-1][personnage->py+1]->personnage != NULL){
+    pt_m->map[personnage->px-1][personnage->py+1]->personnage->pv -= personnage->force + degats;
+    printf(YEL"%s a ete blesse\n"RESET, pt_m->map[personnage->px-1][personnage->py+1]->personnage->nom);
+  }
+}
+
+void tourbilol_cb(void * personnage,void * pt_m){
+  tourbilol(personnage,pt_m);
+}
+
+void shield(personnage_t * personnage,carte_t * pt_m){
+
+  int efficacite = 50;
+
+  printf(YEL"%s se rajoute %d de shield !\n"RESET, personnage->nom,efficacite);
+
+  personnage->est_shield += efficacite;
+
+  printf(YEL"%s est maintenant à %d de shield\n"RESET, personnage->nom,personnage->est_shield);
+
+}
+
+void shield_cb(void * personnage,void * pt_m){
+  shield(personnage,pt_m);
+}
+
+void fait_ton_greu(personnage_t * personnage,carte_t * pt_m){ /* pas fini */ /* need detection hors map*/ /*ERREUR DE SEGMENTATION */
+  int degats = 50;
+  int fear = 2;
+  int x,y;
+
+  printf("X :");
+  scanf("%d",&x);
+  printf("Y :");
+  scanf("%d",&y);
+
+  printf(YEL"%s fait son greu !!\n"RESET, personnage->nom);
+  if(pt_m->map[x][y]->personnage != NULL){
+    pt_m->map[x][y]->personnage->pv -= personnage->force + degats;
+
+    if(y == personnage->py){
+      printf("LUL1");
+      if(x < personnage->px){
+        printf("lul1");
+        pt_m->map[x][y]->personnage->px -= fear;
+        pt_m->map[x-fear][y]->personnage = pt_m->map[x][y]->personnage;
+        pt_m->map[x][y]->personnage = NULL;
+      }
+      else if(x > personnage->px){
+        pt_m->map[x][y]->personnage->px += fear;
+        pt_m->map[x+fear][y]->personnage = pt_m->map[x][y]->personnage;
+        pt_m->map[x][y]->personnage = NULL;
+      }
+    }
+    else if(y > personnage->py){
+      if(x == personnage->px){
+        pt_m->map[x][y]->personnage->py += fear;
+        pt_m->map[x][y+fear]->personnage = pt_m->map[x][y]->personnage;
+        pt_m->map[x][y]->personnage = NULL;
+      }
+      else if(x > personnage->px){
+        pt_m->map[x][y]->personnage->py += fear;
+        pt_m->map[x][y]->personnage->px += fear;
+        pt_m->map[x+fear][y+fear]->personnage = pt_m->map[x][y]->personnage;
+        pt_m->map[x][y]->personnage = NULL;
+      }
+      else if(x < personnage->px){
+        pt_m->map[x][y]->personnage->py += fear;
+        pt_m->map[x][y]->personnage->px -= fear;
+        pt_m->map[x-fear][y+fear]->personnage = pt_m->map[x][y]->personnage;
+        pt_m->map[x][y]->personnage = NULL;
+      }
+    }
+    else if(y < personnage->py){
+      if(x == personnage->px){
+        pt_m->map[x][y]->personnage->py -= fear;
+        pt_m->map[x][y-fear]->personnage = pt_m->map[x][y]->personnage;
+        pt_m->map[x][y]->personnage = NULL;
+      }
+      else if(x > personnage->px){
+        pt_m->map[x][y]->personnage->py -= fear;
+        pt_m->map[x][y]->personnage->px += fear;
+        pt_m->map[x+fear][y-fear]->personnage = pt_m->map[x][y]->personnage;
+        pt_m->map[x][y]->personnage = NULL;
+      }
+      else if(x < personnage->px){
+        pt_m->map[x][y]->personnage->py -= fear;
+        pt_m->map[x][y]->personnage->px -= fear;
+        pt_m->map[x-fear][y-fear]->personnage = pt_m->map[x][y]->personnage;
+        pt_m->map[x][y]->personnage = NULL;
+      }
+
+    }
+
+
+
+
+    printf(YEL"%s a pris peur et s'enfuit !\n"RESET, pt_m->map[x+fear][y+fear]->personnage->nom);
+
+  }
+  else
+    printf(YEL"%s echoue son greu..\n"RESET, personnage->nom);
+
+}
+
+void fait_ton_greu_cb(void * personnage,void * pt_m){
+  fait_ton_greu(personnage,pt_m);
+}
+
+/*------------------------------------------------------------------------------------------*/
 
 int deplacement(personnage_t *_personnage, carte_t * pt_m){
   int x,y;
@@ -113,7 +286,7 @@ void jet_de_sable(){
 /*
 void arakiri(personnage_t * personnage, carte_t * pt_m){
   int range = 2;
-  
+
   if(pt_m->map[personnage->px + 1][personnage->py]->personnage != NULL){
     if(range_detection(personnage,range,y,personnage->px + 1)){
       printf(YEL"\n%s cible %s \n"RESET, personnage->nom, pt_m->map[x][y]->personnage->nom);
@@ -123,6 +296,6 @@ void arakiri(personnage_t * personnage, carte_t * pt_m){
     else
       printf("\nRange insuffisante.\n");
   }
-  
+
 }
 */
