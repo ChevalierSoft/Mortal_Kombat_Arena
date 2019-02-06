@@ -25,5 +25,13 @@ void info_mage(personnage_t *_personnage);
 void kombat(personnage_t * _personnage1, personnage_t * _personnage2,carte_t * pt_m);
 int deplacement(personnage_t *_personnage, carte_t * pt_m);
 int range_detection(personnage_t *_personnage,int range,int x,int y);
+void toxicite(personnage_t * personnage,carte_t * pt_m);
+void toxicite_cb(void * personnage,void * pt_m);
+void tourbilol(personnage_t * personnage,carte_t * pt_m);
+void tourbilol_cb(void * personnage,void * pt_m);
+void shield(personnage_t * personnage,carte_t * pt_m);
+void shield_cb(void * personnage,void * pt_m);
+void fait_ton_greu(personnage_t * personnage,carte_t * pt_m);
+void fait_ton_greu_cb(void * personnage,void * pt_m);
 
 #endif
