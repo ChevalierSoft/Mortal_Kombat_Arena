@@ -1,4 +1,3 @@
-/*extern*/
 #include "fonctions.h"
 #include "personnage.h"
 

@@ -80,7 +80,8 @@ void info_personnage(personnage_t *m){
 }
 
 void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
-  while (m1->pv>0 && m2->pv>0 ){
+  /*while (m1->pv>0 && m2->pv>0 ){*/
+  while(1){
     if (m1->pv > 0 ){
       afficher_map(pt_m);
       info_personnage(m1);
@@ -89,6 +90,7 @@ void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
     }
     else{
       printf("%s est mort\n", m1->nom);
+      break;
     }
     if (m2->pv > 0 ){
       afficher_map(pt_m);
@@ -97,7 +99,8 @@ void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
       menu_choix(m2,pt_m);
     }
     else{
-      printf("%s est mort\n", m2->nom);
+      printf("\n%s est mort\n\n", m2->nom);
+      break;
     }
 
   }

@@ -7,6 +7,8 @@ typedef enum {mage_blanc, mage_noir, chevalier, necromancien, tacticien, ninja} 
 
 /*typedef struct personnage_s personnage_t;*/
 
+typedef void (*attaque_t)(void *);
+
 typedef struct personnage_s{
   char * nom;
   int px;
@@ -19,18 +21,8 @@ typedef struct personnage_s{
   int classe;
 
   int nb_attaques;
-  char ** tab;
-
-  /*char * f1_nom;
-  char * f2_nom;
-  char * f3_nom;
-  char * f4_nom;*/
-
-  /*void (*p1)(void *, void *);*/
-  void (*f1)(void *_personnage, void * pt_m);
-  void (*f2)(void *_personnage, void * pt_m);
-  void (*f3)(void *_personnage, void * pt_m);
-  void (*f4)(void *_personnage, void * pt_m);
+  char ** nom_spell;
+  void (**tab_spell)(void *, void *);
 
   int est_shield;
 	int est_mort;
