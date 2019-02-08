@@ -15,6 +15,24 @@ int range_detection(personnage_t *_personnage,int range,int x,int y){
     return 0;
   }
 }
+/* fonction statique */
+void fuite(personnage_t *_personnage, carte_t * pt_m,int x,int y){
+
+  pt_m->map[_personnage->px][_personnage->py]->personnage = NULL;
+
+
+  _personnage->px =  x;
+  _personnage->py =  y;
+
+  pt_m->map[_personnage->px][_personnage->py]->personnage = _personnage;
+
+
+}
+
+void coup(personnage_t * personnage,int degats){
+  personnage->pv -= degats;
+}
+
 
 void boule_de_feu_cb(void *_personnage, void * pt_m){
   boule_de_feu(_personnage, pt_m);
@@ -84,7 +102,7 @@ void cure(personnage_t *_personnage, carte_t * pt_m){
       pt_m->map[x][y]->personnage->est_empoisone = 0;
       pt_m->map[x][y]->personnage->est_enfeu = 0;
 
-      printf(YEL"%s est gerit de ses alterations d'etat\n"RESET, pt_m->map[x][y]->personnage->nom);
+      printf(YEL"%s est gueri de ses alterations d'etat\n"RESET, pt_m->map[x][y]->personnage->nom);
     }
     else
     printf(YEL"%s\n"RESET,"Range insuffisante");
@@ -183,6 +201,7 @@ void fait_ton_greu(personnage_t * personnage,carte_t * pt_m){ /* pas fini */ /* 
   int degats = 50;
   int fear = 2;
   int x,y;
+  int l,h; //coefficients de hauteur/largeur
 
   printf("X :");
   scanf("%d",&x);
@@ -190,67 +209,53 @@ void fait_ton_greu(personnage_t * personnage,carte_t * pt_m){ /* pas fini */ /* 
   scanf("%d",&y);
 
   printf(YEL"%s fait son greu !!\n"RESET, personnage->nom);
-  if(pt_m->map[x][y]->personnage != NULL){
-    pt_m->map[x][y]->personnage->pv -= personnage->force + degats;
+  if(pt_m->map[x][y]->personnage != NULL && pt_m->map[x][y]->personnage != personnage){
+    coup(pt_m->map[x][y]->personnage,personnage->force + degats);
 
+    //verification de la position de la cible
     if(y == personnage->py){
-      printf("LUL1");
-      if(x < personnage->px){
-        printf("lul1");
-        pt_m->map[x][y]->personnage->px -= fear;
-        pt_m->map[x-fear][y]->personnage = pt_m->map[x][y]->personnage;
-        pt_m->map[x][y]->personnage = NULL;
-      }
-      else if(x > personnage->px){
-        pt_m->map[x][y]->personnage->px += fear;
-        pt_m->map[x+fear][y]->personnage = pt_m->map[x][y]->personnage;
-        pt_m->map[x][y]->personnage = NULL;
-      }
+      h=0;
+      if(x < personnage->px)
+        l=-1;
+      else if(x > personnage->px)
+        l=1;
     }
     else if(y > personnage->py){
-      if(x == personnage->px){
-        pt_m->map[x][y]->personnage->py += fear;
-        pt_m->map[x][y+fear]->personnage = pt_m->map[x][y]->personnage;
-        pt_m->map[x][y]->personnage = NULL;
-      }
-      else if(x > personnage->px){
-        pt_m->map[x][y]->personnage->py += fear;
-        pt_m->map[x][y]->personnage->px += fear;
-        pt_m->map[x+fear][y+fear]->personnage = pt_m->map[x][y]->personnage;
-        pt_m->map[x][y]->personnage = NULL;
-      }
-      else if(x < personnage->px){
-        pt_m->map[x][y]->personnage->py += fear;
-        pt_m->map[x][y]->personnage->px -= fear;
-        pt_m->map[x-fear][y+fear]->personnage = pt_m->map[x][y]->personnage;
-        pt_m->map[x][y]->personnage = NULL;
-      }
+      h=1;
+      if(x == personnage->px)
+        l=0;
+      else if(x > personnage->px)
+        l=1;
+      else if(x < personnage->px)
+        l =-1;
     }
     else if(y < personnage->py){
-      if(x == personnage->px){
-        pt_m->map[x][y]->personnage->py -= fear;
-        pt_m->map[x][y-fear]->personnage = pt_m->map[x][y]->personnage;
-        pt_m->map[x][y]->personnage = NULL;
-      }
-      else if(x > personnage->px){
-        pt_m->map[x][y]->personnage->py -= fear;
-        pt_m->map[x][y]->personnage->px += fear;
-        pt_m->map[x+fear][y-fear]->personnage = pt_m->map[x][y]->personnage;
-        pt_m->map[x][y]->personnage = NULL;
-      }
-      else if(x < personnage->px){
-        pt_m->map[x][y]->personnage->py -= fear;
-        pt_m->map[x][y]->personnage->px -= fear;
-        pt_m->map[x-fear][y-fear]->personnage = pt_m->map[x][y]->personnage;
-        pt_m->map[x][y]->personnage = NULL;
-      }
-
+      h=-1;
+      if(x == personnage->px)
+        l=0;
+      else if(x > personnage->px)
+        l=1;
+      else if(x < personnage->px)
+        l=-1;
     }
 
+    int xn = x+(fear*l); //nouvelle valeur de x de la cible (après fear)
+    int yn = y+(fear*h);//nouvelle valeur de y de la cible (après fear)
 
+    //verification de sortie de map
+    if(xn < 0)
+      xn = 0;
+    if(xn > pt_m->nb_dalles_x-1)
+      xn = pt_m->nb_dalles_x-1;
+    if(yn < 0)
+      yn = 0;
+    if(yn > pt_m->nb_dalles_y-1)
+      yn = pt_m->nb_dalles_y-1;
 
+    fuite(pt_m->map[x][y]->personnage,pt_m,xn,yn);
 
-    printf(YEL"%s a pris peur et s'enfuit !\n"RESET, pt_m->map[x+fear][y+fear]->personnage->nom);
+    printf(YEL"%s a pris %d points de degats !\n"RESET, pt_m->map[xn][yn]->personnage->nom,degats);
+    printf(YEL"%s a pris peur et s'enfuit !\n"RESET, pt_m->map[xn][yn]->personnage->nom);
 
   }
   else
