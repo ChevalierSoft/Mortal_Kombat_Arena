@@ -36,5 +36,7 @@ void shield(personnage_t * personnage,carte_t * pt_m);
 void shield_cb(void * personnage,void * pt_m);
 void fait_ton_greu(personnage_t * personnage,carte_t * pt_m);
 void fait_ton_greu_cb(void * personnage,void * pt_m);
+void detruire_personnage(personnage_t** _personnage);
+void detruire_spell(personnage_t ** _personnage);
 
 #endif

@@ -16,11 +16,11 @@ void init_spell(personnage_t * p, int nb_spell, ...){
 
   for(; i < p->nb_spell ; i++){
     char * arg_nom = va_arg(liste,char *);
-    p->nom_spell[i] = malloc(sizeof(char)*strlen(arg_nom));
+    p->nom_spell[i] = malloc(sizeof(char)*strlen(arg_nom)+1);
     strcpy(p->nom_spell[i], arg_nom);
 
     void *arg_f = va_arg(liste,void *);
-    p->tab_spell[i] = malloc(sizeof(attaque_t));
+    p->tab_spell[i] =(void*) malloc(sizeof(attaque_t));
     p->tab_spell[i] = arg_f;
   }
 
@@ -60,8 +60,8 @@ void init_ninja(personnage_t * _ninja ){
 
 void init_hero(personnage_t * _personnage, int _force, int _PV, int _px, int _py, int _pm, char * _nom, char * _pp, int _nb_att, carte_t * pt_m,int _classe){
 
-  _personnage->nom = malloc(sizeof(char)*strlen(_nom));
-  _personnage->pp = malloc(sizeof(char)*strlen(_pp));
+  _personnage->nom = malloc(sizeof(char)*strlen(_nom)+1);
+  _personnage->pp = malloc(sizeof(char)*strlen(_pp)+1);
   strcpy(_personnage->nom, _nom);
   strcpy(_personnage->pp, _pp);
 
@@ -90,4 +90,33 @@ void init_hero(personnage_t * _personnage, int _force, int _PV, int _px, int _py
     case ninja:init_ninja(_personnage);break;
     default:printf("ERROR !!!!!!!!!!!");break;
   }
+
+}
+
+void detruire_personnage(personnage_t** _personnage){
+  detruire_spell(_personnage);
+  free((*_personnage)->nom);
+  free((*_personnage)->pp);
+  (*_personnage)->pp = NULL;
+  (*_personnage)->nom = NULL;
+  free((*_personnage));
+}
+
+void detruire_spell(personnage_t ** _personnage){
+  int i;
+  printf("\nnb de spells : %d\n",(*_personnage)->nb_spell );
+  for(i=0;i<=(*_personnage)->nb_spell-1;i++){
+    printf("\nnb de i : %d\n",i);
+    free((*_personnage)->nom_spell[i]);
+    printf("\ntab du spell : %p\n",(*_personnage)->tab_spell[i]);
+    free((*_personnage)->tab_spell[i]);
+    (*_personnage)->nom_spell[i] = NULL;
+    printf("\ntab du spell null : %p\n",(*_personnage)->tab_spell[i]);
+    (*_personnage)->tab_spell[i] = ((void*)0);
+  }
+  free((*_personnage)->nom_spell);
+  free((*_personnage)->tab_spell);
+  (*_personnage)->nom_spell = NULL;
+  (*_personnage)->tab_spell = NULL;
+
 }
