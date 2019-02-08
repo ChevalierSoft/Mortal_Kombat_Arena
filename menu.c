@@ -27,20 +27,25 @@ int phase_premiere(personnage_t * _personnage, carte_t * pt_m){
 
 
 int phase_attaque(personnage_t * _personnage, carte_t * pt_m){
-  int choix=-1;
+  int choix=-1, i=0;
+
   do{
     printf(MAG"+++++++++++++++++++\n" RESET);
     printf(MAG"%s\n" RESET, _personnage->nom);
     printf(MAG"+++++++++++++++++++\n" RESET);
     printf(RED"+++++++++++++++++++\n" );
-    printf("+ 1) %s \n", _personnage->nom_spell[0]);
-    printf("+ 2) cure \n");
-    printf("+ 3) passer le tour \n");
-    printf("+ 4) Retour (a coder) \n");
+
+    for(;i < _personnage->nb_spell; i++){
+      printf("+ %d) %s \n", i+1, _personnage->nom_spell[i]);
+    }
+    
+
+    printf("+ %d) passer le tour \n",++i);
+    printf("+ %d) Retour (a coder) \n", ++i);
     printf("++++++++++++++++++\n" RESET);
 
     scanf("%d",&choix);
-  }while (choix <1 || choix >4) ;
+  }while (choix <1 || choix > _personnage->nb_spell + 2) ;/*+2 pour passer le tour et retour*/
 
 
   return(choix);
@@ -53,12 +58,12 @@ void menu_choix(personnage_t * _personnage, carte_t * pt_m){
 
   switch(phase1){
     case 1: phase2 = phase_attaque(_personnage, pt_m);
-            switch(phase2){
-              case 1: _personnage->tab_spell[0](_personnage, pt_m);break;
-              case 2: pas_fini();break;
-              case 3: printf(YEL"%s passe son tour"RESET, _personnage->nom);break;
-              default: pas_fini();break;
-            }
+            if (phase2 < _personnage->nb_spell)
+              _personnage->tab_spell[phase2-1](_personnage, pt_m);
+            else if(phase2==_personnage->nb_spell+1)
+              printf(YEL"%s passe son tour\n"RESET, _personnage->nom);
+            else if(phase2==_personnage->nb_spell+2)
+              pas_fini();         
             break;
     case 2: deplacement(_personnage, pt_m);break;
     case 3: pas_fini();break;

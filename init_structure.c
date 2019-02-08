@@ -11,31 +11,34 @@ void init_spell(personnage_t * p, int nb_spell, ...){
 
   va_start(liste, nb_spell);
 
-  p->nom_spell = malloc(sizeof(char *) * p->nb_attaques);
+  p->nom_spell = malloc(sizeof(char *) * p->nb_spell);
+  p->tab_spell = malloc(sizeof(attaque_t)*p->nb_spell);
 
-  for(; i < p->nb_attaques ; i++){
+  for(; i < p->nb_spell ; i++){
     char * arg_nom = va_arg(liste,char *);
     p->nom_spell[i] = malloc(sizeof(char)*strlen(arg_nom));
-    strcpy(p->nom_spell[0], arg_nom);
-    p->tab_spell = malloc(sizeof(attaque_t)*p->nb_attaques);
-    p->tab_spell[i] = va_arg(liste,void *);
+    strcpy(p->nom_spell[i], arg_nom);
+
+    void *arg_f = va_arg(liste,void *);
+    p->tab_spell[i] = malloc(sizeof(attaque_t));
+    p->tab_spell[i] = arg_f;
   }
 
 }
 
 void init_mage_blanc(personnage_t * _mage_blanc ){
 
-  _mage_blanc->nb_attaques = 1;
+  _mage_blanc->nb_spell = 2;
 
-  init_spell(_mage_blanc,_mage_blanc->nb_attaques,"Soin", &soin_cb, "Cure", cure_cb );
+  init_spell(_mage_blanc,_mage_blanc->nb_spell,"Soin", &soin_cb, "Cure", cure_cb );
 
 }
 
 void init_mage_noir(personnage_t * _mage_noir ){
 
-  _mage_noir->nb_attaques = 1;
+  _mage_noir->nb_spell = 2;
 
-  init_spell(_mage_noir,_mage_noir->nb_attaques,"Boule de feu", &boule_de_feu_cb, "Toxicite", toxicite_cb );
+  init_spell(_mage_noir,_mage_noir->nb_spell,"Boule de feu", &boule_de_feu_cb, "Toxicite", &toxicite_cb );
 
 }
 

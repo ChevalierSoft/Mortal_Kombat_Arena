@@ -20,7 +20,7 @@ typedef struct personnage_s{
   char * pp;
   int classe;
 
-  int nb_attaques;
+  int nb_spell;
   char ** nom_spell;
   void (**tab_spell)(void *, void *);
 
