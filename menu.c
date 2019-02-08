@@ -58,12 +58,14 @@ void menu_choix(personnage_t * _personnage, carte_t * pt_m){
 
   switch(phase1){
     case 1: phase2 = phase_attaque(_personnage, pt_m);
-            if (phase2 < _personnage->nb_spell)
+            if (phase2 <= _personnage->nb_spell)
               _personnage->tab_spell[phase2-1](_personnage, pt_m);
             else if(phase2==_personnage->nb_spell+1)
               printf(YEL"%s passe son tour\n"RESET, _personnage->nom);
             else if(phase2==_personnage->nb_spell+2)
-              pas_fini();         
+              pas_fini();
+          	else
+            	printf("nani ?\n");   
             break;
     case 2: deplacement(_personnage, pt_m);break;
     case 3: pas_fini();break;
