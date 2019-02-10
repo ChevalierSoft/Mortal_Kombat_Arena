@@ -109,7 +109,7 @@ void detruire_spell(personnage_t ** _personnage){
     printf("\nnb de i : %d\n",i);
     free((*_personnage)->nom_spell[i]);
     printf("\ntab du spell : %p\n",(*_personnage)->tab_spell[i]);
-    free((*_personnage)->tab_spell[i]);
+    free((*_personnage)->tab_spell+i*sizeof(attaque_t));/*cette ligne pause probleme*/
     (*_personnage)->nom_spell[i] = NULL;
     printf("\ntab du spell null : %p\n",(*_personnage)->tab_spell[i]);
     (*_personnage)->tab_spell[i] = ((void*)0);
