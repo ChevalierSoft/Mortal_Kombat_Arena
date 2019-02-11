@@ -16,8 +16,6 @@ int range_detection(personnage_t *_personnage,int range,int x,int y){
   }
 }
 
-
-
 /* fonction statique */
 static void fuite(personnage_t *_personnage, carte_t * pt_m,int x,int y){
 
