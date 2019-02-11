@@ -11,14 +11,18 @@ typedef void (*attaque_t)(void *);
 
 typedef struct personnage_s{
   char * nom;
-  int px;
-  int py;
-  int pv;
-  /*pv_max*/
-  int pm;
-  int force;
   char * pp;
   int classe;
+
+  int px;
+  int py;
+  
+  int pv;
+  int pv_max;
+  int pm;
+  int intel;
+  int force;
+  int chance;   /* pour les critiques*/
 
   int nb_spell;
   char ** nom_spell;
@@ -28,8 +32,6 @@ typedef struct personnage_s{
 	int est_mort;
   int est_empoisone;
 	int est_enfeu;
-	int intel;
-	int chance;		/* pour les critiques*/
 
 }personnage_t;
 

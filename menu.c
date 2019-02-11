@@ -75,14 +75,14 @@ void menu_choix(personnage_t * _personnage, carte_t * pt_m){
 
 }
 
-void info_personnage(personnage_t *m){
+void info_personnage(personnage_t *p){
   printf(CYN"+++++++++++++++++++\n" );
-  printf("+ Nom   : %s \n", m->nom);
-  printf("+ PV    : %d \n", m->pv);
-  printf("+ pm    : %d \n", m->pm);
-  printf("+ force : %d \n", m->force);
-  printf("+ px    : %d \n", m->px);
-  printf("+ py    : %d \n", m->py);
+  printf("+ Nom   : %s \n", p->nom);
+  printf("+ PV    : %d "RESET, p->pv);if(p->est_shield)printf("+%d", p->est_shield);printf("\n");
+  printf(CYN"+ pm    : %d \n", p->pm);
+  printf("+ force : %d \n", p->force);
+  printf("+ px    : %d \n", p->px);
+  printf("+ py    : %d \n", p->py);
   printf("+++++++++++++++++++\n"RESET);
 }
 
@@ -92,7 +92,6 @@ void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
     if (m1->pv > 0 ){
       afficher_map(pt_m);
       info_personnage(m1);
-      /*info_personnage(m2);*/
       menu_choix(m1,pt_m);
     }
     else{
@@ -101,7 +100,6 @@ void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
     }
     if (m2->pv > 0 ){
       afficher_map(pt_m);
-      /*info_personnage(m1);*/
       info_personnage(m2);
       menu_choix(m2,pt_m);
     }

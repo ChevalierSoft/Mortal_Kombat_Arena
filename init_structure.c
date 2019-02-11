@@ -28,17 +28,17 @@ void init_spell(personnage_t * p, int nb_spell, ...){
 
 void init_mage_blanc(personnage_t * _mage_blanc ){
 
-  _mage_blanc->nb_spell = 2;
+  _mage_blanc->nb_spell = 3;
 
-  init_spell(_mage_blanc,_mage_blanc->nb_spell,"Soin", &soin_cb, "Cure", cure_cb );
+  init_spell(_mage_blanc,_mage_blanc->nb_spell,"Soin", &soin_cb, "Cure", cure_cb, "Armure", &shield_cb );
 
 }
 
 void init_mage_noir(personnage_t * _mage_noir ){
 
-  _mage_noir->nb_spell = 2;
+  _mage_noir->nb_spell = 3;
 
-  init_spell(_mage_noir,_mage_noir->nb_spell,"Boule de feu", &boule_de_feu_cb, "Toxicite", &toxicite_cb );
+  init_spell(_mage_noir,_mage_noir->nb_spell,"Boule de feu", &boule_de_feu_cb, "Toxicite", &toxicite_cb, "Fait ton greu", &fait_ton_greu_cb );
 
 }
 
@@ -58,25 +58,29 @@ void init_ninja(personnage_t * _ninja ){
 
 }
 
-void init_hero(personnage_t * _personnage, int _force, int _PV, int _px, int _py, int _pm, char * _nom, char * _pp, int _nb_att, carte_t * pt_m,int _classe){
+void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int _px, int _py, int _pm, char * _nom, char * _pp, int _nb_att, carte_t * pt_m,int _classe){
 
   _personnage->nom = malloc(sizeof(char)*strlen(_nom)+1);
   _personnage->pp = malloc(sizeof(char)*strlen(_pp)+1);
   strcpy(_personnage->nom, _nom);
   strcpy(_personnage->pp, _pp);
-
-  _personnage->force = _force;
-  _personnage->pv = _PV;
+  _personnage->classe = _classe;
+  
+  
   _personnage->px = _px;
   _personnage->py = _py;
+
+  _personnage->pv = _pv;
+  _personnage->pv_max = _pv_max;
   _personnage->pm = _pm;
-  _personnage->classe = _classe;
+  _personnage->intel=0;
+  _personnage->force = _force;
 
   _personnage->est_shield=0;
   _personnage->est_empoisone=0;
 	_personnage->est_mort=0;
 	_personnage->est_enfeu=0;
-	_personnage->intel=0;
+	
 	_personnage->chance=0;
 
   placement(_personnage, pt_m);
@@ -104,14 +108,14 @@ void detruire_personnage(personnage_t** _personnage){
 
 void detruire_spell(personnage_t ** _personnage){
   int i;
-  printf("\nnb de spells : %d\n",(*_personnage)->nb_spell );
+  /*printf("\nnb de spells : %d\n",(*_personnage)->nb_spell );*/
   for(i=0;i<=(*_personnage)->nb_spell-1;i++){
-    printf("\nnb de i : %d\n",i);
+    /*printf("\nnb de i : %d\n",i);*/
     free((*_personnage)->nom_spell[i]);
-    printf("\ntab du spell : %p\n",(*_personnage)->tab_spell[i]);
+    /*printf("\ntab du spell : %p\n",(*_personnage)->tab_spell[i]);*/
     free((*_personnage)->tab_spell+i*sizeof(attaque_t));/*cette ligne pause probleme*/
     (*_personnage)->nom_spell[i] = NULL;
-    printf("\ntab du spell null : %p\n",(*_personnage)->tab_spell[i]);
+    /*printf("\ntab du spell null : %p\n",(*_personnage)->tab_spell[i]);*/
     (*_personnage)->tab_spell[i] = ((void*)0);
   }
   free((*_personnage)->nom_spell);

@@ -15,22 +15,30 @@ int range_detection(personnage_t *_personnage,int range,int x,int y){
     return 0;
   }
 }
+
+
+
 /* fonction statique */
-void fuite(personnage_t *_personnage, carte_t * pt_m,int x,int y){
+static void fuite(personnage_t *_personnage, carte_t * pt_m,int x,int y){
 
   pt_m->map[_personnage->px][_personnage->py]->personnage = NULL;
-
 
   _personnage->px =  x;
   _personnage->py =  y;
 
   pt_m->map[_personnage->px][_personnage->py]->personnage = _personnage;
-
-
 }
 
 void coup(personnage_t * personnage,int degats){
-  personnage->pv -= degats;
+  if(personnage->est_shield){
+    personnage->est_shield -= degats;
+    if(personnage->est_shield<0){
+      personnage->pv+=personnage->est_shield;
+      personnage->est_shield=0;
+    }
+  }
+  else
+    personnage->pv -= degats;
 }
 
 
@@ -183,13 +191,13 @@ void tourbilol_cb(void * personnage,void * pt_m){
 
 void shield(personnage_t * personnage,carte_t * pt_m){
 
-  int efficacite = 50;
+  int efficacite = 100;
 
-  printf(YEL"%s se rajoute %d de shield !\n"RESET, personnage->nom,efficacite);
+  printf(YEL"%s s'ajoute %d d'armure !\n"RESET, personnage->nom,efficacite);
 
   personnage->est_shield += efficacite;
 
-  printf(YEL"%s est maintenant à %d de shield\n"RESET, personnage->nom,personnage->est_shield);
+  printf(YEL"%s a maintenant %d d'armure\n"RESET, personnage->nom,personnage->est_shield);
 
 }
 
@@ -217,7 +225,7 @@ void fait_ton_greu(personnage_t * personnage,carte_t * pt_m){ /* pas fini */ /* 
       h=0;
       if(x < personnage->px)
         l=-1;
-      else if(x > personnage->px)
+      else if(x > personnage->px)/*il me semble qu'on a pas besoin de de préciser ici, un esle suffit*/
         l=1;
     }
     else if(y > personnage->py){
@@ -226,7 +234,7 @@ void fait_ton_greu(personnage_t * personnage,carte_t * pt_m){ /* pas fini */ /* 
         l=0;
       else if(x > personnage->px)
         l=1;
-      else if(x < personnage->px)
+      else if(x < personnage->px)/*else*/
         l =-1;
     }
     else if(y < personnage->py){
@@ -235,7 +243,7 @@ void fait_ton_greu(personnage_t * personnage,carte_t * pt_m){ /* pas fini */ /* 
         l=0;
       else if(x > personnage->px)
         l=1;
-      else if(x < personnage->px)
+      else if(x < personnage->px)/*else*/
         l=-1;
     }
 
