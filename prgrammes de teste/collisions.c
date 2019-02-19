@@ -37,22 +37,38 @@ void collision_carre(int mat[N][N], int x, int y ){
 
 void collision_cercle(int mat[N][N], int x, int y ){
 	int i = x, j = y;
+	int yi;
 	int ax=1;
 
 	for (;j<y+range; j++){
 		for(i=x;i<x+ax; i++){
-			mat[j][i]+=1;
+			if(i>=0  && i<N && j<N && j>=0)
+				mat[j][i]+=1;
 		}
 		ax++;
 	}
-	y=j;
-	for (;j<y+range; j++){
-		
-		for(i=x;i<x+--ax; i++){
-			mat[j][i]+=1;
+	yi=j;	//yi pour le followup²²&
+	ax-=2;
+	for (;j<yi+range; j++){
+		for(i=x;i<x+ax; i++){
+			if(i>=0  && i<N && j<N && j>=0)
+				mat[j][i]+=1;
 		}
-		
+		ax--;
 	}
+	//ça ça fait de la chiasse
+	/*
+	j = y;
+	for (;j<yi+range; j++){
+		for(i=x;i>x-ax; i--){
+			if(i>=0  && i<N && j<N && j>=0)
+				mat[j][i]+=1;
+		}
+		ax++;
+	}
+*/
+
+
 }
 
 
