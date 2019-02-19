@@ -33,19 +33,26 @@ void collision_carre(int mat[N][N], int x, int y ){
 			}
 		}
 	}
-
 }
 
 void collision_cercle(int mat[N][N], int x, int y ){
-	int i = 0, j = 0;
+	int i = x, j = y;
+	int ax=1;
 
-	for(i = x-range+1; i < x+range/2 ; ++i){
-		for(j = y-range+1; j > range/i ; --j){
-				if(i>=0  && i<N && j<N && j>=0){
-					mat[i][j]+=1;
-				}
-			}
+	for (;j<y+range; j++){
+		for(i=x;i<x+ax; i++){
+			mat[j][i]+=1;
 		}
+		ax++;
+	}
+	y=j;
+	for (;j<y+range; j++){
+		
+		for(i=x;i<x+--ax; i++){
+			mat[j][i]+=1;
+		}
+		
+	}
 }
 
 
@@ -54,20 +61,20 @@ int main(){
 	int mat[N][N];
 	zero(mat);
 	aff(mat);
-	printf("x : ");
-	scanf("%d", &x);
-	printf("y : ");
-	scanf("%d", &y);
-	printf("Range : ");
-	scanf("%d", &range);
+	printf("x : ");scanf("%d", &x);
+	printf("y : ");scanf("%d", &y);
+	printf("Range : ");scanf("%d", &range);
 
 
 	while(x != -11){
-		collision_carre(mat, x, y);
+		//collision_carre(mat, x, y);
+		collision_cercle(mat, x, y);
 		aff(mat);
 		printf("x : ");	scanf("%d", &x);
 		printf("y : ");	scanf("%d", &y);
 		printf("Range : ");	scanf("%d", &range);
+		if (x == -1)
+			zero(mat);
 	}
 
 	return(0);
