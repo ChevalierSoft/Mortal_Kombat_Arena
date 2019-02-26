@@ -3,7 +3,7 @@
 
 #include "fonctions.h"
 
-typedef enum {mage_blanc, mage_noir, chevalier, necromancien, tacticien, ninja, shrek} heros_classes;
+typedef enum {mage_blanc, mage_noir, chevalier, necromancien, tacticien, ninja, shrek,sac} heros_classes;
 
 /*typedef struct personnage_s personnage_t;*/
 

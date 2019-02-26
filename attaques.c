@@ -289,6 +289,20 @@ int deplacement(personnage_t *_personnage, carte_t * pt_m){
   _personnage->py =  y;
   pt_m->map[_personnage->px][_personnage->py]->personnage = _personnage;
 }
+
+void summon(personnage_t *_personnage, carte_t * pt_m){
+  int x,y;
+  printf("\nCoordonnées de déplacement :");
+  printf("X :");
+  scanf("%d",&x);
+  printf("Y :");
+  scanf("%d",&y);
+  personnage_t * ptitsac = malloc(sizeof(personnage_t));
+  init_hero(ptitsac,1,1,1,x,y,1,"sac","💼",1,pt_m,sac);
+}
+void summon_cb(void *_personnage, void * pt_m){
+  summon(_personnage, pt_m);
+}
 /*
 void jet_de_sable(){
 

@@ -36,9 +36,9 @@ void init_mage_blanc(personnage_t * _mage_blanc ){
 
 void init_mage_noir(personnage_t * _mage_noir ){
 
-  _mage_noir->nb_spell = 3;
+  _mage_noir->nb_spell = 4;
 
-  init_spell(_mage_noir,_mage_noir->nb_spell,"Boule de feu", &boule_de_feu_cb, "Toxicite", &toxicite_cb, "Fait ton greu", &fait_ton_greu_cb );
+  init_spell(_mage_noir,_mage_noir->nb_spell,"Boule de feu", &boule_de_feu_cb, "Toxicite", &toxicite_cb, "Fait ton greu", &fait_ton_greu_cb,"summon",&summon_cb );
 
 }
 
@@ -58,6 +58,10 @@ void init_ninja(personnage_t * _ninja ){
 
 }
 
+void init_sac(personnage_t * _sac ){
+
+}
+
 void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int _px, int _py, int _pm, char * _nom, char * _pp, int _nb_att, carte_t * pt_m,int _classe){
 
   _personnage->nom = malloc(sizeof(char)*strlen(_nom)+1);
@@ -65,8 +69,8 @@ void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int
   strcpy(_personnage->nom, _nom);
   strcpy(_personnage->pp, _pp);
   _personnage->classe = _classe;
-  
-  
+
+
   _personnage->px = _px;
   _personnage->py = _py;
 
@@ -80,7 +84,7 @@ void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int
   _personnage->est_empoisone=0;
 	_personnage->est_mort=0;
 	_personnage->est_enfeu=0;
-	
+
 	_personnage->chance=0;
 
   placement(_personnage, pt_m);
@@ -92,6 +96,7 @@ void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int
     case necromancien:init_necromancien(_personnage);break;
     case tacticien:init_tacticien(_personnage);break;
     case ninja:init_ninja(_personnage);break;
+    case sac:init_sac(_personnage);break;
     default:printf("ERROR !!!!!!!!!!!");break;
   }
 
@@ -120,7 +125,7 @@ void detruire_spell(personnage_t ** _personnage){
   }
   free((*_personnage)->nom_spell);
   free((*_personnage)->tab_spell);
-  (*_personnage)->nom_spell = NULL;
-  (*_personnage)->tab_spell = NULL;
+//  (*_personnage)->nom_spell = NULL;
+//  (*_personnage)->tab_spell = NULL;
 
 }
