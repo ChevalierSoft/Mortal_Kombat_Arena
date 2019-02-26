@@ -7,10 +7,12 @@
 #include <unistd.h>
 #include <math.h>
 #include <stdarg.h>
+#include<string.h>
 #include "personnage.h"
 #include "couleur.h"
 #include "map.h"
 #include "menu.h"
+
 
 void init_hero(personnage_t * _personnage, int _force, int  _pv, int _pv_max, int _px, int _py, int _pm, char * _nom, char * _pp, int _nb_att, carte_t * pt_m,int classe);
 void afficher_mage(personnage_t * marvin);
@@ -22,6 +24,8 @@ void boule_de_feu(personnage_t *_personnage,carte_t * pt_m);
 void boule_de_feu_cb(void *_personnage,void * pt_m);
 void summon(personnage_t *_personnage, carte_t * pt_m);
 void summon_cb(void *_personnage, void * pt_m);
+void evolution(personnage_t *_personnage, carte_t * pt_m);
+void evolution_cb(void *_personnage, void * pt_m);
 /*
 void pas_fini(void);
 void menu_choix(personnage_t * _personnage, carte_t * pt_m);

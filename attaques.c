@@ -303,6 +303,27 @@ void summon(personnage_t *_personnage, carte_t * pt_m){
 void summon_cb(void *_personnage, void * pt_m){
   summon(_personnage, pt_m);
 }
+
+void evolution(personnage_t *_personnage, carte_t * pt_m){
+  int x,y;
+  printf("\nselectionne ton sac :");
+  printf("X :");
+  scanf("%d",&x);
+  printf("Y :");
+  scanf("%d",&y);
+
+
+  free(pt_m->map[x][y]->personnage->pp);
+  char * _pp = "👡";
+  pt_m->map[x][y]->personnage->pp = malloc(sizeof(char)*strlen(_pp)+1);
+  strcpy(pt_m->map[x][y]->personnage->pp,"👡");
+
+}
+
+void evolution_cb(void *_personnage, void * pt_m){
+  evolution(_personnage, pt_m);
+}
+
 /*
 void jet_de_sable(){
 

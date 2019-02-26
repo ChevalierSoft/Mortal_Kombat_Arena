@@ -36,9 +36,9 @@ void init_mage_blanc(personnage_t * _mage_blanc ){
 
 void init_mage_noir(personnage_t * _mage_noir ){
 
-  _mage_noir->nb_spell = 4;
+  _mage_noir->nb_spell = 5;
 
-  init_spell(_mage_noir,_mage_noir->nb_spell,"Boule de feu", &boule_de_feu_cb, "Toxicite", &toxicite_cb, "Fait ton greu", &fait_ton_greu_cb,"summon",&summon_cb );
+  init_spell(_mage_noir,_mage_noir->nb_spell,"Boule de feu", &boule_de_feu_cb, "Toxicite", &toxicite_cb, "Fait ton greu", &fait_ton_greu_cb,"summon",&summon_cb,"db_evolution",&evolution_cb );
 
 }
 
