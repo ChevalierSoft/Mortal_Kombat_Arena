@@ -1,6 +1,7 @@
 #ifndef H_Liste
 #define H_Liste
 #include "personnage.h"
+#include "fonctions.h"
 
 
 typedef struct elem{personnage_t * p; struct elem * succ;struct elem * pred;}t_element;
@@ -26,5 +27,7 @@ void modif_elt(personnage_t * p);
 void oter_elt();
 
 void ajout_droit(personnage_t * p);
+
+void afficher_liste();
 
 #endif

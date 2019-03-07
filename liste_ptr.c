@@ -59,10 +59,21 @@ void modif_elt(personnage_t * p){ //Ecrase un personnage de la liste et le rempl
 }
 
 void oter_elt(){ //Free le pointeur sur un personnage de la liste
+
   if(!liste_vide()){
+
+    t_element * popo= malloc(sizeof(popo));
+    popo->succ=ec;
+
+    detruire_spell(&ec->p);
+    
+    detruire_personnage(&ec->p);
+
     ec->pred->succ = ec->succ;
-    ec->succ->pred = ec -> pred;
-    free(ec);
+    ec->succ->pred = ec->pred;
+    ec=ec->pred;
+    free(popo->succ);
+    free(popo);
   }
   else{
     printf("Liste vide!\n");
@@ -75,8 +86,11 @@ void ajout_droit(personnage_t * p){ //Ajoute un personnage a la la suite de la l
   nouv->p = p;
 
   if(liste_vide()){
+    
     nouv->succ = drapeau;
     nouv->pred = drapeau;
+    drapeau->succ=nouv;
+    drapeau->pred=nouv;
   }
   else{
     nouv->pred = ec;
@@ -84,4 +98,20 @@ void ajout_droit(personnage_t * p){ //Ajoute un personnage a la la suite de la l
     ec->succ = nouv;
     nouv->succ->pred = nouv;
   }
+}
+
+void afficher_liste(){
+  en_tete();
+  //printf(YEL"Affichage de la liste : \n"RESET);
+  if(!liste_vide()){
+    int i = 0;
+    while(!hors_liste()){
+      printf("%s\n",ec->p->nom);
+      suivant();
+      i++;
+    }
+    //printf(YEL"il y a %d perso dans la liste\n" RESET, i);
+  }
+  else
+    printf("liste vide\n\n");
 }

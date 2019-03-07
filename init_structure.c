@@ -18,7 +18,7 @@ void init_spell(personnage_t * p, int nb_spell, ...){
 
   for(; i < p->nb_spell ; i++){
     char * arg_nom = va_arg(liste,char *);
-    p->nom_spell[i] = malloc(sizeof(char)*strlen(arg_nom)+1);
+    p->nom_spell[i] = malloc(sizeof(char)*strlen(arg_nom));
     strcpy(p->nom_spell[i], arg_nom);
 
     void *arg_f = va_arg(liste,void *);
@@ -66,8 +66,8 @@ void init_sac(personnage_t * _sac ){
 
 void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int _px, int _py, int _pm, char * _nom, char * _pp, int _nb_att, carte_t * pt_m,int _classe){
 
-  _personnage->nom = malloc(sizeof(char)*strlen(_nom)+1);
-  _personnage->pp = malloc(sizeof(char)*strlen(_pp)+1);
+  _personnage->nom = malloc(sizeof(char)*strlen(_nom));
+  _personnage->pp = malloc(sizeof(char)*strlen(_pp));
   strcpy(_personnage->nom, _nom);
   strcpy(_personnage->pp, _pp);
   _personnage->classe = _classe;
@@ -92,7 +92,7 @@ void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int
   placement(_personnage, pt_m);
 
   //AJOUT DU PERSONNAGE DANS LA LISTE
-  printf("Avant liste vide\n");
+  
   if(liste_vide()){
     printf("Avant en tete\n");
 
@@ -121,37 +121,57 @@ void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int
 
 }
 
-void detruire_personnage(personnage_t** _personnage){
-  //detruire_spell(_personnage); <- probleme free
-  personnage_t * pcourant;
+/*
+void detruire_liste(){
+  
   en_tete();
-  valeur_elt(&pcourant);
-  while(pcourant != &_personnage){
+  while(!liste_vide() && !hors_liste()){
+
+    oter_elt();
     suivant();
+    en_tete();
+    
   }
-  oter_elt();
-  free((*_personnage)->nom);
-  free((*_personnage)->pp);
-  (*_personnage)->pp = NULL;
-  (*_personnage)->nom = NULL;
-  free((*_personnage));
+  
+}*/
+
+void detruire_liste(){
+  
+  en_tete();
+  while(!liste_vide() && !hors_liste()){
+
+    oter_elt();
+    suivant();
+    en_tete();
+    
+  }
+  
 }
 
-void detruire_spell(personnage_t ** _personnage){
+void detruire_personnage(personnage_t** p){
+  
+  free((*p)->nom);
+  free((*p)->pp);
+  (*p)->pp = NULL;
+  (*p)->nom = NULL;
+  free((*p));
+}
+
+void detruire_spell(personnage_t ** personnage){
   int i;
-  /*printf("\nnb de spells : %d\n",(*_personnage)->nb_spell );*/
-  for(i=0;i<=(*_personnage)->nb_spell-1;i++){
+  /*printf("\nnb de spells : %d\n",(*personnage)->nb_spell );*/
+  for(i=0;i<=(*personnage)->nb_spell-1;i++){
     /*printf("\nnb de i : %d\n",i);*/
-    free((*_personnage)->nom_spell[i]);
-    /*printf("\ntab du spell : %p\n",(*_personnage)->tab_spell[i]);*/
-    free((*_personnage)->tab_spell+i*sizeof(attaque_t)*(*_personnage)->nb_spell);/*cette ligne pause probleme*/
-    (*_personnage)->nom_spell[i] = NULL;
-    /*printf("\ntab du spell null : %p\n",(*_personnage)->tab_spell[i]);*/
-    (*_personnage)->tab_spell[i] = ((void*)0);
+    free((*personnage)->nom_spell[i]);
+    /*printf("\ntab du spell : %p\n",(*personnage)->tab_spell[i]);*/
+    //free((*personnage)->tab_spell+i*sizeof(attaque_t)*(*personnage)->nb_spell);/*cette ligne pause probleme*/
+    (*personnage)->nom_spell[i] = NULL;
+    /*printf("\ntab du spell null : %p\n",(*personnage)->tab_spell[i]);*/
+    (*personnage)->tab_spell[i] = ((void*)0);
   }
-  free((*_personnage)->nom_spell);
-  free((*_personnage)->tab_spell);
-//  (*_personnage)->nom_spell = NULL;
-//  (*_personnage)->tab_spell = NULL;
+  free((*personnage)->nom_spell);
+  free((*personnage)->tab_spell);
+//  (*personnage)->nom_spell = NULL;
+//  (*personnage)->tab_spell = NULL;
 
 }
