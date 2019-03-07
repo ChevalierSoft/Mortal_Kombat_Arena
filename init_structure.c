@@ -1,6 +1,7 @@
 #include "fonctions.h"
 #include "personnage.h"
 
+
 void placement(personnage_t *_personnage,carte_t * pt_m){
   pt_m->map[_personnage->px][_personnage->py]->personnage = _personnage;
 }
@@ -89,6 +90,23 @@ void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int
 
   placement(_personnage, pt_m);
 
+  //AJOUT DU PERSONNAGE DANS LA LISTE
+  printf("Avant liste vide\n");
+  if(liste_vide()){
+    printf("Avant en tete\n");
+
+    en_tete();
+    printf("Avant ajout droit\n");
+		ajout_droit(_personnage);
+	}
+	else{
+    printf("Avant en queue\n");
+		en_queue();
+    printf("avant ajout droit\n");
+		ajout_droit(_personnage);
+	}
+  //------------------------------------------
+
   switch(_classe){
     case mage_blanc:init_mage_blanc( _personnage);break;
     case mage_noir:init_mage_noir(_personnage);break;
@@ -103,7 +121,14 @@ void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int
 }
 
 void detruire_personnage(personnage_t** _personnage){
-  detruire_spell(_personnage);
+  //detruire_spell(_personnage); <- probleme free
+  personnage_t * pcourant;
+  en_tete();
+  valeur_elt(&pcourant);
+  while(pcourant != &_personnage){
+    suivant();
+  }
+  oter_elt();
   free((*_personnage)->nom);
   free((*_personnage)->pp);
   (*_personnage)->pp = NULL;
@@ -118,7 +143,7 @@ void detruire_spell(personnage_t ** _personnage){
     /*printf("\nnb de i : %d\n",i);*/
     free((*_personnage)->nom_spell[i]);
     /*printf("\ntab du spell : %p\n",(*_personnage)->tab_spell[i]);*/
-    free((*_personnage)->tab_spell+i*sizeof(attaque_t));/*cette ligne pause probleme*/
+    free((*_personnage)->tab_spell+i*sizeof(attaque_t)*(*_personnage)->nb_spell);/*cette ligne pause probleme*/
     (*_personnage)->nom_spell[i] = NULL;
     /*printf("\ntab du spell null : %p\n",(*_personnage)->tab_spell[i]);*/
     (*_personnage)->tab_spell[i] = ((void*)0);
