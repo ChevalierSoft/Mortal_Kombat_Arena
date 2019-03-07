@@ -12,12 +12,14 @@ typedef struct dalle_s{
 }dalle_t;
 
 typedef struct carte_s{
-  int nb_dalles;
-  dalle_t * map;
+  int nb_dalles_x;
+  int nb_dalles_y;
+  dalle_t * map[N][N]; /* changer en double pointeur map */
 }carte_t;
 
 void init_map(carte_t * pt_m);
-void afficher_map();
+void afficher_map(carte_t * pt_m);
 void charger_partie(carte_t * pt_m);
+void map_detruire(carte_t ** pt_m);
 
 #endif

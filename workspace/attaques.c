@@ -275,7 +275,7 @@ void fait_ton_greu_cb(void * personnage,void * pt_m){
 
 /*------------------------------------------------------------------------------------------*/
 
-void deplacement(personnage_t *_personnage, carte_t * pt_m){
+int deplacement(personnage_t *_personnage, carte_t * pt_m){
   int x,y;
 
   printf("\nCoordonnées de déplacement :");
@@ -304,7 +304,7 @@ void summon_cb(void *_personnage, void * pt_m){
   summon(_personnage, pt_m);
 }
 
-void sheep(personnage_t *_personnage, carte_t * pt_m){
+void evolution(personnage_t *_personnage, carte_t * pt_m){
   int x,y;
   printf("\nselectionne ton sac :");
   printf("X :");
@@ -314,26 +314,15 @@ void sheep(personnage_t *_personnage, carte_t * pt_m){
 
 
   free(pt_m->map[x][y]->personnage->pp);
-  char * _pp = "🐑";
+  char * _pp = "👡";
   pt_m->map[x][y]->personnage->pp = malloc(sizeof(char)*strlen(_pp)+1);
-  strcpy(pt_m->map[x][y]->personnage->pp,"🐑");
-  pt_m->map[x][y]->personnage->est_sheep = 1;
-  printf("\ncc :%d\n",pt_m->map[x][y]->personnage->est_sheep);
+  strcpy(pt_m->map[x][y]->personnage->pp,"👡");
 
 }
 
-void sheep_cb(void *_personnage, void * pt_m){
-  sheep(_personnage, pt_m);
+void evolution_cb(void *_personnage, void * pt_m){
+  evolution(_personnage, pt_m);
 }
-
-void est_sheep(void * pt_m){
-
-}
-
-//void detection_etat(pt_m){
-
-
-
 
 /*
 void jet_de_sable(){

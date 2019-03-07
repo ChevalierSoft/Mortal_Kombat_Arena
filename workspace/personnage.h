@@ -3,18 +3,35 @@
 
 #include "fonctions.h"
 
-typedef enum {mage_blanc,mage_noir,chevalier,necromencien,tacticien}heros_classes;
+typedef enum {mage_blanc, mage_noir, chevalier, necromancien, tacticien, ninja, shrek,sac} heros_classes;
 
-typedef struct personnage{
+/*typedef struct personnage_s personnage_t;*/
+
+typedef void (*attaque_t)(void *);
+
+typedef struct personnage_s{
   char * nom;
-  int px;
-  int py;
-  int pv;
-  int pm;
-  int force;
   char * pp;
   int classe;
 
+  int px;
+  int py;
+
+  int pv;
+  int pv_max;
+  int pm;
+  int intel;
+  int force;
+  int chance;   /* pour les critiques*/
+
+  int nb_spell;
+  char ** nom_spell;
+  void (**tab_spell)(void *, void *);
+
+  int est_shield;
+	int est_mort;
+  int est_empoisone;
+	int est_enfeu;
 
 }personnage_t;
 
