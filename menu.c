@@ -113,7 +113,7 @@ void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
     if (m1->pv > 0 ){
       afficher_map(pt_m);
       info_personnage(m1);
-      //detection_etat(pt_m);
+      /*detection_etat(pt_m);*/
       menu_choix(m1,pt_m);
     }
     else{
