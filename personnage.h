@@ -1,8 +1,6 @@
 #ifndef H_S
 #define H_S
 
-#include "fonctions.h"
-
 typedef enum {mage_blanc, mage_noir, chevalier, necromancien, tacticien, ninja, shrek,sac} heros_classes;
 
 /*typedef struct personnage_s personnage_t;*/
@@ -28,6 +26,8 @@ typedef struct personnage_s{
   char ** nom_spell;
   void (**tab_spell)(void *, void *);
 
+
+  int est_sheep;
   int est_shield;
 	int est_mort;
   int est_empoisone;
