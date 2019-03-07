@@ -1,8 +1,7 @@
 #include<stdlib.h>
 #include "personnage.h"
 
-typedef struct elem{personnage_t * p; struct elem * succ;struct elem * pred;}t_element;
-                    //pointeur sur un elem personnage_t
+
 t_element * ec;
 t_element * drapeau;
 
@@ -69,9 +68,10 @@ void oter_elt(){ //Free le pointeur sur un personnage de la liste
 }
 
 void ajout_droit(personnage_t * p){ //Ajoute un personnage a la la suite de la liste
-  t_element * nouv;
+  t_element * nouv = malloc(sizeof(t_element));
 
   nouv->p = p;
+
   if(liste_vide()){
     nouv->succ = drapeau;
     nouv->pred = drapeau;

@@ -1,3 +1,6 @@
+#ifndef H_Liste
+#define H_Liste
+#include "personnage.h"
 
 
 typedef struct elem{personnage_t * p; struct elem * succ;struct elem * pred;}t_element;
@@ -16,10 +19,12 @@ void en_queue();
 void suivant();
 void precedent();
 
-void valeur_elt(personnage_t ** p); 
+void valeur_elt(personnage_t ** p);
 
 void modif_elt(personnage_t * p);
 
 void oter_elt();
 
 void ajout_droit(personnage_t * p);
+
+#endif
