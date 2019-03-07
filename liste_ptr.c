@@ -1,5 +1,7 @@
 #include<stdlib.h>
+#include<stdio.h>
 #include "personnage.h"
+#include "liste_ptr.h"
 
 
 t_element * ec;

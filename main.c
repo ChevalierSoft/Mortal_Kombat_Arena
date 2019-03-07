@@ -1,5 +1,8 @@
+#include<stdlib.h>
+#include<stdio.h>
 #include "fonctions.h"
 #include "personnage.h"
+#include "liste_ptr.h"
 
 
 #define N 10
@@ -9,6 +12,8 @@ int main(int argc, char const *argv[]) {
   carte_t * pt_m= malloc(sizeof(carte_t));
 
   //on crée le plateau de jeu (#ez)
+
+  init_liste();
 
   charger_partie(pt_m);
 
