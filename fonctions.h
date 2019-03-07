@@ -24,15 +24,15 @@ void boule_de_feu(personnage_t *_personnage,carte_t * pt_m);
 void boule_de_feu_cb(void *_personnage,void * pt_m);
 void summon(personnage_t *_personnage, carte_t * pt_m);
 void summon_cb(void *_personnage, void * pt_m);
-void evolution(personnage_t *_personnage, carte_t * pt_m);
-void evolution_cb(void *_personnage, void * pt_m);
+void sheep(personnage_t *_personnage, carte_t * pt_m);
+void sheep_cb(void *_personnage, void * pt_m);
 /*
 void pas_fini(void);
 void menu_choix(personnage_t * _personnage, carte_t * pt_m);
 void info_mage(personnage_t *_personnage);
 void kombat(personnage_t * _personnage1, personnage_t * _personnage2,carte_t * pt_m);
 */
-int deplacement(personnage_t *_personnage, carte_t * pt_m);
+void deplacement(personnage_t *_personnage, carte_t * pt_m);
 int range_detection(personnage_t *_personnage,int range,int x,int y);
 void toxicite(personnage_t * personnage,carte_t * pt_m);
 void toxicite_cb(void * personnage,void * pt_m);
