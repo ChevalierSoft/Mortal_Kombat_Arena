@@ -312,14 +312,14 @@ void sheep(personnage_t *_personnage, carte_t * pt_m){
   printf("Y :");
   scanf("%d",&y);
 
-
-  free(pt_m->map[x][y]->personnage->pp);
-  char * _pp = "🐑";
-  pt_m->map[x][y]->personnage->pp = malloc(sizeof(char)*strlen(_pp)+1);
-  strcpy(pt_m->map[x][y]->personnage->pp,"🐑");
-  pt_m->map[x][y]->personnage->est_sheep = 1;
-  printf("\ncc :%d\n",pt_m->map[x][y]->personnage->est_sheep);
-
+  if(pt_m->map[x][y]->personnage != NULL){
+    free(pt_m->map[x][y]->personnage->pp);
+    char * _pp = "🐑";
+    pt_m->map[x][y]->personnage->pp = malloc(sizeof(char)*strlen(_pp)+1);
+    strcpy(pt_m->map[x][y]->personnage->pp,"🐑");
+    pt_m->map[x][y]->personnage->est_sheep = 1;
+    printf("\ncc :%d\n",pt_m->map[x][y]->personnage->est_sheep);
+  }
 }
 
 void sheep_cb(void *_personnage, void * pt_m){
@@ -329,11 +329,26 @@ void sheep_cb(void *_personnage, void * pt_m){
 void est_sheep(void * pt_m){
 
 }
+void detection_etat(void){
+  en_tete();
+  personnage_t * stockage;
+  while(!hors_liste()){
+    valeur_elt(&stockage);
+    printf("\ncc :%d\n",stockage->pv);
+    suivant();
+  }
 
-//void detection_etat(pt_m){
+  /*if(stockage->pv <= 0){
+    printf("\ncc :%d\n",stockage->pv);
+    free(stockage->pp);
+    char * _pp = "⚰️";
+    stockage = malloc(sizeof(char)*strlen(_pp)+1);
 
-
-
+    strcpy(stockage->pp,_pp);
+    stockage->est_mort = 1;
+    stockage->pv = 0;
+  }*/
+}
 
 /*
 void jet_de_sable(){

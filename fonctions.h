@@ -12,6 +12,7 @@
 #include "couleur.h"
 #include "map.h"
 #include "menu.h"
+#include "liste_ptr.h"
 
 
 void init_hero(personnage_t * _personnage, int _force, int  _pv, int _pv_max, int _px, int _py, int _pm, char * _nom, char * _pp, int _nb_att, carte_t * pt_m,int classe);
@@ -26,6 +27,7 @@ void summon(personnage_t *_personnage, carte_t * pt_m);
 void summon_cb(void *_personnage, void * pt_m);
 void sheep(personnage_t *_personnage, carte_t * pt_m);
 void sheep_cb(void *_personnage, void * pt_m);
+void detection_etat(void);
 /*
 void pas_fini(void);
 void menu_choix(personnage_t * _personnage, carte_t * pt_m);

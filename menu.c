@@ -19,7 +19,7 @@ int phase_premiere(personnage_t * _personnage, carte_t * pt_m){
       printf("++++++++++++++++++\n" RESET);
 
       scanf("%d",&choix);
-    }while(choix <1 || choix >4);
+    }while(choix !=2 || choix !=4);
   }else{
     do{
       printf(MAG"+++++++++++++++++++\n" RESET);
@@ -59,10 +59,13 @@ int phase_attaque(personnage_t * _personnage, carte_t * pt_m){
 
 
       printf("+ %d) passer le tour \n",++i);
-      printf("+ %d) Retour (a coder) \n", ++i);
+      printf("+ %d) Retour\n", ++i);
+
       printf("++++++++++++++++++\n" RESET);
 
       scanf("%d",&choix);
+      if(choix == _personnage->nb_spell + 2)
+        return 10;
     }while (choix <1 || choix > _personnage->nb_spell + 2) ;/*+2 pour passer le tour et retour*/
   }
 
@@ -72,27 +75,29 @@ int phase_attaque(personnage_t * _personnage, carte_t * pt_m){
 void menu_choix(personnage_t * _personnage, carte_t * pt_m){
   int phase1=0, phase2=0;
 
-    phase1 = phase_premiere(_personnage, pt_m);
 
+do{ /*tant que le retour n'est pas demandé*/
+  phase1 = phase_premiere(_personnage, pt_m);
+  phase2=0;
     switch(phase1){
+
       case 1: phase2 = phase_attaque(_personnage, pt_m);
-              if(phase2 != 0){ /*tant que l'état mouton n'est pas actif*/
-                if (phase2 <= _personnage->nb_spell)
-                  _personnage->tab_spell[phase2-1](_personnage, pt_m);
-                else if(phase2==_personnage->nb_spell+1)
-                  printf(YEL"%s passe son tour\n"RESET, _personnage->nom);
-                else if(phase2==_personnage->nb_spell+2)
-                  pas_fini();
-              	else
-                	printf("nani ?\n");
-              }
-                break;
+                if(phase2 != 0){ /*tant que l'état mouton n'est pas actif*/
+                  if (phase2 <= _personnage->nb_spell)
+                    _personnage->tab_spell[phase2-1](_personnage, pt_m);
+                  else if(phase2==_personnage->nb_spell+1)
+                    printf(YEL"%s passe son tour\n"RESET, _personnage->nom);
+                  else if(phase2==_personnage->nb_spell+2)
+                    pas_fini();
+                	else
+                    printf("nani ?\n");
+                }break;
       case 2: deplacement(_personnage, pt_m);break;
       case 3: pas_fini();break;
       case 4: printf(YEL"%s passe son tour\n"RESET, _personnage->nom);break;
       default: pas_fini();break;
-  }
-
+    }
+  }while(phase2 == 10);
 }
 
 void info_personnage(personnage_t *p){
@@ -113,8 +118,9 @@ void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
     if (m1->pv > 0 ){
       afficher_map(pt_m);
       info_personnage(m1);
-      /*detection_etat(pt_m);*/
+      detection_etat();
       menu_choix(m1,pt_m);
+
     }
     else{
       printf("%s est mort\n", m1->nom);
@@ -123,7 +129,7 @@ void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
     if (m2->pv > 0 ){
       afficher_map(pt_m);
       info_personnage(m2);
-      /*detection_etat(pt_m);*/
+      detection_etat();
       menu_choix(m2,pt_m);
     }
     else{
