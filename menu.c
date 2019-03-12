@@ -19,7 +19,7 @@ int phase_premiere(personnage_t * _personnage, carte_t * pt_m){
       printf("++++++++++++++++++\n" RESET);
 
       scanf("%d",&choix);
-    }while(choix !=2 || choix !=4);
+    }while(choix <2 || choix >4);
   }else{
     do{
       printf(MAG"+++++++++++++++++++\n" RESET);
