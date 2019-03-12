@@ -291,12 +291,18 @@ void deplacement(personnage_t *_personnage, carte_t * pt_m){
 }
 
 void summon(personnage_t *_personnage, carte_t * pt_m){
-  int x,y;
-  printf("\nCoordonnées de déplacement :");
-  printf("X :");
-  scanf("%d",&x);
-  printf("Y :");
-  scanf("%d",&y);
+  int x,y,i = 0;
+  do{
+    if(i >=1)
+      printf("Error, sortie de map !!!");
+    printf("\nCoordonnées de déplacement :");
+    printf("X :");
+    scanf("%d",&x);
+    printf("Y :");
+    scanf("%d",&y);
+    i++;
+}while((x <0 || x >N) || (y <0 || y >N));
+
   personnage_t * ptitsac = malloc(sizeof(personnage_t));
   init_hero(ptitsac,1,1,1,x,y,1,"sac","💼",1,pt_m,sac);
 }
@@ -305,12 +311,17 @@ void summon_cb(void *_personnage, void * pt_m){
 }
 
 void sheep(personnage_t *_personnage, carte_t * pt_m){
-  int x,y;
+  int x,y,i;
+  do{
+  if(i >=1)
+    printf("Error, sortie de map !!!");
   printf("\nselectionne ton sac :");
   printf("X :");
   scanf("%d",&x);
   printf("Y :");
   scanf("%d",&y);
+  i++;
+}while((x <0 || x >N) || (y <0 || y >N));
 
   if(pt_m->map[x][y]->personnage != NULL){
     free(pt_m->map[x][y]->personnage->pp);
@@ -326,15 +337,13 @@ void sheep_cb(void *_personnage, void * pt_m){
   sheep(_personnage, pt_m);
 }
 
-void est_sheep(void * pt_m){
-
-}
 void detection_etat(void){
   en_tete();
   personnage_t * stockage;
   while(!hors_liste()){
     valeur_elt(&stockage);
-    printf("\ncc :%d\n",stockage->pv);
+    printf("\nvie :%d\n",stockage->pv);
+    printf("\nà :%s\n",stockage->nom);
     suivant();
   }
 
