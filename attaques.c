@@ -361,7 +361,7 @@ void summon(personnage_t *_personnage, carte_t * pt_m){
   if(pt_m->map[_personnage->px][_personnage->py]->personnage != NULL){
     if(range_detection(_personnage,range,y,x)){
       personnage_t * ptitsac = malloc(sizeof(personnage_t));
-      init_hero(ptitsac,1,1,1,x,y,1,"sac","💼",1,pt_m,sac);
+      init_hero(ptitsac,1,1,1,x,y,1,"sac",pt_m,sac);// là
     }else
       printf(YEL"%s\n"RESET,"Range insuffisante");
   }else

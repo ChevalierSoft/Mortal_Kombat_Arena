@@ -15,7 +15,7 @@
 #include "liste_ptr.h"
 
 
-void init_hero(personnage_t * _personnage, int _force, int  _pv, int _pv_max, int _px, int _py, int _pm, char * _nom, char * _pp, int _nb_att, carte_t * pt_m,int classe);
+void init_hero(personnage_t * _personnage, int _force, int  _pv, int _pv_max, int _px, int _py, int _pm, char * _nom, carte_t * pt_m, int classe);
 void afficher_mage(personnage_t * marvin);
 void soin(personnage_t *_personnage,carte_t * pt_m);
 void soin_cb(void *_personnage, void * pt_m);

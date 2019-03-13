@@ -1,7 +1,7 @@
 #ifndef H_S
 #define H_S
 
-typedef enum {mage_blanc, mage_noir, chevalier, necromancien, tacticien, ninja, shrek,sac} heros_classes;
+typedef enum {mage_blanc, mage_noir, chevalier, necromancien, tacticien, ninja, shrek, sac, delimiteur} heros_classes;
 
 /*typedef struct personnage_s personnage_t;*/
 
