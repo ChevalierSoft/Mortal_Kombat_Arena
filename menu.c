@@ -8,19 +8,6 @@ void pas_fini(){
 int phase_premiere(personnage_t * _personnage, carte_t * pt_m){
   int choix = -1;
 
-  if(_personnage->est_sheep){
-    do{
-      printf(MAG"+++++++++++++++++++\n" RESET);
-      printf(MAG"%s est sheep !\n" RESET, _personnage->nom);
-      printf(MAG"+++++++++++++++++++\n" RESET);
-      printf(RED"+++++++++++++++++++\n" );
-      printf("+ 2) Se Deplacer \n");
-      printf("+ 4) Passer le tour \n");
-      printf("++++++++++++++++++\n" RESET);
-
-      scanf("%d",&choix);
-    }while(choix <2 || choix >4);
-  }else{
     do{
       printf(MAG"+++++++++++++++++++\n" RESET);
       printf(MAG"%s\n" RESET, _personnage->nom);
@@ -34,28 +21,25 @@ int phase_premiere(personnage_t * _personnage, carte_t * pt_m){
 
       scanf("%d",&choix);
     }while(choix <1 || choix >4);
+    return(choix);
   }
-
-  return(choix);
-
-}
-
 
 int phase_attaque(personnage_t * _personnage, carte_t * pt_m){
   int choix=-1, i=0;
 
-  if(_personnage->est_sheep){
-    return 0;
-  }else{
     do{
+      i=0;
       printf(MAG"+++++++++++++++++++\n" RESET);
       printf(MAG"%s\n" RESET, _personnage->nom);
       printf(MAG"+++++++++++++++++++\n" RESET);
       printf(RED"+++++++++++++++++++\n" );
-
-      for(;i < _personnage->nb_spell; i++){
-        printf("+ %d) %s \n", i+1, _personnage->nom_spell[i]);
+      if (_personnage->est_sheep == 0){
+        for(;i < _personnage->nb_spell; i++){
+          printf("+ %d) %s \n", i+1, _personnage->nom_spell[i]);
+        }
       }
+      else
+        i=_personnage->nb_spell;
 
 
       printf("+ %d) passer le tour \n",++i);
@@ -67,10 +51,10 @@ int phase_attaque(personnage_t * _personnage, carte_t * pt_m){
       if(choix == _personnage->nb_spell + 2)
         return 10;
     }while (choix <1 || choix > _personnage->nb_spell + 2) ;/*+2 pour passer le tour et retour*/
+      return(choix);
   }
 
-  return(choix);
-}
+
 
 void menu_choix(personnage_t * _personnage, carte_t * pt_m){
   int phase1=0, phase2=0;
@@ -92,7 +76,7 @@ do{ /*tant que le retour n'est pas demandé*/
                 	else
                     printf("nani ?\n");
                 }break;
-      case 2: deplacement(_personnage, pt_m);break;
+      case 2: phase2= deplacement(_personnage, pt_m);break;
       case 3: pas_fini();break;
       case 4: printf(YEL"%s passe son tour\n"RESET, _personnage->nom);break;
       default: pas_fini();break;
