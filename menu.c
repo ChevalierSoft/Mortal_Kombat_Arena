@@ -66,16 +66,15 @@ do{ /*tant que le retour n'est pas demandé*/
     switch(phase1){
 
       case 1: phase2 = phase_attaque(_personnage, pt_m);
-                if(phase2 != 0){ /*tant que l'état mouton n'est pas actif*/
                   if (phase2 <= _personnage->nb_spell)
                     _personnage->tab_spell[phase2-1](_personnage, pt_m);
                   else if(phase2==_personnage->nb_spell+1)
                     printf(YEL"%s passe son tour\n"RESET, _personnage->nom);
                   else if(phase2==_personnage->nb_spell+2)
                     pas_fini();
-                	else
+                	else{
                     printf("nani ?\n");
-                }break;
+                  }break;
       case 2: phase2= deplacement(_personnage, pt_m);break;
       case 3: pas_fini();break;
       case 4: printf(YEL"%s passe son tour\n"RESET, _personnage->nom);break;
@@ -101,8 +100,8 @@ void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
   while(1){
     if (m1->pv > 0 ){
       afficher_map(pt_m);
-      info_personnage(m1);
       detection_etat();
+      info_personnage(m1);
       menu_choix(m1,pt_m);
 
     }
@@ -112,8 +111,8 @@ void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
     }
     if (m2->pv > 0 ){
       afficher_map(pt_m);
-      info_personnage(m2);
       detection_etat();
+      info_personnage(m2);
       menu_choix(m2,pt_m);
     }
     else{
