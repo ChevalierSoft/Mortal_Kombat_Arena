@@ -55,7 +55,6 @@ int phase_attaque(personnage_t * _personnage, carte_t * pt_m){
   }
 
 
-
 void menu_choix(personnage_t * _personnage, carte_t * pt_m){
   int phase1=0, phase2=0;
 
@@ -96,8 +95,36 @@ void info_personnage(personnage_t *p){
 }
 
 void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
-  /*while (m1->pv>0 && m2->pv>0 ){*/
+  /*
+  en_tete();
+
+  int hp_team1=-1, hp_team2=-1;
+  
+  personnage_t * tmp;
+  
+
   while(1){
+
+    while(!hors_liste()){
+      hp_team1=get_hp_team(1);
+      hp_team2=get_hp_team(2);
+      if (hp_team1<=0 || hp_team2<=0){
+        break;
+      }
+      valeur_elt(&tmp);
+      afficher_map(pt_m);
+      detection_etat();
+      info_personnage(tmp);
+      menu_choix(tmp, pt_m);
+
+    }
+
+  }
+*/
+
+
+  while(1){
+
     if (m1->pv > 0 ){
       afficher_map(pt_m);
       detection_etat();
