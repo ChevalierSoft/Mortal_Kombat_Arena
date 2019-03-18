@@ -21,7 +21,7 @@ void jouer(SDL_Renderer * renderer){
 		int x_curs,y_curs,a,b;
     int map[nb_sprites_largeur][nb_sprites_hauteur] = {0};
     SDL_Rect sprite;
-		SDL_Surface * surbrillance = SDL_CreateRGBSurface(w_s,h_s, 100, 32, 0, 0, 0, 50);
+		SDL_Surface * surbrillance = SDL_CreateRGBSurface(w_s,h_s, 100, 32, 0, 0, 0, 0);
 		SDL_Texture * case_sub;
     SDL_Surface *sprites_s[6]= {NULL};
 		SDL_Surface * persos_s[5] = {NULL};
@@ -29,7 +29,7 @@ void jouer(SDL_Renderer * renderer){
 		w_s = 50; //weight et height des sprites
 		h_s = 50;
 
-		SDL_FillRect(surbrillance,&sprite,SDL_MapRGB(surbrillance->format,255,255,255));
+		SDL_FillRect(surbrillance,NULL,SDL_MapRGB(surbrillance->format,255,255,255));
 		case_sub = SDL_CreateTextureFromSurface(renderer,surbrillance);
 
 		//chargement de toues les etats de cases dans tableau sprites
@@ -70,6 +70,10 @@ void jouer(SDL_Renderer * renderer){
 	for (i = 0 ; i < 6 ; i++)
 		SDL_FreeSurface(sprites_s[i]);
 
+	SDL_FreeSurface(surbrillance);
+
+
+	// (TESTS) position initale des deux persos
 	positionm1.x = (((0/4)/taille_sprite)*taille_sprite)+22;
 	positionm1.y = (((480/4)/taille_sprite)*taille_sprite)+22;
 	positionm2.x = (((640/4)/taille_sprite)*taille_sprite)+22;
@@ -103,32 +107,35 @@ void jouer(SDL_Renderer * renderer){
                 }
                 break;
             case SDL_MOUSEBUTTONUP:  //Lors d'un clic gauche, le perso se déplace vers les coords du clic
-                if(event.button.button == SDL_BUTTON_LEFT){
+								if(event.button.x <= HAUTEUR_FENETRE && event.button.y <= LARGEUR_FENETRE){
+									if(event.button.button == SDL_BUTTON_LEFT){
+										x_curs = event.motion.x;
+										y_curs = event.motion.y;
+										a = x_curs/taille_sprite;
+										b = y_curs/taille_sprite; //Récupère les coords de la case cliquée
+	                  /*if(map[a][b] == un personnage){
+												afficher les cases ou il peut se déplacer
+													si on clique sur l'une de ses cases
+														déplacer le personnage sur cette case
+										}*/
+	                }
+									/*
+									 			Lignes servant à placer le perso sur la case cliquée
+									positionm1.x = ((event.button.x/taille_sprite)*taille_sprite)+22;
+									positionm1.y = ((event.button.y/taille_sprite)*taille_sprite)+22
+									*/
+								}
+								break;
+						case SDL_MOUSEMOTION:
+								if(event.motion.x <= HAUTEUR_FENETRE && event.motion.y <= LARGEUR_FENETRE){
 									x_curs = event.motion.x;
 									y_curs = event.motion.y;
 									a = x_curs/taille_sprite;
-									b = y_curs/taille_sprite; //Récupère les coords de la case cliquée
-                  /*if(map[a][b] == un personnage){
-											afficher les cases ou il peut se déplacer
-												si on clique sur l'une de ses cases
-													déplacer le personnage sur cette case
-									}*/
-                }
-								/*
-								 			Lignes servant à placer le perso sur la case cliquée
-								positionm1.x = ((event.button.x/taille_sprite)*taille_sprite)+22;
-								positionm1.y = ((event.button.y/taille_sprite)*taille_sprite)+22
-								*/
+									b = y_curs/taille_sprite;
+									temp = map[a][b];
+									map[a][b] = -1;
+								}
 
-
-                break;
-						case SDL_MOUSEMOTION:
-								x_curs = event.motion.x;
-								y_curs = event.motion.y;
-								a = x_curs/taille_sprite;
-								b = y_curs/taille_sprite;
-								temp = map[a][b];
-								map[a][b] = -1;
 
 								break;
 
@@ -182,6 +189,7 @@ void jouer(SDL_Renderer * renderer){
 										case -1:
 												SDL_QueryTexture(case_sub, NULL, NULL, &w_s, &h_s);
 												SDL_RenderCopy(renderer,case_sub,NULL,&sprite);
+												map[a][b] = temp;
 
 
                 }
@@ -200,7 +208,7 @@ void jouer(SDL_Renderer * renderer){
 			SDL_RenderCopy(renderer,perso0,NULL,&positionm1);
 			SDL_RenderCopy(renderer,perso1,NULL,&positionm2);
 
-			map[a][b] = temp;
+
 
 
 			SDL_RenderPresent(renderer);
