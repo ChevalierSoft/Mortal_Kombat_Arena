@@ -30,6 +30,9 @@ void init_spell(personnage_t * p, int nb_spell, ...){
 }
 
 void init_mage_blanc(personnage_t * _mage_blanc ){
+  char *pp = "🧙‍";
+  _mage_blanc->pp = malloc(sizeof(char)*strlen(pp));
+  strcpy(_mage_blanc->pp, pp);
 
   _mage_blanc->nb_spell = 3; //3
   init_spell(_mage_blanc,_mage_blanc->nb_spell,"Soin", &soin_cb, "Cure", cure_cb, "Armure", &shield_cb );
@@ -37,9 +40,12 @@ void init_mage_blanc(personnage_t * _mage_blanc ){
 }
 
 void init_mage_noir(personnage_t * _mage_noir ){
-
+  
+  char *pp = "🧞‍";
+  _mage_noir->pp = malloc(sizeof(char)*strlen(pp));
+  strcpy(_mage_noir->pp, pp);
+  
   _mage_noir->nb_spell = 5; //5
-
   init_spell(_mage_noir,_mage_noir->nb_spell,"Boule de feu", &boule_de_feu_cb, "Toxicite", &toxicite_cb, "Fait ton greu", &fait_ton_greu_cb,"summon",&summon_cb,"sheep",&sheep_cb );
 
 }
@@ -61,17 +67,28 @@ void init_ninja(personnage_t * _ninja ){
 }
 
 void init_sac(personnage_t * _sac ){
+  char *pp = "💼";
+  _sac->pp = malloc(sizeof(char)*strlen(pp));
+  strcpy(_sac->pp, pp);
+
+  _sac->nb_spell = 0;
 
 }
 
-void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int _px, int _py, int _pm, char * _nom, char * _pp, int _nb_att, carte_t * pt_m,int _classe){
+void init_delimiteur(personnage_t * del ){
+  char *pp = "👽";
+  del->pp = malloc(sizeof(char)*strlen(pp));
+  strcpy(del->pp, pp);
+
+  del->nb_spell = 0;
+}
+
+void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int _px, int _py, int _pm, char * _nom, carte_t * pt_m,int _classe){
 
   _personnage->nom = malloc(sizeof(char)*strlen(_nom));
-  _personnage->pp = malloc(sizeof(char)*strlen(_pp));
   strcpy(_personnage->nom, _nom);
-  strcpy(_personnage->pp, _pp);
+  
   _personnage->classe = _classe;
-
 
   _personnage->px = _px;
   _personnage->py = _py;
@@ -89,21 +106,21 @@ void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int
 
 	_personnage->chance=0;
 
-  placement(_personnage, pt_m);
+  if (_personnage->classe != delimiteur){
+    placement(_personnage, pt_m);
+  }
 
   //AJOUT DU PERSONNAGE DANS LA LISTE
 
   if(liste_vide()){
-    printf("Avant en tete\n");
-
     en_tete();
-    printf("Avant ajout droit\n");
+    //printf("ajout droit\n");
 		ajout_droit(_personnage);
 	}
 	else{
-    printf("Avant en queue\n");
+    //printf("Avant en queue\n");
 		en_queue();
-    printf("avant ajout droit\n");
+    //printf("avant ajout droit\n");
 		ajout_droit(_personnage);
 	}
   //------------------------------------------
@@ -116,24 +133,11 @@ void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int
     case tacticien:init_tacticien(_personnage);break;
     case ninja:init_ninja(_personnage);break;
     case sac:init_sac(_personnage);break;
-    default:printf("ERROR !!!!!!!!!!!");break;
+    case delimiteur:init_delimiteur(_personnage);break;
+    default:printf("Erreur de classe");init_sac(_personnage);break;
   }
 
 }
-
-/*
-void detruire_liste(){
-
-  en_tete();
-  while(!liste_vide() && !hors_liste()){
-
-    oter_elt();
-    suivant();
-    en_tete();
-
-  }
-
-}*/
 
 void detruire_liste(){
 
@@ -160,19 +164,9 @@ void detruire_personnage(personnage_t** p){
 void detruire_spell(personnage_t ** personnage){
   int i;
   /*printf("\nnb de spells : %d\n",(*personnage)->nb_spell );*/
-  for(i=0;i<=(*personnage)->nb_spell-1;i++){
-    /*printf("\nnb de i : %d\n",i);*/
+  for(i=0;i<=(*personnage)->nb_spell-1;i++){   
     free((*personnage)->nom_spell[i]);
-    /*printf("\ntab du spell : %p\n",(*personnage)->tab_spell[i]);*/
-
-
-
-    //free((*personnage)->tab_spell+i*sizeof(attaque_t)*(*personnage)->nb_spell);/*cette ligne pause probleme*/
-    //free((*personnage)->tab_spell[i]);
-
-
     (*personnage)->nom_spell[i] = NULL;
-    /*printf("\ntab du spell null : %p\n",(*personnage)->tab_spell[i]);*/
     (*personnage)->tab_spell[i] = ((void*)0);
   }
   free((*personnage)->nom_spell);

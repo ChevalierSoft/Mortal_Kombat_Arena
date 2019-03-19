@@ -261,26 +261,26 @@ void fait_ton_greu(personnage_t * personnage,carte_t * pt_m){ /* pas fini */ /* 
           h=0;
           if(x < personnage->px)
             l=-1;
-            else if(x > personnage->px)/*il me semble qu'on a pas besoin de de préciser ici, un esle suffit*/
+          else 
             l=1;
         }
         else if(y > personnage->py){
           h=1;
-        if(x == personnage->px)
-          l=0;
-        else if(x > personnage->px)
-          l=1;
-        else if(x < personnage->px)/*else*/
-          l =-1;
+	        if(x == personnage->px)
+	          l=0;
+	        else if(x > personnage->px)
+	          l=1;
+	        else/*(x < personnage->px)*/
+	          l =-1;
         }
         else if(y < personnage->py){
-          h=-1;
-        if(x == personnage->px)
-          l=0;
-        else if(x > personnage->px)
-          l=1;
-        else if(x < personnage->px)/*else*/
-          l=-1;
+	        h=-1;
+	        if(x == personnage->px)
+	          l=0;
+	        else if(x > personnage->px)
+	          l=1;
+	        else/*(x < personnage->px)*/
+	          l=-1;
         }
 
       int xn = x+(fear*l); //nouvelle valeur de x de la cible (après fear)
@@ -321,25 +321,30 @@ int deplacement(personnage_t *_personnage, carte_t * pt_m){
   int x,y,i = 0;
   int range = 5;
   do{
-  if(i >=1)
-    printf("Error, sortie de map !!!");
-  printf("\nCoordonnées de déplacement :\n");
-  printf("X :");
-  scanf("%d",&x);
-  printf("Y :");
-  scanf("%d",&y);
-  i++;
+	  if(i >=1){
+	    printf("Error, sortie de map !!!");
+		}
+	  printf("\nCoordonnées de déplacement :\n");
+	  printf("X :");
+	  scanf("%d",&x);
+	  printf("Y :");
+	  scanf("%d",&y);
+	  i++;
   }while((x <0 || x >N) || (y <0 || y >N));
-  if(pt_m->map[_personnage->px][_personnage->py]->personnage == NULL){
+
+  if(pt_m->map[x][y]->personnage == NULL){
     if(range_detection(_personnage,range,y,x)){
+    	pt_m->map[_personnage->px][_personnage->py]->personnage = NULL;
       _personnage->px =  x;
       _personnage->py =  y;
       pt_m->map[_personnage->px][_personnage->py]->personnage = _personnage;
-    }else
+    }
+    else
       printf(YEL"%s\n"RESET,"Range insuffisante");
-  }else{
-      printf("\nIl y a déja un personnage sur cette case !!\n");
-      return 10; /* permet de pas passer el tour du joueur si il se trompe */
+  }
+  else{
+    printf("\nIl y a déja un personnage sur cette case !!\n");
+    return 10; /* permet de pas passer el tour du joueur si il se trompe */
   }
   return 0;
 }
@@ -358,14 +363,15 @@ void summon(personnage_t *_personnage, carte_t * pt_m){
     i++;
   }while((x <0 || x >N) || (y <0 || y >N));
 
-  if(pt_m->map[_personnage->px][_personnage->py]->personnage == NULL){
+  if(pt_m->map[x][y]->personnage != NULL){
     if(range_detection(_personnage,range,y,x)){
       personnage_t * ptitsac = malloc(sizeof(personnage_t));
-      init_hero(ptitsac,1,1,1,x,y,1,"sac","💼",1,pt_m,sac);
+      init_hero(ptitsac,1,1,1,x,y,1,"sac",pt_m,sac);// là
     }else
       printf(YEL"%s\n"RESET,"Range insuffisante");
   }else
     printf("\nLa case est occupée !\n");
+
 }
 void summon_cb(void *_personnage, void * pt_m){
   summon(_personnage, pt_m);
@@ -396,6 +402,7 @@ void sheep(personnage_t *_personnage, carte_t * pt_m){
     }else
       printf(YEL"%s\n"RESET,"Range insuffisante");
   }
+  printf("\nIl n'y a personne sur cette case :\n");
 }
 
 void sheep_cb(void *_personnage, void * pt_m){
@@ -410,18 +417,31 @@ void detection_etat(void){
     printf("\nvie :%d\n",stockage->pv);
     printf("\nà :%s\n",stockage->nom);
     suivant();
+    if(stockage->pv < 0){
+
+      printf("\nà :%s\n",stockage->nom);
+      printf("\ncc :%d\n",stockage->pv);
+      printf("\ncc1 :%s\n",stockage->pp);
+
+      free(stockage->pp);
+      stockage->pp = NULL;
+
+      printf("\ncc2 :%s\n",stockage->pp);
+      char * pp = "💀";
+      printf("\ncc3 :%s\n",stockage->pp);
+      stockage->pp = malloc(sizeof(char)*strlen(pp));
+      printf("\ncc4 :%s\n",stockage->pp);
+
+      strcpy(stockage->pp,pp);
+      printf("\ncc5 :%s\n",stockage->pp);
+
+
+      stockage->est_mort = 1;
+      stockage->pv = 0;
+      
+
+    }
   }
-
-  /*if(stockage->pv <= 0){
-    printf("\ncc :%d\n",stockage->pv);
-    free(stockage->pp);
-    char * _pp = "⚰️";
-    stockage = malloc(sizeof(char)*strlen(_pp)+1);
-
-    strcpy(stockage->pp,_pp);
-    stockage->est_mort = 1;
-    stockage->pv = 0;
-  }*/
 }
 
 /*
