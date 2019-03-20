@@ -16,6 +16,7 @@ int liste_vide();
 
 void en_tete();
 void en_queue();
+void en_mid();
 
 void suivant();
 void precedent();

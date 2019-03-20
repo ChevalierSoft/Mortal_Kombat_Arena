@@ -30,20 +30,33 @@ void en_tete(){
     ec = drapeau->succ;
 }
 
+
+void en_mid(){
+  if(!liste_vide()){
+    en_tete();
+    while(strcmp(ec->p->pp, "👽") && !hors_liste())
+      ec = ec->succ;
+  }
+}
+
+
 void en_queue(){
   if(!liste_vide())
     ec = drapeau->pred;
-
 }
 
 void suivant(){
   if(!hors_liste())
     ec = ec->succ;
+  else
+    ec = drapeau;
 }
 
 void precedent(){
   if(!hors_liste())
     ec = ec->pred;
+  else
+    ec = drapeau;
 }
 
 void valeur_elt(personnage_t ** p){ //Récupère un personnage et le mets dans une autre variable de type personnage
@@ -53,6 +66,7 @@ void valeur_elt(personnage_t ** p){ //Récupère un personnage et le mets dans u
 }
 
 void modif_elt(personnage_t * p){ //Ecrase un personnage de la liste et le remplace par le personnage en param
+  //pas ouf cette fonction...
   if(!hors_liste()){
     ec->p = p;
   }
@@ -100,16 +114,19 @@ void ajout_droit(personnage_t * p){ //Ajoute un personnage a la la suite de la l
   }
 }
 
+
+
 void afficher_liste(){
   en_tete();
-  //printf(YEL"Affichage de la liste : \n"RESET);
+  printf(YEL"Affichage de la liste : \n"RESET);
   if(!liste_vide()){
     int i = 0;
     while(!hors_liste()){
-      printf("%s\n",ec->p->nom);
+      printf("%s",ec->p->nom);if(ec->p->est_mort)printf("   KO");printf("\n");
       suivant();
       i++;
     }
+    printf("\n");
     //printf(YEL"il y a %d perso dans la liste\n" RESET, i);
   }
   else

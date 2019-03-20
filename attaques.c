@@ -261,7 +261,7 @@ void fait_ton_greu(personnage_t * personnage,carte_t * pt_m){ /* pas fini */ /* 
           h=0;
           if(x < personnage->px)
             l=-1;
-          else 
+          else
             l=1;
         }
         else if(y > personnage->py){
@@ -355,7 +355,7 @@ void summon(personnage_t *_personnage, carte_t * pt_m){
   do{
     if(i >=1)
       printf("Error, sortie de map !!!");
-    printf("\nCoordonnées de déplacement :\n");
+    printf("\nCoordonnées d'invocation :\n");
     printf("X :");
     scanf("%d",&x);
     printf("Y :");
@@ -363,7 +363,7 @@ void summon(personnage_t *_personnage, carte_t * pt_m){
     i++;
   }while((x <0 || x >N) || (y <0 || y >N));
 
-  if(pt_m->map[x][y]->personnage != NULL){
+  if(pt_m->map[x][y]->personnage == NULL){
     if(range_detection(_personnage,range,y,x)){
       personnage_t * ptitsac = malloc(sizeof(personnage_t));
       init_hero(ptitsac,1,1,1,x,y,1,"sac",pt_m,sac);// là
@@ -438,7 +438,7 @@ void detection_etat(void){
 
       stockage->est_mort = 1;
       stockage->pv = 0;
-      
+
 
     }
   }

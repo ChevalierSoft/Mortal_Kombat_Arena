@@ -82,7 +82,7 @@ do{ /*tant que le retour n'est pas demandé*/
   }while(phase2 == 10);
 }
 
-void info_personnage(personnage_t *p){
+void info_personnage(personnage_t * p){
   printf(CYN"+++++++++++++++++++\n" );
   printf("+ Nom   : %s \n", p->nom);
   printf("+ PV    : %d "RESET, p->pv);if(p->est_shield)printf("+%d", p->est_shield);printf("\n");
@@ -94,63 +94,123 @@ void info_personnage(personnage_t *p){
   printf("+++++++++++++++++++\n"RESET);
 }
 
-void kombat(personnage_t * m1, personnage_t * m2, carte_t * pt_m){
-  /*
+void backdash( personnage_t * p){
+  personnage_t * p2;
   en_tete();
+  valeur_elt(&p2);
+  while(p2 != p && !liste_vide()){
+    suivant();
+    valeur_elt(&p2);
+  }
+  if (liste_vide()){
+    en_tete();
+    printf("probleme de personnage free\n");
+  }
 
-  int hp_team1=-1, hp_team2=-1;
-  
+}
+
+int get_hp_team(int n){
   personnage_t * tmp;
-  
+	personnage_t * ex;/* personnage actuel*/
+  int hp=0;
 
-  while(1){
+  valeur_elt(&ex);
 
-    while(!hors_liste()){
-      hp_team1=get_hp_team(1);
-      hp_team2=get_hp_team(2);
-      if (hp_team1<=0 || hp_team2<=0){
-        break;
-      }
+	if(n==1){
+    en_tete();
+		valeur_elt(&tmp);
+    /*printf("hero : %s , %s , pv : %d\n", tmp->nom, tmp->pp, tmp->pv);*/
+
+		while(strcmp(tmp->pp, "👽")){
+      /*printf("on avance #1\n");*/
+      hp+=tmp->pv;
+      suivant();
       valeur_elt(&tmp);
-      afficher_map(pt_m);
-      detection_etat();
-      info_personnage(tmp);
-      menu_choix(tmp, pt_m);
+		}
+    en_tete();
+    valeur_elt(&tmp);
+    while(tmp != ex){
+      /*printf("on straff #1\n");*/
+      suivant();
+      valeur_elt(&tmp);
+      /*sleep(1);*/
+    }
+		
+	}
+	else if (n==2){
+    
+    en_mid();
+    suivant();
+    valeur_elt(&tmp);
+    /*printf("#2 hero : %s , %s , pv : %d\n", tmp->nom, tmp->pp, tmp->pv);*/
+    while(!hors_liste()){
+      
+      hp+=tmp->pv;
+      /*printf("on avance #2\n");*/
+      suivant();
+      valeur_elt(&tmp);
+    }
+    en_tete();
+    valeur_elt(&tmp);
+
+    while(tmp != ex){
+      /*printf("on re avance #3\n");*/
+      suivant();
+      valeur_elt(&tmp);
+      /*sleep(1);*/
+    }
+    
+	}
+	else
+		printf("probleme avec le numero de la team %d \n", n);
+  
+  printf("HP Team %d : %d\n",n, hp);
+	return(hp);
+}
+
+void kombat( carte_t * pt_m){
+  
+  /*verifier que la liste n'est pas vide pour lancer*/
+  if (!liste_vide()){
+    /*bouleen de lancement de partie*/
+    int partie_en_cours = 1;
+    /*barre de vie de la team*/
+    int hp_team1=1, hp_team2=1;
+    /*tmp prendra la valeur des personnages de la liste succecivement*/
+    personnage_t * tmp;
+
+    while(partie_en_cours){
+    	/*affiche la liste des perso à chaque tours*/
+  		afficher_liste();
+    	en_tete();
+  		/*boucle pour un tour*/
+      while(!hors_liste()){
+
+        hp_team1=get_hp_team(1);
+        hp_team2=get_hp_team(2);
+        /*condition d'arret de la parite*/
+        if (hp_team1<=0 || hp_team2<=0){
+          partie_en_cours=0;
+          break;
+        }
+        valeur_elt(&tmp);
+        if(!strcmp(tmp->pp, "👽"));
+        else{
+    		  afficher_map(pt_m);
+          /*printf("map affiche\n");*/
+    		  /*detection_etat(); va jusqu'à la fin de la liste, du coup c'est chiant*/
+    		  info_personnage(tmp);
+          /*printf("infos affiches\n");*/
+    		  menu_choix(tmp, pt_m);
+    		  
+        }
+        suivant();
+      }
 
     }
+
 
   }
-*/
-
-
-  while(1){
-
-    if (m1->pv > 0 ){
-      afficher_map(pt_m);
-      detection_etat();
-      info_personnage(m1);
-      menu_choix(m1,pt_m);
-
-    }
-    else{
-      printf("%s est mort\n", m1->nom);
-      break;
-    }
-    if (m2->pv > 0 ){
-      afficher_map(pt_m);
-      detection_etat();
-      info_personnage(m2);
-      menu_choix(m2,pt_m);
-    }
-    else{
-      printf("\n%s est mort\n\n", m2->nom);
-      break;
-    }
-
-  }
-  afficher_map(pt_m);
-  info_personnage(m1);
-  info_personnage(m2);
 }
 
 
