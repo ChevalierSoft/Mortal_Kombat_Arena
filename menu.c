@@ -94,13 +94,13 @@ void info_personnage(personnage_t * p){
   printf("+++++++++++++++++++\n"RESET);
 }
 
-void backdash( personnage_t * p){
-  personnage_t * p2;
+void backdash( personnage_t * ex){
+  personnage_t * ex2;
   en_tete();
-  valeur_elt(&p2);
-  while(p2 != p && !liste_vide()){
+  valeur_elt(&ex2);
+  while(ex2 != ex && !liste_vide()){
     suivant();
-    valeur_elt(&p2);
+    valeur_elt(&ex2);
   }
   if (liste_vide()){
     en_tete();
@@ -135,16 +135,16 @@ int get_hp_team(int n){
       valeur_elt(&tmp);
       /*sleep(1);*/
     }
-		
+
 	}
 	else if (n==2){
-    
+
     en_mid();
     suivant();
     valeur_elt(&tmp);
     /*printf("#2 hero : %s , %s , pv : %d\n", tmp->nom, tmp->pp, tmp->pv);*/
     while(!hors_liste()){
-      
+
       hp+=tmp->pv;
       /*printf("on avance #2\n");*/
       suivant();
@@ -159,17 +159,17 @@ int get_hp_team(int n){
       valeur_elt(&tmp);
       /*sleep(1);*/
     }
-    
+
 	}
 	else
 		printf("probleme avec le numero de la team %d \n", n);
-  
+
   printf("HP Team %d : %d\n",n, hp);
 	return(hp);
 }
 
 void kombat( carte_t * pt_m){
-  
+
   /*verifier que la liste n'est pas vide pour lancer*/
   if (!liste_vide()){
     /*bouleen de lancement de partie*/
@@ -202,7 +202,7 @@ void kombat( carte_t * pt_m){
     		  info_personnage(tmp);
           /*printf("infos affiches\n");*/
     		  menu_choix(tmp, pt_m);
-    		  
+
         }
         suivant();
       }
