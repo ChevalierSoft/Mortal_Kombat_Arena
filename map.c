@@ -74,7 +74,7 @@ void charger_partie(carte_t * pt_m){
 
   FILE * sauvegarde;
 
-  sauvegarde = fopen("save.txt","r");
+  sauvegarde = fopen("save/m_save.txt","r");
 
   while(!feof(sauvegarde)){
     fscanf(sauvegarde,"%d %d %d",&x,&y,&l);

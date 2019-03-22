@@ -40,17 +40,23 @@ void init_mage_blanc(personnage_t * _mage_blanc ){
 }
 
 void init_mage_noir(personnage_t * _mage_noir ){
-  
+
   char *pp = "🧞‍";
   _mage_noir->pp = malloc(sizeof(char)*strlen(pp));
   strcpy(_mage_noir->pp, pp);
-  
+
   _mage_noir->nb_spell = 5; //5
   init_spell(_mage_noir,_mage_noir->nb_spell,"Boule de feu", &boule_de_feu_cb, "Toxicite", &toxicite_cb, "Fait ton greu", &fait_ton_greu_cb,"summon",&summon_cb,"sheep",&sheep_cb );
 
 }
 
 void init_chevalier(personnage_t * _chevalier ){
+  char *pp = "🌅‍";
+  _chevalier->pp = malloc(sizeof(char)*strlen(pp));
+  strcpy(_chevalier->pp, pp);
+
+  _chevalier->nb_spell = 1;
+  init_spell(_chevalier,_chevalier->nb_spell, "Fait ton greu", &fait_ton_greu_cb);
 
 }
 
@@ -87,7 +93,7 @@ void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int
 
   _personnage->nom = malloc(sizeof(char)*strlen(_nom));
   strcpy(_personnage->nom, _nom);
-  
+
   _personnage->classe = _classe;
 
   _personnage->px = _px;
@@ -164,7 +170,7 @@ void detruire_personnage(personnage_t** p){
 void detruire_spell(personnage_t ** personnage){
   int i;
   /*printf("\nnb de spells : %d\n",(*personnage)->nb_spell );*/
-  for(i=0;i<=(*personnage)->nb_spell-1;i++){   
+  for(i=0;i<=(*personnage)->nb_spell-1;i++){
     free((*personnage)->nom_spell[i]);
     (*personnage)->nom_spell[i] = NULL;
     (*personnage)->tab_spell[i] = ((void*)0);

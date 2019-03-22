@@ -195,10 +195,10 @@ void kombat( carte_t * pt_m){
         }
         valeur_elt(&tmp);
         if(!strcmp(tmp->pp, "👽"));
-        else{
-    		  afficher_map(pt_m);
-          /*printf("map affiche\n");*/
-    		  /*detection_etat(); va jusqu'à la fin de la liste, du coup c'est chiant*/
+        else if(tmp->pv>0) {
+
+    		  detection_etat();
+          afficher_map(pt_m);
     		  info_personnage(tmp);
           /*printf("infos affiches\n");*/
     		  menu_choix(tmp, pt_m);
@@ -211,6 +211,8 @@ void kombat( carte_t * pt_m){
 
 
   }
+  detection_etat();
+  afficher_map(pt_m);
 }
 
 

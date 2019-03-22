@@ -106,7 +106,7 @@ int main(){
 
 	while(x != -11){
 		//collision_carre(mat, x, y);
-		collision_cercle(mat, x, y);
+		collision_carre(mat, x, y);
 		aff(mat);
 		printf("x : ");	scanf("%d", &x);
 		printf("y : ");	scanf("%d", &y);
