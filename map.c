@@ -49,8 +49,8 @@ void init_map(carte_t * pt_m){ /* changer le malloc du à la transformation de m
   int i,j;
 
 
-  pt_m->nb_dalles_x = N;
-  pt_m->nb_dalles_y = N;
+  pt_m->nb_dalles_x = 20;
+  pt_m->nb_dalles_y = 20;
   for(j=0;j<N;j++){
     for(i=0;i<N;i++){
       (pt_m)->map[i][j] = malloc(sizeof(dalle_t));

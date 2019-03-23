@@ -119,15 +119,21 @@ void ajout_droit(personnage_t * p){ //Ajoute un personnage a la la suite de la l
 void afficher_liste(){
   en_tete();
   printf(YEL"Affichage de la liste : \n"RESET);
+  
   if(!liste_vide()){
-    int i = 0;
+    printf(CYN"#Team1\n"RESET);
+    
     while(!hors_liste()){
-      printf("%s",ec->p->nom);if(ec->p->est_mort)printf("   KO");printf("\n");
+      if(strcmp(ec->p->pp, "👽")){
+        printf("| %s",ec->p->nom);
+        if(ec->p->est_mort)printf("   KO");
+        printf("\n");
+      }
+      else
+        printf(MAG"#Team2\n"RESET);
       suivant();
-      i++;
     }
     printf("\n");
-    //printf(YEL"il y a %d perso dans la liste\n" RESET, i);
   }
   else
     printf("liste vide\n\n");

@@ -21,10 +21,32 @@ void aff_all(){
 
 	}
 	fclose(file);
+}
+
+int dbl_len(char *s){	
+	int i=0;
+	while(*s){
+		i++;
+		s++;
+	}
+	return(i);
+}
+
+void dbl_cpy(char ** d, char * q){
+  int i=0;
+  char * d2 = malloc(sizeof(char) * dbl_len(q)+1);
+
+  while (q[i]!='\0'){
+    d2[i] = q[i];
+    i++;
+  }
+  d2[++i] = '\0';
+  free(*d);
+  *d=d2;
 
 }
 
-char * get_nom(char *s, int index){
+char * get_nom(char **s, int index){
 
 	FILE * file;
 	file = fopen(p_save, "r");
@@ -39,9 +61,7 @@ char * get_nom(char *s, int index){
   //choppe le 0
 	fscanf(file, "%d", &ligne);
 
-
 	//cherche la bonne ligne
-  printf("on a trouvé %d %d\n", index, ligne );
 	while(ligne != index && !feof(file)){
 		while(x != '\n'){
 			fscanf(file, "%c", &x);
@@ -53,26 +73,21 @@ char * get_nom(char *s, int index){
 		}
     if(_vide)
       return("personnage n'existe pas");
-
-    //fscanf(file, "%c", &x);
+    
 		fscanf(file, "%d", &ligne);
     fscanf(file, "%c", &x);
-    printf("->%d\n",ligne );
 	}
 
-
-  fscanf(file, "%c", &x);
-  //fscanf(file, "%[^'\n']", &trace);
-  fgets (trace, 50, file);
-  printf("%s\n", trace);
+  fscanf(file, "%c", &x); // passe le \n
+  fgets (trace, 50, file); // récupere la ligne
+  
   token = strtok(trace, del);
 
-  //token = strtok(NULL, s);
   printf("%s\n", token);
+  dbl_cpy(s, token);
 
   return(token);
 
-	//printf("test nom : %s\n", s);
 }
 
 int c2i(char c){ return(c-'0'); }
@@ -188,7 +203,8 @@ void * get_line(char *s, int index){
 int main(){
 
   //aff_all();
-  char * s = get_nom(s, 2);
+  char * s;
+  get_nom(&s, 2);
   printf("\n-> %s\n", s);
 
 

@@ -112,15 +112,14 @@ void backdash( personnage_t * ex){
 int get_hp_team(int n){
   personnage_t * tmp;
 	personnage_t * ex;/* personnage actuel*/
+  
   int hp=0;
-
   valeur_elt(&ex);
 
 	if(n==1){
     en_tete();
 		valeur_elt(&tmp);
     /*printf("hero : %s , %s , pv : %d\n", tmp->nom, tmp->pp, tmp->pv);*/
-
 		while(strcmp(tmp->pp, "👽")){
       /*printf("on avance #1\n");*/
       hp+=tmp->pv;
@@ -135,16 +134,13 @@ int get_hp_team(int n){
       valeur_elt(&tmp);
       /*sleep(1);*/
     }
-
 	}
 	else if (n==2){
-
     en_mid();
     suivant();
     valeur_elt(&tmp);
     /*printf("#2 hero : %s , %s , pv : %d\n", tmp->nom, tmp->pp, tmp->pv);*/
     while(!hors_liste()){
-
       hp+=tmp->pv;
       /*printf("on avance #2\n");*/
       suivant();
@@ -152,14 +148,12 @@ int get_hp_team(int n){
     }
     en_tete();
     valeur_elt(&tmp);
-
     while(tmp != ex){
       /*printf("on re avance #3\n");*/
       suivant();
       valeur_elt(&tmp);
       /*sleep(1);*/
     }
-
 	}
 	else
 		printf("probleme avec le numero de la team %d \n", n);
@@ -185,7 +179,7 @@ void kombat( carte_t * pt_m){
     	en_tete();
   		/*boucle pour un tour*/
       while(!hors_liste()){
-
+        detection_etat(pt_m);
         hp_team1=get_hp_team(1);
         hp_team2=get_hp_team(2);
         /*condition d'arret de la parite*/
@@ -196,8 +190,7 @@ void kombat( carte_t * pt_m){
         valeur_elt(&tmp);
         if(!strcmp(tmp->pp, "👽"));
         else if(tmp->pv>0) {
-
-    		  detection_etat();
+    		  
           afficher_map(pt_m);
     		  info_personnage(tmp);
           /*printf("infos affiches\n");*/
@@ -211,7 +204,7 @@ void kombat( carte_t * pt_m){
 
 
   }
-  detection_etat();
+  detection_etat(pt_m);
   afficher_map(pt_m);
 }
 

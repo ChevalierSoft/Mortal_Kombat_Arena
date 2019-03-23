@@ -8,10 +8,27 @@ fonctions à faire :
   - charge, qui fait des degats sur la case en face
   -
 
-
-
-
 */
+
+// à finir...
+void getXY(void * p, void * m, void f_cb(void * pp, void * map, int xi, int yi)){
+  //prend un x et un y et les envoient dans les fonctions d'attaques
+  int x,y,i=0;
+  do{
+    if(i >=1)
+      printf("Error, sortie de map !!!");
+    printf("X :");
+    scanf("%d",&x);
+    printf("Y :");
+    scanf("%d",&y);
+    i++;
+  }while((x <0 || x >N) || (y <0 || y >N));
+
+  f_cb(p, m, x, y);
+
+  /*on pourrait récupérer le code d'erreur de la fonction, en mode : 
+  si la renge ne le permet pas on revien ici et on recommence*/
+}
 
 
 int range_detection(personnage_t *_personnage,int range,int x,int y){
@@ -64,13 +81,13 @@ void boule_de_feu(personnage_t *_personnage, carte_t * pt_m){ // mage noir, mage
   int range = 5;
 
   do{
-  if(i >=1)
-    printf("Error, sortie de map !!!");
-  printf("X :");
-  scanf("%d",&x);
-  printf("Y :");
-  scanf("%d",&y);
-  i++;
+    if(i >=1)
+      printf("Error, sortie de map !!!");
+    printf("X :");
+    scanf("%d",&x);
+    printf("Y :");
+    scanf("%d",&y);
+    i++;
   }while((x <0 || x >N) || (y <0 || y >N));
 
   if(pt_m->map[x][y]->personnage != NULL){
@@ -95,13 +112,13 @@ void soin(personnage_t *_personnage, carte_t * pt_m){ //mage blanc
   int range = 4;
 
   do{
-  if(i >=1)
-    printf("Error, sortie de map !!!");
-  printf("X :");
-  scanf("%d",&x);
-  printf("Y :");
-  scanf("%d",&y);
-  i++;
+    if(i >=1)
+      printf("Error, sortie de map !!!");
+    printf("X :");
+    scanf("%d",&x);
+    printf("Y :");
+    scanf("%d",&y);
+    i++;
   }while((x <0 || x >N) || (y <0 || y >N));
 
   if(pt_m->map[x][y]->personnage != NULL){
@@ -122,13 +139,13 @@ void cure(personnage_t *_personnage, carte_t * pt_m){
   int range = 4;
 
   do{
-  if(i >=1)
-    printf("Error, sortie de map !!!");
-  printf("X :");
-  scanf("%d",&x);
-  printf("Y :");
-  scanf("%d",&y);
-  i++;
+    if(i >=1)
+      printf("Error, sortie de map !!!");
+    printf("X :");
+    scanf("%d",&x);
+    printf("Y :");
+    scanf("%d",&y);
+    i++;
   }while((x <0 || x >N) || (y <0 || y >N));
 
   if(pt_m->map[x][y]->personnage != NULL){
@@ -149,13 +166,13 @@ void toxicite(personnage_t * personnage,carte_t * pt_m){
   int range = 6;
 
   do{
-  if(i >=1)
-    printf("Error, sortie de map !!!");
-  printf("X :");
-  scanf("%d",&x);
-  printf("Y :");
-  scanf("%d",&y);
-  i++;
+    if(i >=1)
+      printf("Error, sortie de map !!!");
+    printf("X :");
+    scanf("%d",&x);
+    printf("Y :");
+    scanf("%d",&y);
+    i++;
   }while((x <0 || x >N) || (y <0 || y >N));
 
   if(pt_m->map[x][y]->personnage != NULL){
@@ -177,13 +194,13 @@ void toxicite_cb(void * personnage,void * pt_m){
 void tourbilol(personnage_t * personnage,carte_t * pt_m){ /* pas fini */
   int x, y, i = 0;
   do{
-  if(i >=1)
-    printf("Error, sortie de map !!!");
-  printf("X :");
-  scanf("%d",&x);
-  printf("Y :");
-  scanf("%d",&y);
-  i++;
+    if(i >=1)
+      printf("Error, sortie de map !!!");
+    printf("X :");
+    scanf("%d",&x);
+    printf("Y :");
+    scanf("%d",&y);
+    i++;
   }while((x <0 || x >N) || (y <0 || y >N));
 
   int degats = 100;
@@ -248,7 +265,7 @@ void shield_cb(void * personnage,void * pt_m){
   shield(personnage,pt_m);
 }
 
-void fait_ton_greu(personnage_t * personnage,carte_t * pt_m){ /* pas fini */ /* need detection hors map*/ /*ERREUR DE SEGMENTATION */
+void fait_ton_greu(personnage_t * _personnage,carte_t * pt_m){ /* pas fini */ /* need detection hors map*/ /*ERREUR DE SEGMENTATION */
   int degats = 50;
   int fear = 2;
   int x,y,i = 0;
@@ -257,42 +274,42 @@ void fait_ton_greu(personnage_t * personnage,carte_t * pt_m){ /* pas fini */ /* 
 
 
   do{
-  if(i >=1)
-    printf("Error, sortie de map !!!");
-  printf("X :");
-  scanf("%d",&x);
-  printf("Y :");
-  scanf("%d",&y);
-  i++;
+    if(i >=1)
+      printf("Error, sortie de map !!!");
+    printf("X :");
+    scanf("%d",&x);
+    printf("Y :");
+    scanf("%d",&y);
+    i++;
   }while((x <0 || x >N) || (y <0 || y >N));
 
-  printf(YEL"%s fait son greu !!\n"RESET, personnage->nom);
-  if(pt_m->map[x][y]->personnage != NULL && pt_m->map[x][y]->personnage != personnage){
-    if(range_detection(personnage,range,y,x)){
-        coup(pt_m->map[x][y]->personnage,personnage->force + degats);
+  printf(YEL"%s fait son greu !!\n"RESET, _personnage->nom);
+  if(pt_m->map[x][y]->personnage != NULL && pt_m->map[x][y]->personnage != _personnage){
+    if(range_detection(_personnage,range,y,x)){
+        coup(pt_m->map[x][y]->personnage,_personnage->force + degats);
 
         //verification de la position de la cible
-        if(y == personnage->py){
+        if(y == _personnage->py){
           h=0;
-          if(x < personnage->px)
+          if(x < _personnage->px)
             l=-1;
           else
             l=1;
         }
-        else if(y > personnage->py){
+        else if(y > _personnage->py){
           h=1;
-	        if(x == personnage->px)
+	        if(x == _personnage->px)
 	          l=0;
-	        else if(x > personnage->px)
+	        else if(x > _personnage->px)
 	          l=1;
 	        else/*(x < personnage->px)*/
 	          l =-1;
         }
-        else if(y < personnage->py){
+        else if(y < _personnage->py){
 	        h=-1;
-	        if(x == personnage->px)
+	        if(x == _personnage->px)
 	          l=0;
-	        else if(x > personnage->px)
+	        else if(x > _personnage->px)
 	          l=1;
 	        else/*(x < personnage->px)*/
 	          l=-1;
@@ -321,11 +338,11 @@ void fait_ton_greu(personnage_t * personnage,carte_t * pt_m){ /* pas fini */ /* 
       printf(YEL"%s\n"RESET,"Range insuffisante");
 
     }else
-      printf(YEL"%s echoue son greu..\n"RESET, personnage->nom);
+      printf(YEL"%s echoue son greu..\n"RESET, _personnage->nom);
 }
 
-void fait_ton_greu_cb(void * personnage,void * pt_m){
-  fait_ton_greu(personnage,pt_m);
+void fait_ton_greu_cb(void * _personnage,void * pt_m){
+  fait_ton_greu(_personnage,pt_m);
 }
 
 /*------------------------------------------------------------------------------------------*/
@@ -379,7 +396,7 @@ void summon(personnage_t *_personnage, carte_t * pt_m){
   if(pt_m->map[x][y]->personnage == NULL){
     if(range_detection(_personnage,range,y,x)){
       personnage_t * ptitsac = malloc(sizeof(personnage_t));
-      init_hero(ptitsac,1,1,1,x,y,1,"sac",pt_m,sac);// là
+      init_hero(ptitsac, x, y, "sac", pt_m, sac);                         // là.
     }else
       printf(YEL"%s\n"RESET,"Range insuffisante");
   }else
@@ -422,7 +439,7 @@ void sheep_cb(void *_personnage, void * pt_m){
   sheep(_personnage, pt_m);
 }
 
-void detection_etat(void){
+void detection_etat(carte_t * pt_m){
   personnage_t * ex;
   personnage_t * stockage;
   valeur_elt(&ex);
@@ -446,11 +463,20 @@ void detection_etat(void){
         strcpy(stockage->pp,pp);
         printf(YEL "\n%s est mort\n" RESET,stockage->nom);
 
-
         stockage->est_mort = 1;
         stockage->pv = 0;
       }
 
+    }
+    if (stockage->est_empoisone){
+      coup(stockage, 11);
+    }
+    /*mystiquement cette condition est maudite*/
+    /*if ( pt_m->map[stockage->px][stockage->py]->land == 3 ){
+      stockage->est_enfeu = 1;
+    }*/
+    if (stockage->est_enfeu){
+      coup(stockage, 13);
     }
     suivant();
   }

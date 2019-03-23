@@ -29,6 +29,7 @@ void init_spell(personnage_t * p, int nb_spell, ...){
 
 }
 
+
 void init_mage_blanc(personnage_t * _mage_blanc ){
   char *pp = "🧙‍";
   _mage_blanc->pp = malloc(sizeof(char)*strlen(pp));
@@ -37,47 +38,109 @@ void init_mage_blanc(personnage_t * _mage_blanc ){
   _mage_blanc->nb_spell = 3; //3
   init_spell(_mage_blanc,_mage_blanc->nb_spell,"Soin", &soin_cb, "Cure", cure_cb, "Armure", &shield_cb );
 
+  _mage_blanc->pv = 310;
+  _mage_blanc->pv_max = 310;
+  _mage_blanc->pm = 200;
+  _mage_blanc->intel=0;
+  _mage_blanc->force = 11;
+  _mage_blanc->chance=0;
+
 }
 
-void init_mage_noir(personnage_t * _mage_noir ){
+void init_mage_noir(personnage_t * mage_noir ){
 
   char *pp = "🧞‍";
-  _mage_noir->pp = malloc(sizeof(char)*strlen(pp));
-  strcpy(_mage_noir->pp, pp);
+  mage_noir->pp = malloc(sizeof(char)*strlen(pp));
+  strcpy(mage_noir->pp, pp);
 
-  _mage_noir->nb_spell = 5; //5
-  init_spell(_mage_noir,_mage_noir->nb_spell,"Boule de feu", &boule_de_feu_cb, "Toxicite", &toxicite_cb, "Fait ton greu", &fait_ton_greu_cb,"summon",&summon_cb,"sheep",&sheep_cb );
+  mage_noir->nb_spell = 5; //5
+  init_spell(mage_noir,mage_noir->nb_spell,"Boule de feu", &boule_de_feu_cb, "Toxicite", &toxicite_cb, "Fait ton greu", &fait_ton_greu_cb,"summon",&summon_cb,"sheep",&sheep_cb );
+
+  mage_noir->pv = 299;
+  mage_noir->pv_max = 299;
+  mage_noir->pm = 199;
+  mage_noir->intel = 0;
+  mage_noir->force = 1;
+  mage_noir->chance=0;
 
 }
 
-void init_chevalier(personnage_t * _chevalier ){
+void init_chevalier(personnage_t * chevalier ){
   char *pp = "🌅‍";
-  _chevalier->pp = malloc(sizeof(char)*strlen(pp));
-  strcpy(_chevalier->pp, pp);
+  chevalier->pp = malloc(sizeof(char)*strlen(pp));
+  strcpy(chevalier->pp, pp);
 
-  _chevalier->nb_spell = 1;
-  init_spell(_chevalier,_chevalier->nb_spell, "Fait ton greu", &fait_ton_greu_cb);
+  chevalier->nb_spell = 1;
+  init_spell(chevalier,chevalier->nb_spell, "Fait ton greu", &fait_ton_greu_cb);
 
-}
-
-void init_necromancien(personnage_t * _necromencien ){
-
-}
-
-void init_tacticien(personnage_t * _tacticien ){
-
-}
-
-void init_ninja(personnage_t * _ninja ){
+  chevalier->pv = 700;
+  chevalier->pv_max = 700;
+  chevalier->pm = 20;
+  chevalier->intel = 1;
+  chevalier->force = 70;
+  chevalier->chance = 2;
 
 }
 
-void init_sac(personnage_t * _sac ){
+void init_necromancien(personnage_t * necromencien ){
+	char *pp = "👩‍🎓";
+  necromencien->pp = malloc(sizeof(char)*strlen(pp));
+  strcpy(necromencien->pp, pp);
+
+  necromencien->nb_spell = 0;
+
+  necromencien->pv = 330;
+  necromencien->pv_max = 330;
+  necromencien->pm = 320;
+  necromencien->intel = 30;
+  necromencien->force = 5;
+  necromencien->chance = 0;
+}
+
+void init_tacticien(personnage_t * tacticien ){
+	char *pp = "👩‍🔧";
+  tacticien->pp = malloc(sizeof(char)*strlen(pp));
+  strcpy(tacticien->pp, pp);
+
+  tacticien->nb_spell = 0;
+
+  tacticien->pv = 350;
+  tacticien->pv_max = 350;
+  tacticien->pm = 210;
+  tacticien->intel= 25;
+  tacticien->force = 30;
+  tacticien->chance = 0;
+}
+
+void init_ninja(personnage_t * ninja ){
+	
+	char *pp = "🐱‍👤";
+  ninja->pp = malloc(sizeof(char)*strlen(pp));
+  strcpy(ninja->pp, pp);
+
+  ninja->nb_spell = 0;
+
+  ninja->pv = 500;
+  ninja->pv_max = 500;
+  ninja->pm = 20;
+  ninja->intel = 4;
+  ninja->force = 80;
+  ninja->chance = 5;
+}
+
+void init_sac(personnage_t * sac ){
   char *pp = "💼";
-  _sac->pp = malloc(sizeof(char)*strlen(pp));
-  strcpy(_sac->pp, pp);
+  sac->pp = malloc(sizeof(char)*strlen(pp));
+  strcpy(sac->pp, pp);
 
-  _sac->nb_spell = 0;
+  sac->nb_spell = 0;
+
+  sac->pv = 1;
+  sac->pv_max = 300;
+  sac->pm = 3;
+  sac->intel = 10;
+  sac->force = 20;
+  sac->chance = 20;
 
 }
 
@@ -87,9 +150,16 @@ void init_delimiteur(personnage_t * del ){
   strcpy(del->pp, pp);
 
   del->nb_spell = 0;
+
+  del->pv = 1;
+  del->pv_max = 1;
+  del->pm = 0;
+  del->intel= 9999;
+  del->force = 0;
+  del->chance = 42;
 }
 
-void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int _px, int _py, int _pm, char * _nom, carte_t * pt_m,int _classe){
+void init_hero(personnage_t * _personnage, int _px, int _py, char * _nom, carte_t * pt_m, int _classe){
 
   _personnage->nom = malloc(sizeof(char)*strlen(_nom));
   strcpy(_personnage->nom, _nom);
@@ -99,19 +169,13 @@ void init_hero(personnage_t * _personnage, int _force, int _pv, int _pv_max, int
   _personnage->px = _px;
   _personnage->py = _py;
 
-  _personnage->pv = _pv;
-  _personnage->pv_max = _pv_max;
-  _personnage->pm = _pm;
-  _personnage->intel=0;
-  _personnage->force = _force;
 
   _personnage->est_shield=0;
   _personnage->est_empoisone=0;
 	_personnage->est_mort=0;
 	_personnage->est_enfeu=0;
 
-	_personnage->chance=0;
-
+	//le délimiteur est omnitient 
   if (_personnage->classe != delimiteur){
     placement(_personnage, pt_m);
   }
