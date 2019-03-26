@@ -1,4 +1,4 @@
-0 3 /* nom force PV PV_MAX px py pm classe team*/
-1 -marvin- 20 10 420 1 2 1 0 1
-2 -Zeddicus Zul Zorander- 25 350 350 3 4 2 1 2
-3 -smurf- 25 350 350 3 4 2 1 2
+0 nom px py classe
+1 -marvin- 1 2 0
+2 -Zeddicus Zul Zorander- 3 4 1
+3 -Solaire- 7 7 2

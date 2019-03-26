@@ -23,7 +23,7 @@ void aff_all(){
 	fclose(file);
 }
 
-int dbl_len(char *s){	
+int dbl_len(char *s){
 	int i=0;
 	while(*s){
 		i++;
@@ -41,20 +41,24 @@ void dbl_cpy(char ** d, char * q){
     i++;
   }
   d2[++i] = '\0';
-  free(*d);
+	//memset(d, '\0', sizeof(d));
+  //free(*d);
+
   *d=d2;
 
 }
 
-char * get_nom(char **s, int index){
+char * get_nom(char *s, int index){
 
 	FILE * file;
 	file = fopen(p_save, "r");
 	char x= ' ';
-  int _vide = 0;
   int ligne;
 	char trace[100];
-  char * token;
+  char * _nom;
+	char * doudou1;
+	char * doudou2;
+	char * doudou3;
   const char del[2] = "-";
 	int i=0;
 
@@ -66,27 +70,54 @@ char * get_nom(char **s, int index){
 		while(x != '\n'){
 			fscanf(file, "%c", &x);
       if (feof(file)){
-        _vide=1;
-        break;
+        return("personnage n'existe pas");
       }
 
 		}
-    if(_vide)
-      return("personnage n'existe pas");
-    
+
 		fscanf(file, "%d", &ligne);
     fscanf(file, "%c", &x);
 	}
 
-  fscanf(file, "%c", &x); // passe le \n
-  fgets (trace, 50, file); // récupere la ligne
-  
-  token = strtok(trace, del);
+  fscanf(file, "%c", &x); // passe le \n <-non
+  fgets (trace, 100, file); // récupere la ligne
 
-  printf("%s\n", token);
-  dbl_cpy(s, token);
+	dbl_cpy(&doudou1, trace);	//on la copie dans doudou1
 
-  return(token);
+	dbl_cpy(&doudou3, trace);
+
+	printf("trace :%s\n", trace);
+
+  _nom = strtok(trace, del); // on isole le nom
+  printf("_nom :%s\n", _nom);
+
+	//_nom = strtok(trace, " ");
+	dbl_cpy(&doudou1, strstr(doudou1, "- "));
+  printf("doudou1 :%s\n",doudou1 );
+	printf("doudou2 :%s\n",doudou2 );
+
+	dbl_cpy(&doudou1, strstr(doudou1, " "));
+	printf("lelelele %s\n", doudou1);
+	dbl_cpy(&doudou2, doudou1);
+
+	strtok(doudou1, " ");
+	int px= atoi(doudou1);
+	printf("%d\n", px );
+	printf("donc :%s\n", doudou1 );
+
+	printf("strstr :%s\n", strstr(doudou2, doudou1));
+
+	//strtok(doudou2, " ");
+
+	printf("doudou1 :%s\n", doudou1);
+	printf("doudou2 :%s\n", doudou2);
+
+
+	//free(doudou1);
+  //dbl_cpy(s, _nom);
+	//strcpy(s,_nom);
+	fclose(file);
+  return(_nom);
 
 }
 
@@ -203,11 +234,8 @@ void * get_line(char *s, int index){
 int main(){
 
   //aff_all();
-  char * s;
-  get_nom(&s, 2);
+  char * s = get_nom(s, 2);
   printf("\n-> %s\n", s);
-
-
 
 
   return(0);
