@@ -2,11 +2,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
 //#define p_save ((const unsigned char * )"./data/p_save.txt")
-char * p_save = "./p_save.txt";
+//char * p_save = "./p_save.txt";
 
-void aff_all(){
+void aff_all(char * p_save){
 
 	FILE * file;
 	file = fopen(p_save, "r");
@@ -48,17 +47,14 @@ void dbl_cpy(char ** d, char * q){
 
 }
 
-char * get_nom(char *s, int index){
+char * get_nom(char * p_save,char *s, int index){
 
 	FILE * file;
 	file = fopen(p_save, "r");
-	char x= ' ';
+	char x = ' ';
   int ligne;
 	char trace[100];
   char * _nom;
-	char * doudou1;
-	char * doudou2;
-	char * doudou3;
   const char del[2] = "-";
 	int i=0;
 
@@ -72,9 +68,7 @@ char * get_nom(char *s, int index){
       if (feof(file)){
         return("personnage n'existe pas");
       }
-
 		}
-
 		fscanf(file, "%d", &ligne);
     fscanf(file, "%c", &x);
 	}
@@ -82,42 +76,11 @@ char * get_nom(char *s, int index){
   fscanf(file, "%c", &x); // passe le \n <-non
   fgets (trace, 100, file); // récupere la ligne
 
-	dbl_cpy(&doudou1, trace);	//on la copie dans doudou1
-
-	dbl_cpy(&doudou3, trace);
-
-	printf("trace :%s\n", trace);
-
   _nom = strtok(trace, del); // on isole le nom
-  printf("_nom :%s\n", _nom);
+	strncpy(s,_nom,35);
 
-	//_nom = strtok(trace, " ");
-	dbl_cpy(&doudou1, strstr(doudou1, "- "));
-  printf("doudou1 :%s\n",doudou1 );
-	printf("doudou2 :%s\n",doudou2 );
-
-	dbl_cpy(&doudou1, strstr(doudou1, " "));
-	printf("lelelele %s\n", doudou1);
-	dbl_cpy(&doudou2, doudou1);
-
-	strtok(doudou1, " ");
-	int px= atoi(doudou1);
-	printf("%d\n", px );
-	printf("donc :%s\n", doudou1 );
-
-	printf("strstr :%s\n", strstr(doudou2, doudou1));
-
-	//strtok(doudou2, " ");
-
-	printf("doudou1 :%s\n", doudou1);
-	printf("doudou2 :%s\n", doudou2);
-
-
-	//free(doudou1);
-  //dbl_cpy(s, _nom);
-	//strcpy(s,_nom);
 	fclose(file);
-  return(_nom);
+  return(s);
 
 }
 
@@ -151,92 +114,72 @@ int s2i(char *s){
 	return (value*neg);
 }
 
-int get_champ(int index,int stat ){
+int get_champ(char * p_save, int index,int * px, int * py, int * classe ){
 
 	FILE * file;
 	 file = fopen(p_save, "r");
 	char x;
-	int i=0;
+	int i=0,champ=0;
 	char s[15];
 	int monCul=0;
-
+	int a,b,c;
+	//prend le 0
 	fscanf(file, "%d", &i);
 
 	//cherche la ligne
 	while(i != index && !feof(file)){
 		while(x != '\n'){
 			fscanf(file, "%c", &x);
+			if (feof(file)){
+        printf("%s\n","personnage n'existe pas" );
+				return(2);
+      }
 		}
+
 		fscanf(file, "%d", &i);
+		fscanf(file, "%c", &x);
 	}
 
-	//cherche le champ
-	for(int champ=0 ; champ < stat-1; champ ++){
-		fscanf(file, "%s ", s);
-	}
+		//cherche le 1er champ
+	while(x != '-')
+		fscanf(file, "%c", &x);
+	fscanf(file, "%c", &x);
+	while(x != '-')
+		fscanf(file, "%c", &x);
 
-	fscanf(file, "%d", &monCul);
-	return(monCul);
+	fscanf(file, "%c", &x);
+
+	fscanf(file, "%d ", px);
+	fscanf(file, "%d ", py);
+	fscanf(file, "%d ", classe);
+
+	return(0);
 }
 
-void * get_line(char *s, int index){
+int get_nb_pers(char * p_save, int * nb_pers){
 
 	FILE * file;
 	file = fopen(p_save, "r");
-	char x= ' ';
-  int _vide = 0;
-  int ligne;
-	char trace[100];
-  char * token;
-  const char del[2] = "-";
-	int i=0;
 
-  //choppe le 0
-	fscanf(file, "%d", &ligne);
+	fscanf(file, "%d", nb_pers );
+	fscanf(file, "%d", nb_pers );
 
+	return(*nb_pers);
 
-	//cherche la bonne ligne
-  printf("on a trouvé %d %d\n", index, ligne );
-	while(ligne != index && !feof(file)){
-		while(x != '\n'){
-			fscanf(file, "%c", &x);
-      if (feof(file)){
-        _vide=1;
-        break;
-      }
-
-		}
-    if(_vide)
-      return("personnage n'existe pas");
-
-    //fscanf(file, "%c", &x);
-		fscanf(file, "%d", &ligne);
-    fscanf(file, "%c", &x);
-    printf("->%d\n",ligne );
-	}
-
-
-  fscanf(file, "%c", &x);
-  //fscanf(file, "%[^'\n']", &trace);
-  fgets (trace, 50, file);
-  printf("%s\n", trace);
-  token = strtok(trace, del);
-
-  //token = strtok(NULL, s);
-  printf("%s\n", token);
-
-  return(token);
-
-	//printf("test nom : %s\n", s);
 }
 
-
 int main(){
+	char * p_save = "./p_save.txt";
 
-  //aff_all();
-  char * s = get_nom(s, 2);
-  printf("\n-> %s\n", s);
-
+	int px, py, classe, nb_pers;
+  char * s ;
+	get_nb_pers(p_save, &nb_pers);
+	printf("nb pers : %d\n\n", nb_pers);
+	for(int i = 1; i<nb_pers+1; i++){
+		get_nom(p_save, s, i);
+		get_champ(p_save, i, &px, &py, &classe);
+	  printf("%s -> px:%d py:%d classe:%d\n", s, px, py, classe);
+	}
 
   return(0);
 }
