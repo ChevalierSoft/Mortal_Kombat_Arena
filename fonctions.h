@@ -15,5 +15,6 @@
 #include "liste_ptr.h"
 #include "attaques.h"
 #include "init_structure.h"
+#include "load_perso.h"
 
 #endif
