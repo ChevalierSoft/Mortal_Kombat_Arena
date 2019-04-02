@@ -70,8 +70,8 @@ void init_chevalier(personnage_t * chevalier ){
   chevalier->pp = malloc(sizeof(char)*strlen(pp));
   strcpy(chevalier->pp, pp);
 
-  chevalier->nb_spell = 1;
-  init_spell(chevalier,chevalier->nb_spell, "Fait ton greu", &fait_ton_greu_cb);
+  chevalier->nb_spell = 2;
+  init_spell(chevalier,chevalier->nb_spell, "Fait ton greu", &fait_ton_greu_cb, "Tourbilol", tourbilol_cb);
 
   chevalier->pv = 700;
   chevalier->pv_max = 700;
@@ -168,7 +168,6 @@ void init_hero(personnage_t * _personnage, int _px, int _py, char * _nom, carte_
 
   _personnage->px = _px;
   _personnage->py = _py;
-
 
   _personnage->est_shield=0;
   _personnage->est_empoisone=0;

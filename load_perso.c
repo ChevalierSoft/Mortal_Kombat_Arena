@@ -1,6 +1,4 @@
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "fonctions.h"
 
 //#define p_save ((const unsigned char * )"./data/p_save.txt")
 //char * p_save = "./p_save.txt";
@@ -65,9 +63,9 @@ char * get_nom(char * p_save,char *s, int index){
 	while(ligne != index && !feof(file)){
 		while(x != '\n'){
 			fscanf(file, "%c", &x);
-      if (feof(file)){
-        return("personnage n'existe pas");
-      }
+	      if (feof(file)){
+	        return("personnage n'existe pas");
+	      }
 		}
 		fscanf(file, "%d", &ligne);
     fscanf(file, "%c", &x);
@@ -81,7 +79,6 @@ char * get_nom(char * p_save,char *s, int index){
 
 	fclose(file);
   return(s);
-
 }
 
 int c2i(char c){ return(c-'0'); }
@@ -131,7 +128,7 @@ int get_champ(char * p_save, int index,int * px, int * py, int * classe ){
 		while(x != '\n'){
 			fscanf(file, "%c", &x);
 			if (feof(file)){
-        printf("%s\n","personnage n'existe pas" );
+	      printf("%s\n","personnage n'existe pas" );
 				return(2);
       }
 		}
@@ -146,12 +143,14 @@ int get_champ(char * p_save, int index,int * px, int * py, int * classe ){
 	fscanf(file, "%c", &x);
 	while(x != '-')
 		fscanf(file, "%c", &x);
-
+	//saute l'espace
 	fscanf(file, "%c", &x);
-
+	//prend les trois champs de type int
 	fscanf(file, "%d ", px);
 	fscanf(file, "%d ", py);
 	fscanf(file, "%d ", classe);
+
+	fclose(file);
 
 	return(0);
 }
@@ -164,30 +163,48 @@ int get_nb_pers(char * p_save, int * nb_pers){
 	fscanf(file, "%d", nb_pers );
 	fscanf(file, "%d", nb_pers );
 
+	fclose(file);
+
 	return(*nb_pers);
 
 }
+//fonction qui envoie les infos perssus dans le fichier vers 
+void gogo_powerRanger(int px, int py, char * nom, int classe, carte_t * pt_m){
+	personnage_t * Lucatiel = malloc(sizeof(personnage_t));
+  init_hero(Lucatiel, px, py, nom, pt_m, classe);
 
-int main(){
-	char * p_save = "./p_save.txt";
-
-	int px, py, classe, nb_pers;
-  char * s ;
-	get_nb_pers(p_save, &nb_pers);
-	printf("nb pers : %d\n\n", nb_pers);
-	for(int i = 1; i<nb_pers+1; i++){
-		get_nom(p_save, s, i);
-		get_champ(p_save, i, &px, &py, &classe);
-	  printf("%s -> px:%d py:%d classe:%d\n", s, px, py, classe);
-	}
-
-  return(0);
 }
 
-/* nom force PV PV_MAX px py pm classe */
+void quit_quick(carte_t * pt_m){
+	detruire_liste();
+  map_detruire(&pt_m);
+  afficher_liste();
+  printf(RED"\n+++++++++++++++++++++++++++++++++++++++++++++++++++\n"RESET);
+
+}
+
+void load_perso(carte_t * pt_m){
+	//printf("donner un niveau (1 a 9)\n");
+	printf("%s %s\n", RED"p_save.txt"RESET,"a ete charge\n");
+	char * p_save = "save/p_save.txt";
+
+	int px, py, classe, nb_pers;
+	char * nom = malloc(sizeof(char)*35+1);
+	get_nb_pers(p_save, &nb_pers);
+	//printf("nb pers : %d\n\n", nb_pers);
+	for(int i = 1; i<nb_pers+1; i++){
+		get_nom(p_save, nom, i);
+		get_champ(p_save, i, &px, &py, &classe);
+	  //printf("%s -> px:%d py:%d classe:%d\n", nom, px, py, classe);
+
+	  gogo_powerRanger(px, py, nom, classe, pt_m);
+	}
+
+	free(nom);
+}
 
 
-
+/* nom px py classe */
 
 
 

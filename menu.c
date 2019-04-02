@@ -1,5 +1,5 @@
 #include "fonctions.h"
-#include "personnage.h"
+
 
 void pas_fini(){
   printf(YEL"%s\n", "sort non castable avant la prochaine lune \n"RESET);
@@ -55,30 +55,32 @@ int phase_attaque(personnage_t * _personnage, carte_t * pt_m){
   }
 
 
-void menu_choix(personnage_t * _personnage, carte_t * pt_m){
+void menu_choix(personnage_t * sasuke, carte_t * pt_m){
   int phase1=0, phase2=0;
+  do{ /*tant que le retour n'est pas demandé*/
+    phase1 = phase_premiere(sasuke, pt_m);
+    phase2=0;
+      switch(phase1){
 
-
-do{ /*tant que le retour n'est pas demandé*/
-  phase1 = phase_premiere(_personnage, pt_m);
-  phase2=0;
-    switch(phase1){
-
-      case 1: phase2 = phase_attaque(_personnage, pt_m);
-                  if (phase2 <= _personnage->nb_spell)
-                    _personnage->tab_spell[phase2-1](_personnage, pt_m);
-                  else if(phase2==_personnage->nb_spell+1)
-                    printf(YEL"%s passe son tour\n"RESET, _personnage->nom);
-                  else if(phase2==_personnage->nb_spell+2)
-                    pas_fini();
-                	else{
-                    printf("nani ?\n");
-                  }break;
-      case 2: phase2= deplacement(_personnage, pt_m);break;
-      case 3: pas_fini();break;
-      case 4: printf(YEL"%s passe son tour\n"RESET, _personnage->nom);break;
-      default: pas_fini();break;
-    }
+        case 1: phase2 = phase_attaque(sasuke, pt_m); /*si on choisi d'attaquer*/
+                    if (phase2 <= sasuke->nb_spell){ /*lance le spell*/
+                      /*void (*lel)(void *, void *);*/
+                      /*sasuke->tab_spell[phase2-1](sasuke, pt_m);*/
+                      getXY(sasuke, pt_m, (sasuke)->tab_spell[phase2-1]);
+                      /*lel = sasuke->tab_spell[phase2-1];*/
+                      /*getXY(sasuke, pt_m, lel);*/
+                    }
+                    else if(phase2==sasuke->nb_spell+1) /*passe le tour*/
+                      printf(YEL"%s passe son tour\n"RESET, sasuke->nom);
+                    else if(phase2==sasuke->nb_spell+2) /*un jour peut etre les objets*/
+                      pas_fini();
+                  	else;
+                    break;
+        case 2: phase2= deplacement(sasuke, pt_m);break;
+        case 3: pas_fini();break;
+        case 4: printf(YEL"%s passe son tour\n"RESET, sasuke->nom);break;
+        default: pas_fini();break;
+      }
   }while(phase2 == 10);
 }
 
@@ -179,16 +181,17 @@ void kombat( carte_t * pt_m){
     	en_tete();
   		/*boucle pour un tour*/
       while(!hors_liste()){
+
         detection_etat(pt_m);
         hp_team1=get_hp_team(1);
         hp_team2=get_hp_team(2);
-        /*condition d'arret de la parite*/
+        /*condition d'arret de la partie*/
         if (hp_team1<=0 || hp_team2<=0){
           partie_en_cours=0;
           break;
         }
         valeur_elt(&tmp);
-        if(!strcmp(tmp->pp, "👽"));
+        if(!strcmp(tmp->pp, "👽"));    /*  /!\   probleme ici pour les poisons et autre qui font le double des degats du au delimiteur */
         else if(tmp->pv>0) {
     		  
           afficher_map(pt_m);
