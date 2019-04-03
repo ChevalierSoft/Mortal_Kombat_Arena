@@ -185,6 +185,7 @@ void quit_quick(carte_t * pt_m){
 
 void load_perso(carte_t * pt_m){
 	//printf("donner un niveau (1 a 9)\n");
+	int i = 1;
 	printf("%s %s\n", RED"p_save.txt"RESET,"a ete charge\n");
 	char * p_save = "save/p_save.txt";
 
@@ -192,7 +193,7 @@ void load_perso(carte_t * pt_m){
 	char * nom = malloc(sizeof(char)*35+1);
 	get_nb_pers(p_save, &nb_pers);
 	//printf("nb pers : %d\n\n", nb_pers);
-	for(int i = 1; i<nb_pers+1; i++){
+	for(; i<nb_pers+1; i++){
 		get_nom(p_save, nom, i);
 		get_champ(p_save, i, &px, &py, &classe);
 	  //printf("%s -> px:%d py:%d classe:%d\n", nom, px, py, classe);
