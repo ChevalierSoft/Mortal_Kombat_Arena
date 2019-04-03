@@ -17,3 +17,4 @@ load_perso.o: load_perso.c load_perso.h fonctions.h
 
 clean:
 	rm -rf *.o
+	rm STAR*
