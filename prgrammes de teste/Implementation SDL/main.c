@@ -124,7 +124,7 @@ int main(int argc, char const **argv) {
 
   }
   else{
-    printf("MK_Arena Terminal\n");
+    printf("MK_Arena Terminal (utiliser l'option -s pour la version graphique)\n");
   }
   printf(RED"\n++++++++++++++++++++ M K Arena ++++++++++++++++++++\n"RESET);
   //on crée le plateau de jeu (#ez)
