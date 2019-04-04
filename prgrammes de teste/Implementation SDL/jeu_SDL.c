@@ -9,13 +9,14 @@
 #include "map.h"
 
 
-void jouer(SDL_Renderer * renderer,carte_t * pt_m){
+void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
-	 en_tete();
+	 /*en_tete();
 
 	 personnage_t * ex ;
 
-	 valeur_elt(&ex);
+
+	 valeur_elt(&ex);*/
 	//Variables TTF
 	TTF_Font * police = NULL;
 	SDL_Color couleurNoire = {0,0,0};
@@ -31,8 +32,8 @@ void jouer(SDL_Renderer * renderer,carte_t * pt_m){
 		int i,j;
 		int temp;
 		int x_cursMAP,y_cursMAP,x_cursMENU,y_cursMENU,aMAP,bMAP,aMENU,bMENU;
-		int numspell=0;
-		int posyBouttons[ex->nb_spell+1];
+		int numspell=-1;
+		int posyBouttons[personnage->nb_spell+1];
 		int BoutonAppuye=-1;
 		int cameraX=0,cameraY=0;
 		int cameraOff=30;
@@ -80,7 +81,7 @@ void jouer(SDL_Renderer * renderer,carte_t * pt_m){
 
 
 
-			//Les texutres
+			//Les textures
 		//chargement de toues les etats de cases dans tableau sprites
     sprites_s[0]= IMG_Load("./sprite du projet/ca0.png");
     sprites_s[1]= IMG_Load("./sprite du projet/ca1.png");
@@ -159,13 +160,7 @@ void jouer(SDL_Renderer * renderer,carte_t * pt_m){
 	boutonPos.y = (HAUTEUR_FENETRE - taille_sprite*3);
 
 
-
-
-    // Chargement du niveau
-  if (!chargerMap(pt_m))
-      exit(EXIT_FAILURE); // On arrête le jeu si on n'a pas pu charger le niveau
-
-
+	printf("Perso en cours : %s\n",personnage->nom);
 
 
 	while (continuer)
@@ -215,7 +210,24 @@ void jouer(SDL_Renderer * renderer,carte_t * pt_m){
 										aMAP = x_cursMAP/taille_sprite;
 										bMAP = y_cursMAP/taille_sprite; //Récupère les coords de la case cliquée
 
-										boutonActuel = boutonPasSurvole;
+										//Si on est dans le menu des attaques
+										if(BoutonAppuye == 0 && numspell != -1){
+											//Reconnaissance du perso clické
+											if(pt_m->map[aMAP][bMAP]->personnage != NULL){
+												printf("Perso clické : %s\n",pt_m->map[aMAP][bMAP]->personnage->nom);
+												personnage->tab_spell[numspell](personnage,pt_m,aMAP,bMAP);
+												continuer = 0;
+											}
+
+										}
+										//Si on a clické sur deplacement
+										else if(BoutonAppuye == 1 && numspell == -1){
+											deplacement(personnage,pt_m,aMAP,bMAP);
+											continuer = 0;
+
+
+										}
+
 
 									}
 
@@ -226,26 +238,31 @@ void jouer(SDL_Renderer * renderer,carte_t * pt_m){
 								//Clic dans menu
 								if(event.button.x <= LARGEUR_FENETRE && event.button.y >= HAUTEUR_FENETRE-3*taille_sprite){
 
-									if(event.button.x >= boutonPos.x && event.button.x <= boutonPos.x + boutonPos.w && event.button.y >= boutonPos.y && event.button.y <= boutonPos.y + ex->nb_spell*boutonPos.h){
+									if(event.button.x >= boutonPos.x && event.button.x <= boutonPos.x + boutonPos.w && event.button.y >= boutonPos.y && event.button.y <= boutonPos.y + personnage->nb_spell*boutonPos.h){
 
 
-										for(i=0;i<ex->nb_spell;i++){
-											if(event.button.y >= posyBouttons[i] && event.button.y <= posyBouttons[i] + boutonPos.h)
-
+										for(i=0;i<personnage->nb_spell;i++){
+											if(event.button.y >= posyBouttons[i] && event.button.y <= posyBouttons[i] + boutonPos.h){
 												numspell = i;
+												if(BoutonAppuye == 0){
 
+													printf("Numspell : %d\n",numspell);
 
+												}
+											}
 										}
 										if(numspell == 0){
 											BoutonAppuye = 0;
 										}
+										if(numspell == 1){
+											BoutonAppuye = 1;
+										}
 
 
-										boutonActuel = boutonEnfonce;
+
 
 									}
-									else{
-										boutonActuel = boutonPasSurvole;									}
+
 
 
 
@@ -406,7 +423,7 @@ void jouer(SDL_Renderer * renderer,carte_t * pt_m){
 					suivant();
 				}
 				//retour au personnage initial(personnage actif)
-				backdash(ex);
+				backdash(personnage);
 
 				//Affichage du menu
 				SDL_QueryTexture(cadre,NULL,NULL,&(cadrePos.w),&(cadrePos.h));
@@ -432,10 +449,10 @@ void jouer(SDL_Renderer * renderer,carte_t * pt_m){
 					boutonPos.y =  (HAUTEUR_FENETRE - taille_sprite*3);
 				}
 				else if(BoutonAppuye == 0){
-					for(i=0;i<ex->nb_spell;i++){
+					for(i=0;i<personnage->nb_spell;i++){
 
 
-						sprintf(spell,"%s",ex->nom_spell[i]);
+						sprintf(spell,"%s",personnage->nom_spell[i]);
 
 
 						texteS = TTF_RenderText_Solid(police,spell,couleurNoire);

@@ -76,7 +76,8 @@ void menu_choix(personnage_t * sasuke, carte_t * pt_m){
                       pas_fini();
                   	else;
                     break;
-        case 2: phase2= deplacement(sasuke, pt_m);break;
+        case 2: getXY(sasuke, pt_m,&deplacement);break;
+
         case 3: pas_fini();break;
         case 4: printf(YEL"%s passe son tour\n"RESET, sasuke->nom);break;
         default: pas_fini();break;
@@ -114,7 +115,7 @@ void backdash( personnage_t * ex){
 int get_hp_team(int n){
   personnage_t * tmp;
 	personnage_t * ex;/* personnage actuel*/
-  
+
   int hp=0;
   valeur_elt(&ex);
 
@@ -164,7 +165,7 @@ int get_hp_team(int n){
 	return(hp);
 }
 
-void kombat( carte_t * pt_m){
+void kombat(SDL_Renderer * renderer,carte_t * pt_m){
 
   /*verifier que la liste n'est pas vide pour lancer*/
   if (!liste_vide()){
@@ -193,12 +194,12 @@ void kombat( carte_t * pt_m){
         valeur_elt(&tmp);
         if(!strcmp(tmp->pp, "👽"));    /*  /!\   probleme ici pour les poisons et autre qui font le double des degats du au delimiteur */
         else if(tmp->pv>0) {
-    		  
+
           afficher_map(pt_m);
     		  info_personnage(tmp);
           /*printf("infos affiches\n");*/
-    		  menu_choix(tmp, pt_m);
-
+    		  /*menu_choix(tmp, pt_m);*/
+          jouer(renderer,tmp,pt_m);
         }
         suivant();
       }

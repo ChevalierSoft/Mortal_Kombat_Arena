@@ -2,10 +2,11 @@
 
 
 
-void main_menu(SDL_Renderer * renderer,SDL_Texture* texture,SDL_Rect position,carte_t * pt_m){
+void main_menu(SDL_Renderer * renderer,SDL_Texture* menu,SDL_Rect position,carte_t * pt_m){
   int continuer = 1;
 
   SDL_Event event;
+
 
   while (continuer)
 
@@ -29,7 +30,9 @@ void main_menu(SDL_Renderer * renderer,SDL_Texture* texture,SDL_Rect position,ca
                       break;
                   case SDLK_KP_1:
                     //lancement de la partie
-                      kombat(pt_m);
+                      kombat(renderer,pt_m);
+
+
                       break;
               }
               break;
@@ -109,12 +112,17 @@ int main(int argc, char const *argv[]) {
   carte_t * pt_m= malloc(sizeof(carte_t));
   //on crée une liste de perso
   init_liste();
+  printf("CHARGEMENT DE LA PARTIE :\n");
   //on charge la map
   charger_partie(pt_m);
+
+
+
   //on charge les persos
   load_perso(pt_m);
+
   //lancement du jeu,non.
-  main_menu(renderer,menu,position);
+  main_menu(renderer,menu,position,pt_m);
 
 
   /*en_tete();

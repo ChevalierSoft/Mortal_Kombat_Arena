@@ -69,17 +69,21 @@ void init_map(carte_t * pt_m){ /* changer le malloc du à la transformation de m
 
 void charger_partie(carte_t * pt_m){
   //Charge un etat de la map depuis un fichier
+
   init_map(pt_m);
+
   int x,y,l;
 
   FILE * sauvegarde;
 
   sauvegarde = fopen("save/m_save.txt","r");
-
+  printf("Debut boucle remplissage :\n");
   while(!feof(sauvegarde)){
     fscanf(sauvegarde,"%d %d %d",&x,&y,&l);
     pt_m->map[x][y]->land = l;
   }
+  printf("Fin boucle remplissage\n");
+  fclose(sauvegarde);
 
 
 }

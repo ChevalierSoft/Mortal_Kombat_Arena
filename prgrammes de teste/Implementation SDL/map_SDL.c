@@ -16,7 +16,7 @@ int chargerMap(carte_t * pt_m)
     int i = 0, j = 0;
     int x,y,l;
 
-    save = fopen("save.txt", "r");
+    save = fopen("save/m_save.txt", "r");
     if (save == NULL)
         return 0;
 
@@ -24,7 +24,7 @@ int chargerMap(carte_t * pt_m)
         fscanf(save,"%d %d %d",&x,&y,&l);
         pt_m->map[x][y]->land= l;
     }
-    
+
 
     fclose(save);
     return 1;

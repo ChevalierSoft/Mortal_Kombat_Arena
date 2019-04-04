@@ -24,7 +24,7 @@ typedef struct personnage_s{
 
   int nb_spell;
   char ** nom_spell;
-  void (**tab_spell)(void *, void *);
+  void (**tab_spell)(void *, void *,int,int);
 
 
   int est_sheep;
