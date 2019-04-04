@@ -170,6 +170,7 @@ void init_hero(personnage_t * _personnage, int _px, int _py, char * _nom, carte_
   _personnage->py = _py;
 
   _personnage->est_shield=0;
+  _personnage->est_sheep=0;
   _personnage->est_empoisone=0;
 	_personnage->est_mort=0;
 	_personnage->est_enfeu=0;
