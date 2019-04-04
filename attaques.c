@@ -284,20 +284,10 @@ void fait_ton_greu_cb(void * _personnage,void * pt_m, int x, int y){
 
 /*------------------------------------------------------------------------------------------*/
 
-int deplacement(personnage_t *_personnage, carte_t * pt_m){
-  int x,y,i = 0;
+void deplacement(personnage_t *_personnage, carte_t * pt_m, int x, int y){
+
   int range = 6;
-  do{
-	  if(i >=1){
-	    printf("Error, sortie de map !!!");
-		}
-	  printf("\nCoordonnées de déplacement :\n");
-	  printf("X :");
-	  scanf("%d",&x);
-	  printf("Y :");
-	  scanf("%d",&y);
-	  i++;
-  }while((x <0 || x >N) || (y <0 || y >N));
+
 
   if(pt_m->map[x][y]->personnage == NULL){
     if(range_detection(_personnage,range,y,x)){
@@ -309,12 +299,15 @@ int deplacement(personnage_t *_personnage, carte_t * pt_m){
     else
       printf(YEL"%s\n"RESET,"Range insuffisante");
   }
+}
+  /*
   else{
     printf("\nIl y a déja un personnage sur cette case !!\n");
-    return 10; /* permet de pas passer el tour du joueur si il se trompe */
+    return 10;  permet de pas passer el tour du joueur si il se trompe
   }
   return 0;
 }
+*/
 
 void summon(personnage_t *_personnage, carte_t * pt_m, int x, int y){
 
@@ -405,10 +398,19 @@ void jet_de_sable(){
 
 /*
 void arakiri(personnage_t * personnage, carte_t * pt_m){
+int i;
+int j;
+int range = 2;
+
   if(pt_m->map[x][y]->personnage == NULL){
     if(range_detection(_personnage,range,y,x)){
-
-
+      for(i = x-range; i < x+range ; ++i){ // collision_carre
+        for(j = y-range; j < y+range ; ++j){
+          if(i>=0  && i<N && j<N && j>=0){
+            pt_m->map[i][j]+=1;
+          }
+        }
+      }
     }else
       printf(YEL"%s\n"RESET,"Range insuffisante");
   }else
