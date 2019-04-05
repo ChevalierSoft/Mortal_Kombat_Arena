@@ -104,7 +104,9 @@ int main(int argc, char const **argv) {
   	   exit(2);
   	}
 
-    ecran = SDL_CreateWindow("MK Arena",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,LARGEUR_FENETRE,HAUTEUR_FENETRE,SDL_WINDOW_RESIZABLE);
+
+
+    ecran = SDL_CreateWindow("MK Arena",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,LARGEUR_FENETRE,HAUTEUR_FENETRE,SDL_WINDOW_RESIZABLE);
     if(ecran == NULL){
     	fprintf(stderr, "Impossible de charger le mode vidéo : %s\n",SDL_GetError());
     	exit(EXIT_FAILURE);
@@ -120,6 +122,9 @@ int main(int argc, char const **argv) {
   	position.y = 0;
   	position.w = LARGEUR_FENETRE;
   	position.h = HAUTEUR_FENETRE;
+
+    SDL_RenderSetLogicalSize(renderer, HAUTEUR_FENETRE, LARGEUR_FENETRE);
+
     main_menu(renderer,menu,position,pt_m);
 
     SDL_DestroyRenderer(renderer);

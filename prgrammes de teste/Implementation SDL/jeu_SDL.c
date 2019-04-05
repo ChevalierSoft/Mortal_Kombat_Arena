@@ -17,6 +17,8 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 
 	 valeur_elt(&ex);*/
+	 SDL_RenderSetLogicalSize(renderer, HAUTEUR_FENETRE, LARGEUR_FENETRE);
+
 	//Variables TTF
 	TTF_Font * police = NULL;
 	SDL_Color couleurNoire = {0,0,0};
@@ -33,7 +35,7 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 		int temp;
 		int x_cursMAP,y_cursMAP,x_cursMENU,y_cursMENU,aMAP,bMAP,aMENU,bMENU;
 		int numspell=-1;
-		int posyBouttons[personnage->nb_spell+1];
+		int posyBouttons[personnage->nb_spell+1]; //positions en Y des boutons
 		int attaque=-1;
 		int deplacementP=-1;
 		int cameraX=0,cameraY=0;
@@ -149,19 +151,16 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 
 
-		//Position du cadre
-			cadrePos.x = 0;
-			cadrePos.y = (HAUTEUR_FENETRE - taille_sprite*3);
-			cadrePos.w = LARGEUR_FENETRE;
-			cadrePos.h = taille_sprite*3;
+
 
 
 		//Position du bouton
 	boutonPos.x = LARGEUR_FENETRE/3;
-	boutonPos.y = (HAUTEUR_FENETRE - taille_sprite*3);
+	boutonPos.y = HAUTEUR_MAP;
 
 
-	printf("Perso en cours : %s\n",personnage->nom);
+	printf("Perso en cours : %s / Nombre de spells : %d\n",personnage->nom,personnage->nb_spell);
+
 
 
 	while (continuer)
@@ -182,7 +181,7 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
                 switch(event.key.keysym.sym)
                 {
-                    case SDLK_ESCAPE:
+                    case SDLK_q:
                         continuer =0;
                         break;
 
@@ -204,13 +203,14 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
             case SDL_MOUSEBUTTONUP:
 
 						  	//Clic sur la map
-								if(event.button.x <= LARGEUR_FENETRE && event.button.y <= HAUTEUR_FENETRE-3*taille_sprite){
+								if(event.button.x <= LARGEUR_FENETRE && event.button.y <= HAUTEUR_MAP){
 									if(event.button.button == SDL_BUTTON_LEFT){
 										x_cursMAP = event.button.x;
 										y_cursMAP = event.button.y;
-										aMAP = x_cursMAP/taille_sprite;
-										bMAP = y_cursMAP/taille_sprite; //Récupère les coords de la case cliquée
+										aMAP = x_cursMAP/(taille_sprite+cameraX);
+										bMAP = y_cursMAP/(taille_sprite+cameraY); //Récupère les coords de la case cliquée
 
+										printf("case cliquée : x = %d / y = %d\n",aMAP,bMAP);
 										//Si on a cliqué sur attaque
 										if(attaque == 1){
 											//Reconnaissance du perso clické
@@ -237,19 +237,25 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 								}
 								//Clic dans menu
-								if(event.button.x <= LARGEUR_FENETRE && event.button.y >= HAUTEUR_FENETRE-3*taille_sprite){
+								if(event.button.x <= LARGEUR_FENETRE && event.button.y >= HAUTEUR_MAP){
 
 									if(event.button.x >= boutonPos.x && event.button.x <= boutonPos.x + boutonPos.w && event.button.y >= boutonPos.y && event.button.y <= boutonPos.y + personnage->nb_spell*boutonPos.h){
 
 
 										for(i=0;i<personnage->nb_spell;i++){
+											//printf("Passage boucle avant if n°%d\n",i);
+											//printf("PosY du boutton %d : %d\n",i,posyBouttons[i]);
+											//Si on clique sur la surface d'un bouton de numéro i
 											if(event.button.y >= posyBouttons[i] && event.button.y <= posyBouttons[i] + boutonPos.h){
 												numspell = i;
-												if(attaque == 1){
+												printf("Numspell : %d\n",numspell);
+												//printf("Passage boucle après if n°%d\n",i);
+												if(numspell == 4)
+													attaque = 1;
 
-													printf("Numspell : %d\n",numspell);
 
-												}
+
+
 											}
 										}
 										if(numspell == 0){
@@ -271,9 +277,9 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 
 								break;
-						case SDL_MOUSEMOTION:
+						//case SDL_MOUSEMOTION:
 								//Dans la Map
-								if(event.motion.x <= LARGEUR_FENETRE && event.motion.y <= HAUTEUR_FENETRE-3*taille_sprite){
+								//if(event.motion.x <= LARGEUR_FENETRE && event.motion.y <= HAUTEUR_MAP){
 									//Deplacement caméra
 
 									//surbrillance watzafaque
@@ -284,9 +290,9 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 									temp =pt_m->map[i][j]->land;
 									pt_m->map[i][j]->land = -1;*/
 
-								}
+								//}
 								//Dans le Menu
-								else if(event.motion.y >=taille_sprite * nb_sprites_hauteur && event.motion.y <= HAUTEUR_FENETRE && event.motion.x <=LARGEUR_FENETRE){
+								//else if(event.motion.y >=taille_sprite * nb_sprites_hauteur && event.motion.y <= HAUTEUR_FENETRE && event.motion.x <=LARGEUR_FENETRE){
 									//Survolage de bouton
 									/*if(event.motion.x >= boutonPos.x && event.motion.x <= boutonPos.x + boutonPos.w && event.motion.y >= boutonPos.y && event.motion.y <= boutonPos.y + boutonPos.h){
 										boutonActuel = boutonSurvole;
@@ -297,17 +303,11 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 									}*/
 
 
-								}
+								//}
 
 
-								break;
+								//break;
 
-
-
-            case SDL_QUIT:
-
-                continuer = 0;
-                break;
 
         }
 
@@ -382,7 +382,11 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 					valeur_elt(&stck);
 
 					position_p.x = stck->px * taille_sprite + cameraX;
+					if(position_p.x > LARGEUR_FENETRE)
+						position_p.x = LARGEUR_FENETRE;
 					position_p.y = stck->py * taille_sprite + cameraY;
+					if(position_p.y > HAUTEUR_MAP)
+						position_p.y = HAUTEUR_MAP;
 
 					switch(stck->classe){
 
@@ -423,8 +427,17 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 					suivant();
 				}
+				//Fin affichage des persos
+
+
 				//retour au personnage initial(personnage actif)
 				backdash(personnage);
+
+				//Position du cadre
+				cadrePos.x = 0;
+				cadrePos.y = HAUTEUR_MAP;
+				cadrePos.w = LARGEUR_FENETRE;
+				cadrePos.h = taille_sprite*3;
 
 				//Affichage du menu
 				SDL_QueryTexture(cadre,NULL,NULL,&(cadrePos.w),&(cadrePos.h));
@@ -447,7 +460,7 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 						boutonPos.y += i+1 * boutonPos.h;
 						strcpy(spell,"");
 					}
-					boutonPos.y =  (HAUTEUR_FENETRE - taille_sprite*3);
+					boutonPos.y =  HAUTEUR_MAP;
 				}
 				else if(attaque == 1){
 					for(i=0;i<personnage->nb_spell;i++){
@@ -466,6 +479,7 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 						SDL_RenderCopy(renderer,boutonActuel,NULL,&boutonPos);
 						SDL_RenderCopy(renderer,texte,NULL,&boutonPos);
+
 						posyBouttons[i]=boutonPos.y;
 
 						boutonPos.y += i+1 * boutonPos.h;
@@ -474,7 +488,7 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 
 					}
-					boutonPos.y =  (HAUTEUR_FENETRE - taille_sprite*3);
+					boutonPos.y =  HAUTEUR_MAP;
 				}
 
 
