@@ -34,7 +34,8 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 		int x_cursMAP,y_cursMAP,x_cursMENU,y_cursMENU,aMAP,bMAP,aMENU,bMENU;
 		int numspell=-1;
 		int posyBouttons[personnage->nb_spell+1];
-		int BoutonAppuye=-1;
+		int attaque=-1;
+		int deplacementP=-1;
 		int cameraX=0,cameraY=0;
 		int cameraOff=30;
 		int motionX=0,motionY=0;
@@ -210,8 +211,8 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 										aMAP = x_cursMAP/taille_sprite;
 										bMAP = y_cursMAP/taille_sprite; //Récupère les coords de la case cliquée
 
-										//Si on est dans le menu des attaques
-										if(BoutonAppuye == 0 && numspell != -1){
+										//Si on a cliqué sur attaque
+										if(attaque == 1){
 											//Reconnaissance du perso clické
 											if(pt_m->map[aMAP][bMAP]->personnage != NULL){
 												printf("Perso clické : %s\n",pt_m->map[aMAP][bMAP]->personnage->nom);
@@ -220,8 +221,8 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 											}
 
 										}
-										//Si on a clické sur deplacement
-										else if(BoutonAppuye == 1 && numspell == -1){
+										//Si on a cliqué sur deplacement
+										else if(deplacementP == 1){
 											deplacement(personnage,pt_m,aMAP,bMAP);
 											continuer = 0;
 
@@ -244,7 +245,7 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 										for(i=0;i<personnage->nb_spell;i++){
 											if(event.button.y >= posyBouttons[i] && event.button.y <= posyBouttons[i] + boutonPos.h){
 												numspell = i;
-												if(BoutonAppuye == 0){
+												if(attaque == 1){
 
 													printf("Numspell : %d\n",numspell);
 
@@ -252,10 +253,10 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 											}
 										}
 										if(numspell == 0){
-											BoutonAppuye = 0;
+											attaque = 1;
 										}
 										if(numspell == 1){
-											BoutonAppuye = 1;
+											deplacementP = 1;
 										}
 
 
@@ -429,7 +430,7 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 				SDL_QueryTexture(cadre,NULL,NULL,&(cadrePos.w),&(cadrePos.h));
 				SDL_RenderCopy(renderer,cadre,NULL,&cadrePos);
 
-				if(BoutonAppuye == -1){
+				if(attaque == -1){
 					for(i=0;i<2;i++){
 
 						texteS = TTF_RenderText_Solid(police,Menu[i],couleurNoire);
@@ -448,7 +449,7 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 					}
 					boutonPos.y =  (HAUTEUR_FENETRE - taille_sprite*3);
 				}
-				else if(BoutonAppuye == 0){
+				else if(attaque == 1){
 					for(i=0;i<personnage->nb_spell;i++){
 
 

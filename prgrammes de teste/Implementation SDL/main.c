@@ -122,6 +122,11 @@ int main(int argc, char const **argv) {
   	position.h = HAUTEUR_FENETRE;
     main_menu(renderer,menu,position,pt_m);
 
+    SDL_DestroyRenderer(renderer);
+		SDL_DestroyWindow(ecran);
+	  TTF_Quit();
+ 	  SDL_Quit();
+
   }
   else{
     printf("MK_Arena Terminal (utiliser l'option -s pour la version graphique)\n");
