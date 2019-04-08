@@ -176,6 +176,7 @@ void kombat(carte_t * pt_m, int affSDL, ...){
   if (!liste_vide()){
     /*bouleen de lancement de partie*/
     int partie_en_cours = 1;
+
     /*barre de vie de la team*/
     int hp_team1=1, hp_team2=1;
     /*tmp prendra la valeur des personnages de la liste succecivement*/

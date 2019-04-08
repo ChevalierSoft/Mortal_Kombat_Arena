@@ -9,7 +9,7 @@
 #include "map.h"
 
 
-void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
+int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 	 /*en_tete();
 
@@ -23,11 +23,19 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 	TTF_Font * police = NULL;
 	SDL_Color couleurNoire = {0,0,0};
 	SDL_Surface * texteS;
+	SDL_Surface * info_persoS;
+	SDL_Surface * pv_persoS;
+
 	SDL_Texture * texte =NULL;
+	SDL_Texture * info_perso = NULL;
+	SDL_Texture * pv_perso = NULL;
+
 
 
 	int continuer=1;
 	char spell[20];
+	char nom_p[50];
+	char pv[20];
 	char * Menu[2]={"Attaquer","Deplacement"};
     //variables et structures pour la map
 		int w_s,h_s;
@@ -52,6 +60,9 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 		SDL_Rect position_p;
 		SDL_Rect blanc;
 		SDL_Rect cadrePos;
+		SDL_Rect aff_perso;
+		SDL_Rect text_p;
+		SDL_Rect pv_p;
 
 		SDL_Surface * surbrillance;
     SDL_Surface * sprites_s[6]= {NULL};
@@ -184,6 +195,8 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
                     case SDLK_q:
                         continuer =0;
                         break;
+										case SDLK_ESCAPE:
+											return 0;
 
 
                 }
@@ -205,10 +218,10 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 						  	//Clic sur la map
 								if(event.button.x <= LARGEUR_FENETRE && event.button.y <= HAUTEUR_MAP){
 									if(event.button.button == SDL_BUTTON_LEFT){
-										x_cursMAP = event.button.x;
-										y_cursMAP = event.button.y;
-										aMAP = x_cursMAP/(taille_sprite+cameraX);
-										bMAP = y_cursMAP/(taille_sprite+cameraY); //Récupère les coords de la case cliquée
+										x_cursMAP = event.button.x-cameraX;
+										y_cursMAP = event.button.y-cameraY;
+										aMAP = x_cursMAP/taille_sprite;
+										bMAP = y_cursMAP/taille_sprite; //Récupère les coords de la case cliquée
 
 										printf("case cliquée : x = %d / y = %d\n",aMAP,bMAP);
 										//Si on a cliqué sur attaque
@@ -307,6 +320,7 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 
 								//break;
+
 
 
         }
@@ -443,6 +457,7 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 				SDL_QueryTexture(cadre,NULL,NULL,&(cadrePos.w),&(cadrePos.h));
 				SDL_RenderCopy(renderer,cadre,NULL,&cadrePos);
 
+					//On affiche le menu d'attaque et deplacement
 				if(attaque == -1){
 					for(i=0;i<2;i++){
 
@@ -462,6 +477,7 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 					}
 					boutonPos.y =  HAUTEUR_MAP;
 				}
+					//On affiche le menu de spells
 				else if(attaque == 1){
 					for(i=0;i<personnage->nb_spell;i++){
 
@@ -491,10 +507,66 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 					boutonPos.y =  HAUTEUR_MAP;
 				}
 
+				//Position de l'affichage des infos du personnage en partie_en_cours
+				aff_perso.x = LARGEUR_FENETRE - 3*taille_sprite ;
+				aff_perso.y = HAUTEUR_MAP + taille_sprite;
+
+				text_p.x = aff_perso.x;
+				text_p.y = aff_perso.y - 40;
+
+				pv_p.x = aff_perso.x;
+				pv_p.y = aff_perso.y + 40;
 
 
 
 
+
+
+				switch(personnage->classe){
+
+						case 0:
+								SDL_QueryTexture(perso[0], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+								SDL_RenderCopy(renderer,perso[0],NULL,&aff_perso);
+								break;
+						case 1:
+								SDL_QueryTexture(perso[1], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+								SDL_RenderCopy(renderer,perso[1],NULL,&aff_perso);
+								break;
+						case 2:
+								SDL_QueryTexture(perso[2], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+								SDL_RenderCopy(renderer,perso[2],NULL,&aff_perso);
+								break;
+						case 3:
+								SDL_QueryTexture(perso[3], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+								SDL_RenderCopy(renderer,perso[3],NULL,&aff_perso);
+								break;
+						case 4:
+								SDL_QueryTexture(perso[4], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+								SDL_RenderCopy(renderer,perso[4],NULL,&aff_perso);
+								break;
+						default:
+								break;
+
+
+				}
+
+				sprintf(nom_p,"%s",personnage->nom);
+
+				info_persoS = TTF_RenderText_Solid(police,nom_p,couleurNoire);
+				SDL_DestroyTexture(info_perso);
+				info_perso = SDL_CreateTextureFromSurface(renderer,info_persoS);
+
+				SDL_QueryTexture(info_perso,NULL,NULL,&(text_p.w), &(text_p.h));
+				SDL_RenderCopy(renderer,info_perso,NULL,&text_p);
+
+				sprintf(pv,"%d/%d",personnage->pv,personnage->pv_max);
+
+				pv_persoS = TTF_RenderText_Solid(police,pv,couleurNoire);
+				SDL_DestroyTexture(pv_perso);
+				pv_perso = SDL_CreateTextureFromSurface(renderer,pv_persoS);
+
+				SDL_QueryTexture(pv_perso,NULL,NULL,&(pv_p.w), &(pv_p.h));
+				SDL_RenderCopy(renderer,pv_perso,NULL,&pv_p);
 
 				SDL_RenderPresent(renderer);
 
@@ -517,8 +589,10 @@ void jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 	SDL_DestroyTexture(case_sub);
 	SDL_DestroyTexture(texte);
+	SDL_DestroyTexture(info_perso);
 	SDL_DestroyTexture(cadre);
 
 
 	TTF_CloseFont(police);
+	return 1;
 }
