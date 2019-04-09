@@ -165,12 +165,18 @@ int get_hp_team(int n){
 	return(hp);
 }
 
-void kombat( carte_t * pt_m){
+void kombat(carte_t * pt_m, int affSDL, ...){
+
+  va_list liste;
+  va_start(liste, 1);
+
+  SDL_Renderer * renderer = va_arg(liste,SDL_Renderer *);
 
   /*verifier que la liste n'est pas vide pour lancer*/
   if (!liste_vide()){
     /*bouleen de lancement de partie*/
     int partie_en_cours = 1;
+
     /*barre de vie de la team*/
     int hp_team1=1, hp_team2=1;
     /*tmp prendra la valeur des personnages de la liste succecivement*/
@@ -198,8 +204,9 @@ void kombat( carte_t * pt_m){
           afficher_map(pt_m);
     		  info_personnage(tmp);
           /*printf("infos affiches\n");*/
-    		  menu_choix(tmp, pt_m);
-
+    		  /*menu_choix(tmp, pt_m);*/
+          if(affSDL)jouer(renderer,tmp,pt_m);
+          else menu_choix(tmp, pt_m);
         }
         suivant();
       }
