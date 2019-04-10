@@ -5,6 +5,51 @@ void pas_fini(){
   printf(YEL"%s\n", "sort non castable avant la prochaine lune \n"RESET);
 }
 
+void menu_start(){
+  printf("                                                                         \n");
+  printf(MAG"@@@@@@@@@@   @@@  @@@   @@@@@@   @@@@@@@   @@@@@@@@  @@@  @@@   @@@@@@   \n");
+  printf(   "@@@@@@@@@@@  @@@  @@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@ @@@  @@@@@@@@  \n");
+  printf(   "@@! @@! @@!  @@!  !@@  @@!  @@@  @@!  @@@  @@!       @@!@!@@@  @@!  @@@  \n");
+  printf(   "!@! !@! !@!  !@!  @!!  !@!  @!@  !@!  @!@  !@!       !@!!@!@!  !@!  @!@  \n");
+  printf(   "@!! !!@ @!@  @!@@!@!   @!@!@!@!  @!@!!@!   @!!!:!    @!@ !!@!  @!@!@!@!  \n");
+  printf(CYN"!@!   ! !@!  !!@!!!    !!!@!!!!  !!@!@!    !!!!!:    !@!  !!!  !!!@!!!!  \n");
+  printf(   "!!:     !!:  !!: :!!   !!:  !!!  !!: :!!   !!:       !!:  !!!  !!:  !!!  \n");
+  printf(   ":!:     :!:  :!:  !:!  :!:  !:!  :!:  !:!  :!:       :!:  !:!  :!:  !:!  \n");
+  printf(   ":::     ::    ::  :::  ::   :::  ::   :::   :: ::::   ::   ::  ::   :::  \n");
+  printf(   " :      :     :   :::   :   : :   :   : :  : :: ::   ::    :    :   : :  \n\n"RESET);
+  printf(   "                            PRESS ENTER\n"                                  );
+  getchar();
+}
+
+int dbl_digit(char c){
+  if (c>='0' && c<='9'){
+    return(1);}
+  return(0);
+}
+
+int menu_main(){
+  int choix;
+  printf(MAG" @@@@@@@@@@  @@@@@@@@ @@@  @@@ @@@  @@@\n");
+  printf(   " @@! @@! @@! @@!      @@!@!@@@ @@!  @@@\n");
+  printf(   " @!! !!@ @!@ @!!!:!   @!@@!!@! @!@  !@!\n");
+  printf(CYN" !!:     !!: !!:      !!:  !!! !!:  !!!\n");
+  printf(   "  :      :   : :: ::: ::    :   :.:: : \n\n"RESET);
+
+  printf(YEL"1) Une machine\n");
+  printf("2) Reseau (a implementer)\n");
+  printf("3) Quiter\n"RESET);
+  do{
+    choix = getchar();
+  }while( (!dbl_digit(choix)) || (choix < '1') || (choix > '3'));
+
+  if(choix=='3'){
+    printf(MAG"\n#######################################################################\n"RESET);
+    exit(0);
+  }
+
+  return(choix-'0');
+}
+
 int phase_premiere(personnage_t * _personnage, carte_t * pt_m){
   int choix = -1;
 
@@ -59,7 +104,7 @@ void menu_choix(personnage_t * sasuke, carte_t * pt_m){
   int phase1=0, phase2=0;
   do{ /*tant que le retour n'est pas demandé*/
     phase1 = phase_premiere(sasuke, pt_m);
-    phase2=0;
+    phase2 = 0;
       switch(phase1){
 
         case 1: phase2 = phase_attaque(sasuke, pt_m); /*si on choisi d'attaquer*/
@@ -76,7 +121,7 @@ void menu_choix(personnage_t * sasuke, carte_t * pt_m){
                       pas_fini();
                   	else;
                     break;
-        case 2: getXY(sasuke, pt_m,&deplacement);break;
+        case 2: getXY(sasuke, pt_m,&deplacement_cb);break;
 
         case 3: pas_fini();break;
         case 4: printf(YEL"%s passe son tour\n"RESET, sasuke->nom);break;
@@ -99,12 +144,18 @@ void info_personnage(personnage_t * p){
 
 void backdash( personnage_t * ex){
   personnage_t * ex2;
+  int i =0;
   en_tete();
   valeur_elt(&ex2);
   while(ex2 != ex && !liste_vide()){
+
+    printf("Nom perso : %s\n",ex2->nom);
     suivant();
     valeur_elt(&ex2);
+    i++;
+
   }
+
   if (liste_vide()){
     en_tete();
     printf("probleme de personnage free\n");
@@ -170,12 +221,16 @@ void kombat(carte_t * pt_m, int affSDL, ...){
   va_list liste;
   va_start(liste, 1);
 
+  int partie_en_cours = 1;
+
   SDL_Renderer * renderer = va_arg(liste,SDL_Renderer *);
 
   /*verifier que la liste n'est pas vide pour lancer*/
-  if (!liste_vide()){
+  if (!liste_vide()&& partie_en_cours==1){
     /*bouleen de lancement de partie*/
-    int partie_en_cours = 1;
+
+    int team=1;
+
 
     /*barre de vie de la team*/
     int hp_team1=1, hp_team2=1;
@@ -183,11 +238,14 @@ void kombat(carte_t * pt_m, int affSDL, ...){
     personnage_t * tmp;
 
     while(partie_en_cours){
-    	/*affiche la liste des perso à chaque tours*/
+
+      team = 1;
+      /*affiche la liste des perso à chaque tours*/
   		afficher_liste();
     	en_tete();
+
   		/*boucle pour un tour*/
-      while(!hors_liste()){
+      while(!hors_liste()&& partie_en_cours == 1){
 
         detection_etat(pt_m);
         hp_team1=get_hp_team(1);
@@ -198,15 +256,32 @@ void kombat(carte_t * pt_m, int affSDL, ...){
           break;
         }
         valeur_elt(&tmp);
-        if(!strcmp(tmp->pp, "👽"));    /*  /!\   probleme ici pour les poisons et autre qui font le double des degats du au delimiteur */
+        //Si on est au délimiteur
+        if(!strcmp(tmp->pp, "👽"))team = 2;   /*  /!\   probleme ici pour les poisons et autre qui font le double des degats du au delimiteur */
         else if(tmp->pv>0) {
 
           afficher_map(pt_m);
     		  info_personnage(tmp);
           /*printf("infos affiches\n");*/
     		  /*menu_choix(tmp, pt_m);*/
-          if(affSDL)jouer(renderer,tmp,pt_m);
+          if(affSDL){
+            partie_en_cours = jouer(renderer,tmp,pt_m);
+            printf("Partie en cours : %d\n",partie_en_cours);
+
+
+                //la capitulation
+              /*if(team==1)
+                hp_team1=0;
+              else
+                hp_team2=0;*/
+
+            printf("HP de la team 1 : %d\n",hp_team1);
+            printf("HP de la team 2 : %d\n",hp_team2);
+          }
           else menu_choix(tmp, pt_m);
+        }
+        else{
+          printf("%s est K.O\n",tmp->nom);
         }
         suivant();
       }
@@ -215,7 +290,9 @@ void kombat(carte_t * pt_m, int affSDL, ...){
 
 
   }
+  printf("YOLOOOOOOOOOOOOOOOOOOOOOOOOOOOO\n");
   detection_etat(pt_m);
+  printf("Detection etat ?\n");
   afficher_map(pt_m);
 }
 

@@ -25,10 +25,12 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 	SDL_Surface * texteS;
 	SDL_Surface * info_persoS;
 	SDL_Surface * pv_persoS;
+	SDL_Surface * logS;
 
 	SDL_Texture * texte =NULL;
 	SDL_Texture * info_perso = NULL;
 	SDL_Texture * pv_perso = NULL;
+	SDL_Texture * log = NULL;
 
 
 
@@ -36,6 +38,7 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 	char spell[20];
 	char nom_p[50];
 	char pv[20];
+	char log_s[100];
 	char * Menu[2]={"Attaquer","Deplacement"};
     //variables et structures pour la map
 		int w_s,h_s;
@@ -49,6 +52,7 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 		int cameraX=0,cameraY=0;
 		int cameraOff=30;
 		int motionX=0,motionY=0;
+		int spell_used = 0;
 
 
 
@@ -61,6 +65,7 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 		SDL_Rect blanc;
 		SDL_Rect cadrePos;
 		SDL_Rect aff_perso;
+		SDL_Rect aff_log;
 		SDL_Rect text_p;
 		SDL_Rect pv_p;
 
@@ -227,16 +232,17 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 										//Si on a cliqué sur attaque
 										if(attaque == 1){
 											//Reconnaissance du perso clické
-											if(pt_m->map[aMAP][bMAP]->personnage != NULL){
-												printf("Perso clické : %s\n",pt_m->map[aMAP][bMAP]->personnage->nom);
-												personnage->tab_spell[numspell](personnage,pt_m,aMAP,bMAP);
-												continuer = 0;
-											}
+
+
+											personnage->tab_spell[numspell](personnage,pt_m,aMAP,bMAP);
+											spell_used = 1;
+											continuer = 0;
+
 
 										}
 										//Si on a cliqué sur deplacement
 										else if(deplacementP == 1){
-											deplacement(personnage,pt_m,aMAP,bMAP);
+											deplacement_cb(personnage,pt_m,aMAP,bMAP);
 											continuer = 0;
 
 
@@ -274,7 +280,7 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 										if(numspell == 0){
 											attaque = 1;
 										}
-										if(numspell == 1){
+										if(numspell == 1 && attaque != 1){
 											deplacementP = 1;
 										}
 
@@ -282,9 +288,6 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 
 									}
-
-
-
 
 								}
 
@@ -550,6 +553,7 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 				}
 
+					//Affichage des infos du perso (nom/image/vie)
 				sprintf(nom_p,"%s",personnage->nom);
 
 				info_persoS = TTF_RenderText_Solid(police,nom_p,couleurNoire);
@@ -567,6 +571,24 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 				SDL_QueryTexture(pv_perso,NULL,NULL,&(pv_p.w), &(pv_p.h));
 				SDL_RenderCopy(renderer,pv_perso,NULL,&pv_p);
+
+					//Affichage des logs
+					if(spell_used == 1){
+						aff_log.x=0;
+						aff_log.y=HAUTEUR_MAP + taille_sprite;
+
+						sprintf(log_s,"Ceci est un log");
+						logS = TTF_RenderText_Solid(police,log_s,couleurNoire);
+						SDL_DestroyTexture(log);
+						log = SDL_CreateTextureFromSurface(renderer,logS);
+
+						SDL_QueryTexture(log,NULL,NULL,&(aff_log.w), &(aff_log.h));
+						SDL_RenderCopy(renderer,log,NULL,&aff_log);
+					}
+
+
+
+
 
 				SDL_RenderPresent(renderer);
 

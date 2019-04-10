@@ -168,19 +168,19 @@ int get_nb_pers(char * p_save, int * nb_pers){
 	return(*nb_pers);
 
 }
-//fonction qui envoie les infos perssus dans le fichier vers 
-void gogo_powerRanger(int px, int py, char * nom, int classe, carte_t * pt_m){
-	personnage_t * Lucatiel = malloc(sizeof(personnage_t));
-  init_hero(Lucatiel, px, py, nom, pt_m, classe);
-
-}
 
 void quit_quick(carte_t * pt_m){
 	detruire_liste();
   map_detruire(&pt_m);
   afficher_liste();
-  printf(RED"\n+++++++++++++++++++++++++++++++++++++++++++++++++++\n"RESET);
+  printf(MAG"\n#######################################################################\n"RESET);
 
+}
+
+//fonction qui envoie les infos perçu dans le fichier vers init
+void gogo_powerRanger(int id, int px, int py, char * nom, int classe, carte_t * pt_m){
+	personnage_t * Lucatiel = malloc(sizeof(personnage_t));
+  init_hero(Lucatiel, id, px, py, nom, pt_m, classe);
 }
 
 void load_perso(carte_t * pt_m){
@@ -196,9 +196,8 @@ void load_perso(carte_t * pt_m){
 	for(; i<nb_pers+1; i++){
 		get_nom(p_save, nom, i);
 		get_champ(p_save, i, &px, &py, &classe);
-	  //printf("%s -> px:%d py:%d classe:%d\n", nom, px, py, classe);
-
-	  gogo_powerRanger(px, py, nom, classe, pt_m);
+	  //printf("%s -> id:%d px:%d py:%d classe:%d\n", nom, i, px, py, classe);
+	  gogo_powerRanger(i, px, py, nom, classe, pt_m);
 	}
 
 	free(nom);
