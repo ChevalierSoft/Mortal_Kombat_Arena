@@ -37,7 +37,7 @@ int menu_main(){
 
   printf(YEL"1) Une machine\n");
   printf("2) Reseau (a implementer)\n");
-  printf("3) Quiter\n"RESET);
+  printf("3) Quitter\n"RESET);
   do{
     choix = getchar();
   }while( (!dbl_digit(choix)) || (choix < '1') || (choix > '3'));

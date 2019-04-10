@@ -33,6 +33,7 @@ typedef struct personnage_s{
 	int est_mort;
   int est_empoisone;
 	int est_enfeu;
+  int est_aveugle;
 
 }personnage_t;
 
