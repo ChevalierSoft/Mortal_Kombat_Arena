@@ -384,36 +384,65 @@ void detection_etat(carte_t * pt_m){
     if (stockage->est_enfeu){
       coup(stockage, 13);
     }
+    if ( stockage->est_aveugle > 0 ){
+    stockage->est_aveugle = (stockage->est_aveugle) - 1;
+      printf("\n%s est aveuglé il lui reste %d tour(s) avant de pouvoir attaquer !\n",stockage->nom, stockage->est_aveugle);
+    }
+
     suivant();
   }
   backdash(ex);
 }
 
-/*
-void jet_de_sable(){
 
-}*/
 
-/*
-void arakiri(personnage_t * personnage, carte_t * pt_m){
+
+void arakiri(personnage_t * personnage, carte_t * pt_m){ //   C good
 int i;
 int j;
+int x;
+int y;
 int range = 2;
 
   if(pt_m->map[x][y]->personnage == NULL){
-    if(range_detection(_personnage,range,y,x)){
+
       for(i = x-range; i < x+range ; ++i){ // collision_carre
         for(j = y-range; j < y+range ; ++j){
           if(i>=0  && i<N && j<N && j>=0){
-            pt_m->map[i][j]+=1;
+            if(pt_m->map[i][j]->personnage != NULL)
+              coup(pt_m->map[i][j]->personnage, 50);
+            if(pt_m->map[i][j]->land != 2)
+              pt_m->map[i][j]->land = 3;
+            else{
+              pt_m->map[i][j]->land = 1;
+            }
           }
         }
       }
-    }else
-      printf(YEL"%s\n"RESET,"Range insuffisante");
   }else
     printf("\nLa case est occupée !\n");
 
 }
 
-*/
+void arakiri_cb(void * personnage, void * pt_m){
+  arakiri( personnage,pt_m);
+}
+
+
+void jet_de_sable(personnage_t * personnage, carte_t * pt_m, int x, int y){
+
+int range = 4;
+if(pt_m->map[x][y]->personnage == NULL){
+  if(range_detection(personnage,range,y,x)){
+    pt_m->map[x][y]->personnage->est_aveugle = 3;
+
+}else
+  printf(YEL"%s\n"RESET,"Range insuffisante");
+}else
+printf("\nLa case est occupée !\n");
+
+}
+
+void jet_de_sable_cb(void * personnage,void * pt_m, int x, int y){
+  jet_de_sable(personnage,pt_m, x, y);
+}

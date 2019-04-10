@@ -22,7 +22,13 @@ void shield_cb				(void * personnage, void * pt_m, int x, int y);
 
 void fait_ton_greu_cb	(void * personnage, void * pt_m, int x, int y);
 
-void arakiri					(personnage_t * personnage, carte_t * pt_m);
+void arakiri (personnage_t * personnage, carte_t * pt_m);
+
+void arakiri_cb (void * personnage, void * pt_m);
+
+void jet_de_sable(personnage_t * personnage, carte_t * pt_m, int x, int y);
+
+void jet_de_sable_cb(void * personnage,void * pt_m, int x, int y);
 
 void detection_etat		(carte_t * pt_m);
 void deplacement_cb		(void * personnage, void * pt_m, int x, int y);
