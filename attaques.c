@@ -11,20 +11,26 @@ fonctions à faire :
 */
 
 //prend un x et un y et les envoient dans les fonctions d'attaques
-void getXY(void * p, void * m, void f_cb(void * pp, void * map, int xi, int yi)){
+void getXY(personnage_t * p, void * m, void f_cb(void * pp, void * map, int xi, int yi)){
 
-  int x,y,i=0;
-  printf("Donner la position\n");
-  do{
-    if(i >=1)
-      printf("Error, sortie de map !!!");
-    printf("X :");
-    scanf("%d",&x);
-    printf("Y :");
-    scanf("%d",&y);
-    i++;
-  }while((x <0 || x >N) || (y <0 || y >N));
+  int x=0,y=0,i=0;
 
+  if(!(f_cb == &tourbilol_cb || f_cb == &jet_de_sable_cb || f_cb == &shield_cb || f_cb == &arakiri_cb )){
+    printf("Donner la position\n");
+    do{
+      if(i >=1)
+        printf("Error, sortie de map !!!");
+      printf("X :");
+      scanf("%d",&x);
+      printf("Y :");
+      scanf("%d",&y);
+      i++;
+    }while((x <0 || x >N) || (y <0 || y >N));
+  }
+  else{
+    x = p->px;
+    y = p->py;
+  }
   f_cb(p, m, x, y);
 
   /*on pourrait récupérer le code d'erreur de la fonction, en mode :
@@ -397,11 +403,10 @@ void detection_etat(carte_t * pt_m){
 
 
 
-void arakiri(personnage_t * personnage, carte_t * pt_m){ //   C good
+void arakiri(personnage_t * personnage, carte_t * pt_m, int x, int y){ //   C good
+
 int i;
 int j;
-int x;
-int y;
 int range = 2;
 
   if(pt_m->map[x][y]->personnage == NULL){
@@ -424,8 +429,8 @@ int range = 2;
 
 }
 
-void arakiri_cb(void * personnage, void * pt_m){
-  arakiri( personnage,pt_m);
+void arakiri_cb(void * personnage, void * pt_m, int x, int y){
+  arakiri( personnage,pt_m,x,y);
 }
 
 
