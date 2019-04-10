@@ -70,8 +70,8 @@ void init_chevalier(personnage_t * chevalier ){
   chevalier->pp = malloc(sizeof(char)*strlen(pp));
   strcpy(chevalier->pp, pp);
 
-  chevalier->nb_spell = 2;
-  init_spell(chevalier,chevalier->nb_spell, "Fait ton greu", &fait_ton_greu_cb, "Tourbilol", tourbilol_cb);
+  chevalier->nb_spell = 3;
+  init_spell(chevalier,chevalier->nb_spell, "Fait ton greu", &fait_ton_greu_cb, "Tourbilol", &tourbilol_cb,"jet de sable",&jet_de_sable_cb);
 
   chevalier->pv = 700;
   chevalier->pv_max = 700;
@@ -113,7 +113,7 @@ void init_tacticien(personnage_t * tacticien ){
 }
 
 void init_ninja(personnage_t * ninja ){
-	
+
 	char *pp = "🐱‍👤";
   ninja->pp = malloc(sizeof(char)*strlen(pp));
   strcpy(ninja->pp, pp);
@@ -133,7 +133,8 @@ void init_sac(personnage_t * sac ){
   sac->pp = malloc(sizeof(char)*strlen(pp));
   strcpy(sac->pp, pp);
 
-  sac->nb_spell = 0;
+  sac->nb_spell = 1;
+  init_spell(sac,sac->nb_spell, "arakiri",&arakiri_cb);
 
   sac->pv = 1;
   sac->pv_max = 300;
@@ -174,8 +175,9 @@ void init_hero(personnage_t * _personnage, int _id, int _px, int _py, char * _no
   _personnage->est_empoisone=0;
 	_personnage->est_mort=0;
 	_personnage->est_enfeu=0;
+  _personnage->est_aveugle=0; //test
 
-	//le délimiteur est omnitient 
+	//le délimiteur est omnitient
   if (_personnage->classe != delimiteur){
     placement(_personnage, pt_m);
   }
