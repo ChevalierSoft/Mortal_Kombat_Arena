@@ -437,14 +437,14 @@ void arakiri_cb(void * personnage, void * pt_m, int x, int y){
 void jet_de_sable(personnage_t * personnage, carte_t * pt_m, int x, int y){
 
 int range = 4;
-if(pt_m->map[x][y]->personnage == NULL){
+if(pt_m->map[x][y]->personnage != NULL){
   if(range_detection(personnage,range,y,x)){
     pt_m->map[x][y]->personnage->est_aveugle = 3;
 
 }else
   printf(YEL"%s\n"RESET,"Range insuffisante");
 }else
-printf("\nLa case est occupée !\n");
+printf("\n Il n'y a personne sur cette case !\n");
 
 }
 
