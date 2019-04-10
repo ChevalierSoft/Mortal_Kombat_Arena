@@ -409,24 +409,19 @@ int i;
 int j;
 int range = 2;
 
-  if(pt_m->map[x][y]->personnage == NULL){
-
-      for(i = x-range; i < x+range ; ++i){ // collision_carre
-        for(j = y-range; j < y+range ; ++j){
-          if(i>=0  && i<N && j<N && j>=0){
-            if(pt_m->map[i][j]->personnage != NULL)
-              coup(pt_m->map[i][j]->personnage, 50);
-            if(pt_m->map[i][j]->land != 2)
-              pt_m->map[i][j]->land = 3;
-            else{
-              pt_m->map[i][j]->land = 1;
-            }
+    for(i = x-range; i < x+range ; ++i){ // collision_carre
+      for(j = y-range; j < y+range ; ++j){
+        if(i>=0  && i<N && j<N && j>=0){
+          if(pt_m->map[i][j]->personnage != NULL)
+            coup(pt_m->map[i][j]->personnage, 50);
+          if(pt_m->map[i][j]->land != 2)
+            pt_m->map[i][j]->land = 3;
+          else{
+            pt_m->map[i][j]->land = 1;
           }
         }
       }
-  }else
-    printf("\nLa case est occupée !\n");
-
+    }
 }
 
 void arakiri_cb(void * personnage, void * pt_m, int x, int y){
