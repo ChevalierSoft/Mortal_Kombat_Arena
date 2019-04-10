@@ -8,16 +8,46 @@ void pas_fini(){
 void menu_start(){
   printf("                                                                         \n");
   printf(MAG"@@@@@@@@@@   @@@  @@@   @@@@@@   @@@@@@@   @@@@@@@@  @@@  @@@   @@@@@@   \n");
-  printf("@@@@@@@@@@@  @@@  @@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@ @@@  @@@@@@@@  \n");
-  printf("@@! @@! @@!  @@!  !@@  @@!  @@@  @@!  @@@  @@!       @@!@!@@@  @@!  @@@  \n");
-  printf("!@! !@! !@!  !@!  @!!  !@!  @!@  !@!  @!@  !@!       !@!!@!@!  !@!  @!@  \n");
-  printf("@!! !!@ @!@  @!@@!@!   @!@!@!@!  @!@!!@!   @!!!:!    @!@ !!@!  @!@!@!@!  \n");
+  printf(   "@@@@@@@@@@@  @@@  @@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@ @@@  @@@@@@@@  \n");
+  printf(   "@@! @@! @@!  @@!  !@@  @@!  @@@  @@!  @@@  @@!       @@!@!@@@  @@!  @@@  \n");
+  printf(   "!@! !@! !@!  !@!  @!!  !@!  @!@  !@!  @!@  !@!       !@!!@!@!  !@!  @!@  \n");
+  printf(   "@!! !!@ @!@  @!@@!@!   @!@!@!@!  @!@!!@!   @!!!:!    @!@ !!@!  @!@!@!@!  \n");
   printf(CYN"!@!   ! !@!  !!@!!!    !!!@!!!!  !!@!@!    !!!!!:    !@!  !!!  !!!@!!!!  \n");
-  printf("!!:     !!:  !!: :!!   !!:  !!!  !!: :!!   !!:       !!:  !!!  !!:  !!!  \n");
-  printf(":!:     :!:  :!:  !:!  :!:  !:!  :!:  !:!  :!:       :!:  !:!  :!:  !:!  \n");
-  printf(":::     ::    ::  :::  ::   :::  ::   :::   :: ::::   ::   ::  ::   :::  \n");
-  printf(" :      :     :   :::   :   : :   :   : :  : :: ::   ::    :    :   : :  \n\n"RESET);
+  printf(   "!!:     !!:  !!: :!!   !!:  !!!  !!: :!!   !!:       !!:  !!!  !!:  !!!  \n");
+  printf(   ":!:     :!:  :!:  !:!  :!:  !:!  :!:  !:!  :!:       :!:  !:!  :!:  !:!  \n");
+  printf(   ":::     ::    ::  :::  ::   :::  ::   :::   :: ::::   ::   ::  ::   :::  \n");
+  printf(   " :      :     :   :::   :   : :   :   : :  : :: ::   ::    :    :   : :  \n\n"RESET);
+  printf(   "                            PRESS ENTER\n"                                  );
   getchar();
+}
+
+int dbl_digit(char c){
+  if (c>='0' && c<='9'){
+    return(1);}
+  return(0);
+}
+
+int menu_main(){
+  int choix;
+  printf(MAG" @@@@@@@@@@  @@@@@@@@ @@@  @@@ @@@  @@@\n");
+  printf(   " @@! @@! @@! @@!      @@!@!@@@ @@!  @@@\n");
+  printf(   " @!! !!@ @!@ @!!!:!   @!@@!!@! @!@  !@!\n");
+  printf(CYN" !!:     !!: !!:      !!:  !!! !!:  !!!\n");
+  printf(   "  :      :   : :: ::: ::    :   :.:: : \n\n"RESET);
+
+  printf(YEL"1) Une machine\n");
+  printf("2) Reseau (a implementer)\n");
+  printf("3) Quiter\n"RESET);
+  do{
+    choix = getchar();
+  }while( (!dbl_digit(choix)) || (choix < '1') || (choix > '3'));
+
+  if(choix=='3'){
+    printf(MAG"\n#######################################################################\n"RESET);
+    exit(0);
+  }
+
+  return(choix-'0');
 }
 
 int phase_premiere(personnage_t * _personnage, carte_t * pt_m){
@@ -68,7 +98,6 @@ int phase_attaque(personnage_t * _personnage, carte_t * pt_m){
     }while (choix <1 || choix > _personnage->nb_spell + 2) ;/*+2 pour passer le tour et retour*/
       return(choix);
   }
-
 
 void menu_choix(personnage_t * sasuke, carte_t * pt_m){
   int phase1=0, phase2=0;
@@ -124,7 +153,6 @@ void backdash( personnage_t * ex){
     en_tete();
     printf("probleme de personnage free\n");
   }
-
 }
 
 int get_hp_team(int n){
@@ -181,7 +209,6 @@ int get_hp_team(int n){
 }
 
 void kombat( carte_t * pt_m){
-  menu_start();
   /*verifier que la liste n'est pas vide pour lancer*/
   if (!liste_vide()){
     /*bouleen de lancement de partie*/

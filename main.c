@@ -7,9 +7,10 @@
 
 int main(int argc, char const *argv[]) {
 
-  printf(RED"\n++++++++++++++++++++ M K Arena ++++++++++++++++++++\n"RESET);
+  printf(MAG"\n#######################################################################\n"RESET);
   // Squalala nous sommes parti
   menu_start();
+  menu_main();
   //on crée le plateau de jeu (#ez)
   carte_t * pt_m= malloc(sizeof(carte_t));
   //on crée une liste de perso
@@ -26,7 +27,7 @@ int main(int argc, char const *argv[]) {
   //free la map
   map_detruire(&pt_m);
   afficher_liste();
-  printf(RED"\n+++++++++++++++++++++++++++++++++++++++++++++++++++\n"RESET);
+  printf(MAG"\n#######################################################################\n"RESET);
 
   return 0;
 

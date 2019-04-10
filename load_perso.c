@@ -173,11 +173,11 @@ void quit_quick(carte_t * pt_m){
 	detruire_liste();
   map_detruire(&pt_m);
   afficher_liste();
-  printf(RED"\n+++++++++++++++++++++++++++++++++++++++++++++++++++\n"RESET);
+  printf(MAG"\n#######################################################################\n"RESET);
 
 }
 
-//fonction qui envoie les infos perssus dans le fichier vers 
+//fonction qui envoie les infos perçu dans le fichier vers init
 void gogo_powerRanger(int id, int px, int py, char * nom, int classe, carte_t * pt_m){
 	personnage_t * Lucatiel = malloc(sizeof(personnage_t));
   init_hero(Lucatiel, id, px, py, nom, pt_m, classe);
