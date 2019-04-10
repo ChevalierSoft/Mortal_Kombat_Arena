@@ -288,7 +288,6 @@ void deplacement(personnage_t *_personnage, carte_t * pt_m, int x, int y){
 
   int range = 6;
 
-
   if(pt_m->map[x][y]->personnage == NULL){
     if(range_detection(_personnage,range,y,x)){
     	pt_m->map[_personnage->px][_personnage->py]->personnage = NULL;
@@ -299,15 +298,14 @@ void deplacement(personnage_t *_personnage, carte_t * pt_m, int x, int y){
     else
       printf(YEL"%s\n"RESET,"Range insuffisante");
   }
-}
-  /*
   else{
     printf("\nIl y a déja un personnage sur cette case !!\n");
-    return 10;  permet de pas passer el tour du joueur si il se trompe
+    //return 10;  permet de pas passer el tour du joueur si il se trompe
   }
-  return 0;
 }
-*/
+void deplacement_cb(void *_personnage, void * pt_m, int x, int y){
+  deplacement(_personnage, pt_m, x, y);
+}
 
 void summon(personnage_t *_personnage, carte_t * pt_m, int x, int y){
 
@@ -316,12 +314,12 @@ void summon(personnage_t *_personnage, carte_t * pt_m, int x, int y){
   if(pt_m->map[x][y]->personnage == NULL){
     if(range_detection(_personnage,range,y,x)){
       personnage_t * ptitsac = malloc(sizeof(personnage_t));
-      init_hero(ptitsac, x, y, "sac", pt_m, sac);                         // là.
+      //compte le nb de perso dans la liste puis:
+      init_hero(ptitsac,10, x, y, "sac", pt_m, sac);                         // là.
     }else
       printf(YEL"%s\n"RESET,"Range insuffisante");
   }else
     printf("\nLa case est occupée !\n");
-
 }
 void summon_cb(void *_personnage, void * pt_m, int x, int y){
   summon(_personnage, pt_m, x, y);

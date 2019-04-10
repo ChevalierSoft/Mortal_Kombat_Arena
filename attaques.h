@@ -22,10 +22,10 @@ void shield_cb				(void * personnage, void * pt_m, int x, int y);
 
 void fait_ton_greu_cb	(void * personnage, void * pt_m, int x, int y);
 
-void arakiri(personnage_t * personnage, carte_t * pt_m);
+void arakiri					(personnage_t * personnage, carte_t * pt_m);
 
 void detection_etat		(carte_t * pt_m);
-void  deplacement			(personnage_t *_personnage, carte_t * pt_m, int x, int y);
+void deplacement_cb		(void * personnage, void * pt_m, int x, int y);
 int  range_detection	(personnage_t *_personnage, int range, int x, int y);
 
 

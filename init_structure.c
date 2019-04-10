@@ -159,11 +159,11 @@ void init_delimiteur(personnage_t * del ){
   del->chance = 42;
 }
 
-void init_hero(personnage_t * _personnage, int _px, int _py, char * _nom, carte_t * pt_m, int _classe){
+void init_hero(personnage_t * _personnage, int _id, int _px, int _py, char * _nom, carte_t * pt_m, int _classe){
 
   _personnage->nom = malloc(sizeof(char)*strlen(_nom));
   strcpy(_personnage->nom, _nom);
-
+  _personnage->id = _id;
   _personnage->classe = _classe;
 
   _personnage->px = _px;

@@ -5,6 +5,21 @@ void pas_fini(){
   printf(YEL"%s\n", "sort non castable avant la prochaine lune \n"RESET);
 }
 
+void menu_start(){
+  printf("                                                                         \n");
+  printf(MAG"@@@@@@@@@@   @@@  @@@   @@@@@@   @@@@@@@   @@@@@@@@  @@@  @@@   @@@@@@   \n");
+  printf("@@@@@@@@@@@  @@@  @@@  @@@@@@@@  @@@@@@@@  @@@@@@@@  @@@@ @@@  @@@@@@@@  \n");
+  printf("@@! @@! @@!  @@!  !@@  @@!  @@@  @@!  @@@  @@!       @@!@!@@@  @@!  @@@  \n");
+  printf("!@! !@! !@!  !@!  @!!  !@!  @!@  !@!  @!@  !@!       !@!!@!@!  !@!  @!@  \n");
+  printf("@!! !!@ @!@  @!@@!@!   @!@!@!@!  @!@!!@!   @!!!:!    @!@ !!@!  @!@!@!@!  \n");
+  printf(CYN"!@!   ! !@!  !!@!!!    !!!@!!!!  !!@!@!    !!!!!:    !@!  !!!  !!!@!!!!  \n");
+  printf("!!:     !!:  !!: :!!   !!:  !!!  !!: :!!   !!:       !!:  !!!  !!:  !!!  \n");
+  printf(":!:     :!:  :!:  !:!  :!:  !:!  :!:  !:!  :!:       :!:  !:!  :!:  !:!  \n");
+  printf(":::     ::    ::  :::  ::   :::  ::   :::   :: ::::   ::   ::  ::   :::  \n");
+  printf(" :      :     :   :::   :   : :   :   : :  : :: ::   ::    :    :   : :  \n\n"RESET);
+  getchar();
+}
+
 int phase_premiere(personnage_t * _personnage, carte_t * pt_m){
   int choix = -1;
 
@@ -76,7 +91,7 @@ void menu_choix(personnage_t * sasuke, carte_t * pt_m){
                       pas_fini();
                   	else;
                     break;
-        case 2: getXY(sasuke, pt_m,&deplacement);break;
+        case 2: getXY(sasuke, pt_m,&deplacement_cb);break;
 
         case 3: pas_fini();break;
         case 4: printf(YEL"%s passe son tour\n"RESET, sasuke->nom);break;
@@ -166,7 +181,7 @@ int get_hp_team(int n){
 }
 
 void kombat( carte_t * pt_m){
-
+  menu_start();
   /*verifier que la liste n'est pas vide pour lancer*/
   if (!liste_vide()){
     /*bouleen de lancement de partie*/
