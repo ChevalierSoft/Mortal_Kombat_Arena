@@ -23,6 +23,10 @@
 //char * serveur_id = "DaBoi";
 #define serveur_id "DaBoi"
 
+typedef struct{
+	int id, choix_menu, numero_fonction, tx, ty;
+} action_t;
+
 char buffer[512];
 
 void fin(int sig){
@@ -192,12 +196,32 @@ int recive_ok(int client_socket){
   return(0);
 }
 
+void send_action(int client_socket, action_t * action_serv){
+
+	send_int(client_socket,action_serv->id);
+	recive_ok(client_socket);
+
+	send_int(client_socket,action_serv->choix_menu);
+	recive_ok(client_socket);
+
+	send_int(client_socket,action_serv->numero_fonction);
+	recive_ok(client_socket);
+	
+	send_int(client_socket,action_serv->tx);
+	recive_ok(client_socket);
+
+	send_int(client_socket,action_serv->ty);
+	recive_ok(client_socket);
+
+}
+
 
 //####################################################################
 
 
 int main ( void ){
 
+	system("clear");
 	int ma_socket;
 	int client_socket;
 	struct sockaddr_in mon_address, client_address;
@@ -257,7 +281,7 @@ int main ( void ){
 
   //Ready?
   printf("Pret ? (o|y)\n");
-  getchar();
+  //getchar();														<------
   memset(buffer, 0, sizeof(buffer));
   sprintf(buffer,"Ready ?");
   send(client_socket, buffer, strlen(buffer), 0);
@@ -268,7 +292,7 @@ int main ( void ){
   printf(YEL"[%s] %s \n"RESET, client_id, buffer);
   
   //nom fichier save à md5 ?
-  char * nomFichier = "p_save.txt";
+  char * nomFichier = "p_save.txt";	//à changer
   memset(buffer, 0, sizeof(buffer));
   sprintf(buffer, nomFichier);
   send(client_socket, buffer, strlen(buffer), 0);
@@ -278,7 +302,7 @@ int main ( void ){
   memset(buffer, 0, sizeof(buffer));
   recv(client_socket, buffer, 512,0);
   printf(YEL"[%s] %s \n"RESET, client_id, buffer);
-  printf(YEL"tst	\n"RESET);
+  printf(YEL"_	\n"RESET);
 
   char * serveur_md5 = get_md5(nomFichier);
 
@@ -294,33 +318,27 @@ int main ( void ){
 		  
 	//Start
 	printf(RED"La partie commence\n"RESET);
-
+	printf("Envoie d'une action --->\n");
 	//va falloir enregistrer les retours avec des modulo
 	//l'Host va tj commancer pour l'instant
 
 	//envoie d'une action
-	int id = 1;
-	send_int(client_socket, id);
+	action_t * action_serv = malloc(sizeof(action_serv));
+	//sera defini a la fin de getXY
+	action_serv->id = 1;
+	action_serv->choix_menu = 1;
+	action_serv->numero_fonction = 3;
+	action_serv->tx = 2;
+	action_serv->ty = 1;
 
-	recive_ok(client_socket);
+	
 
-	int choix_menu = 1;
-	send_int(client_socket, choix_menu);
-
-	/*int numero_fonction = 3;
-	send_int(client_socket, numero_fonction);
-
-	int tx = 2;
-	send_int(client_socket, tx);
-
-	int ty = 1;
-	send_int(client_socket, ty);
-	*/
-
+	send_action(client_socket, action_serv);
 
 	shutdown(ma_socket,2);
 	close(ma_socket);
 	return 0;
 }
+
 
 

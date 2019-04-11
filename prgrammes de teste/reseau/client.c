@@ -26,34 +26,9 @@
 #define client_id "Ash"
 #define QUITTER "QUITTER"
 
-char menu(){
-	char choix;
-	printf("Que voulez-vous faire ?\n");
-	printf("m: envoyer un message au serveur\n");
-	printf("q: quitter\n");
-	printf("Que voulez-vous faire ?\n");
-	scanf(" %c", &choix);
-	return choix;
-}
-
-void envoyer_message(int to_server_socket){
-	char msg[200], buffer[512];
-	printf("quel est votre message : ");
-	scanf(" %[^\n]s", buffer);
-	sprintf(msg, "MSG %s", buffer);
-	send(to_server_socket, msg, strlen(msg), 0); //on augmente la taille de 4 pour l'entête
-	// lecture de la réponse
-	memset(buffer, 0, sizeof(buffer));
-	recv(to_server_socket,buffer,512,0);
-	printf(MAG"[client] reponse du serveur : '%s'\n"RESET, buffer);
-	/*if(strncmp("MSG", buffer, 3)==0){
-			printf("[serveur] message reçu : '%s'\n",buffer+4);
-			//printf("[serveur] envoi de la réponse ");
-			//sprintf(buffer,"REPONSE DU SERVEUR");
-			envoyer_message(client_socket);
-			//send(client_socket, buffer, 512, 0);
-	}*/
-}
+typedef struct{
+	int id, choix_menu, numero_fonction, tx, ty;
+} action_t;
 
 void quitter(int to_server_socket){
 	printf("[client] envoi message QUITTER au serveur\n");
@@ -147,26 +122,66 @@ static int a2i(char* s){
  		res*=10;
  		res += c2i(s[i]);
  	}
- 	printf("%d\n", neg*res);
  	return(neg*res);
-
 }
 
-void recive_int(int to_server_socket, int *id){
-
+int recive_int(int to_server_socket){
 	char buffer[512];
 	memset(buffer, 0, sizeof(buffer));
 	recv(to_server_socket, buffer, 512, 0);
-	*id = a2i(buffer);
+	return(a2i(buffer));
 }
 
 void send_msg(int to_server_socket, char * msg){
 	char buffer[512];
 	memset(buffer, 0, sizeof(buffer));
-	strcpy(buffer, msg);
-	send(to_server_socket, client_id, strlen(client_id),0);
+	sprintf(buffer, msg);
+	//printf("buffer : %s\n", buffer);
+	send(to_server_socket, buffer, strlen(buffer),0);
 
 }
+
+void recive_action(int to_server_socket, action_t *action_serv){
+	
+	action_serv->id = recive_int(to_server_socket);
+  send_msg(to_server_socket, "ok");
+  action_serv->choix_menu = recive_int(to_server_socket);
+  send_msg(to_server_socket, "ok");
+  action_serv->numero_fonction = recive_int(to_server_socket);
+  send_msg(to_server_socket, "ok");
+	action_serv->tx = recive_int(to_server_socket);
+	send_msg(to_server_socket, "ok");
+	action_serv->ty = recive_int(to_server_socket);
+	send_msg(to_server_socket, "ok");
+
+
+  printf("id = %d\n", action_serv->id);
+	
+  if(action_serv->choix_menu==1)
+  	printf(YEL"choix = attaque\n"RESET);
+  else if (action_serv->choix_menu==2)
+  	printf(YEL"choix = deplacement\n"RESET);
+  else if (action_serv->choix_menu==3)
+  	printf(YEL"choix = abandon\n"RESET);
+  else if (action_serv->choix_menu==4)
+  	printf(YEL"choix = passe son tour\n"RESET);
+
+  
+
+	
+  printf("numero_fonction = %d\n", action_serv->numero_fonction);
+
+  
+
+	
+  printf("tx = %d\n", action_serv->tx);
+
+  
+
+	
+  printf("ty = %d\n", action_serv->ty);
+}
+
 
 
 //####################################################################
@@ -174,6 +189,7 @@ void send_msg(int to_server_socket, char * msg){
 
 int main (  int argc, char** argv ){
 
+	system("clear");
 	struct sockaddr_in serveur_addr;
 	struct hostent *serveur_info;
 	long hostAddr;
@@ -213,8 +229,7 @@ int main (  int argc, char** argv ){
 	//printf("port : %d\n",port);
 
 	//connection !
-	sprintf(buffer, "Connection client");
-	send(to_server_socket, buffer, strlen(buffer),0);
+	send_msg(to_server_socket, "Connection client");
 
 	//nom du serveur?
 	memset(buffer, 0, sizeof(buffer));
@@ -224,8 +239,7 @@ int main (  int argc, char** argv ){
 	strcpy(server_id, buffer);
 
 	//nom client !
-	memset(buffer, 0, sizeof(buffer));
-	send(to_server_socket, client_id, strlen(client_id),0);
+	send_msg(to_server_socket, client_id);
 
 	//Ready ?
 	memset(buffer, 0, sizeof(buffer));
@@ -235,9 +249,8 @@ int main (  int argc, char** argv ){
 	//Ready !
 	memset(buffer, 0, sizeof(buffer));
 	printf("Pret ? (o|y)\n");
-  getchar();
-  sprintf(buffer,"Client pret");
-  send(to_server_socket, buffer, strlen(buffer),0);
+  //getchar();														<------
+  send_msg(to_server_socket, "Client pret");
 
   //nom fichier save à md5 ?
   memset(buffer, 0, sizeof(buffer));
@@ -250,47 +263,19 @@ int main (  int argc, char** argv ){
 	//md5 !
 	char * client_md5 = get_md5(nomFichier);
 	printf("client_md5 : %s\n", client_md5);
-
-	memset(buffer, 0, sizeof(buffer));
-	sprintf(buffer, client_md5);
-	send(to_server_socket, buffer, strlen(buffer),0);
+	send_msg(to_server_socket, client_md5);
 	free(client_md5); //hé oui, faut free
   
   //Start
   printf(RED"La partie commence\n"RESET);
 
   //enregistrement d'une action
-  int id=0;
-  recive_int(to_server_socket, &id);
-  printf("id = %d\n", id);
-
-  send_msg(to_server_socket, "ok");
-
-	int choix_menu = 0;
-	recive_int(to_server_socket, &choix_menu);
-  if(choix_menu==1)
-  	printf("choix = attaque\n");
-  else if (choix_menu==2)
-  	printf("choix = deplacement\n");
-  else if (choix_menu==3)
-  	printf("choix = abandon\n");
-  else if (choix_menu==4)
-  	printf("choix = passe son tour\n");
+  action_t * action_serv = malloc(sizeof(action_serv));
+	recive_action(to_server_socket, action_serv);
 
 
-/*
-	int numero_fonction = 0;
-	recive_int(to_server_socket, &numero_fonction);
-  printf("numero_fonction = %d\n", numero_fonction);
 
-	int tx = 0;
-	recive_int(to_server_socket, &tx);
-  printf("tx = %d\n", tx);
 
-	int ty = 0;
-	recive_int(to_server_socket, &ty);
-  printf("ty = %d\n", ty);
-*/
 
 
 
@@ -299,3 +284,8 @@ int main (  int argc, char** argv ){
 	close(to_server_socket);
 	return 0;
 }
+
+
+/*pensser à une sortie si on initialise un perso 
+en dehors de la map par faute de taille*/
+/*verifier les fichiers ouverts*/
