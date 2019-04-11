@@ -143,6 +143,8 @@ void send_msg(int to_server_socket, char * msg){
 
 void recive_action(int to_server_socket, action_t *action_serv){
 	
+	printf(YEL"####reception####\n"RESET);
+
 	action_serv->id = recive_int(to_server_socket);
   send_msg(to_server_socket, "ok");
   action_serv->choix_menu = recive_int(to_server_socket);
@@ -154,32 +156,34 @@ void recive_action(int to_server_socket, action_t *action_serv){
 	action_serv->ty = recive_int(to_server_socket);
 	send_msg(to_server_socket, "ok");
 
-
+	printf(YEL"###traitement###\n"RESET);
   printf("id = %d\n", action_serv->id);
 	
-  if(action_serv->choix_menu==1)
-  	printf(YEL"choix = attaque\n"RESET);
-  else if (action_serv->choix_menu==2)
-  	printf(YEL"choix = deplacement\n"RESET);
-  else if (action_serv->choix_menu==3)
-  	printf(YEL"choix = abandon\n"RESET);
-  else if (action_serv->choix_menu==4)
-  	printf(YEL"choix = passe son tour\n"RESET);
+  if(action_serv->choix_menu==1){
+  	printf("choix = attaque\n");
+  	if (action_serv->numero_fonction > 0){
+  		printf("numero de la fonction d'attaque = %d\n", action_serv->numero_fonction);
+  		printf("nom du spell en : tx = %d ty = %d\n", action_serv->tx, action_serv->ty);
+  	}
+  	//faudra comparer avec nb_spell du perso's id
+  	//execute le spell[numero_fonction-1] du perso 
+  }
+  else if (action_serv->choix_menu==2){
+  	printf("choix = deplacement\n");
+  	printf("deplacement en : tx = %d ty = %d\n", action_serv->tx, action_serv->ty);
+  }
+  else if (action_serv->choix_menu==3){
+  	printf("choix = passe son tour\n");
+  	//ne rien faire
+  }
+  else if (action_serv->choix_menu==5){
+  	printf("choix = abandon\n");
+  	//gg(team2);
+  }
 
   
-
-	
-  printf("numero_fonction = %d\n", action_serv->numero_fonction);
-
+	printf(YEL"################\n"RESET);
   
-
-	
-  printf("tx = %d\n", action_serv->tx);
-
-  
-
-	
-  printf("ty = %d\n", action_serv->ty);
 }
 
 
