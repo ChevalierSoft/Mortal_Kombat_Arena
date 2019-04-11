@@ -143,6 +143,59 @@ char * get_md5(char * file_name){
   return(output);
 }
 
+static char i2c(int i){
+
+	return(i+'0');
+}
+
+char *i2a(int i/*,char *s*/){
+	char *s;
+	s=malloc(sizeof(char)*6);
+	int neg=0;
+ 	 int tmp=0;
+	  int j=0;
+
+ 	if (i < 0){
+ 		neg=1;
+ 		i*=-1;
+ 	}
+ 	
+ 	while(i!=0 && j<6){
+		tmp=i%10;
+		i/=10;
+		s[j]=i2c(tmp);
+		j++;
+	}
+	if (neg==1)
+		s[j++]='-';
+	s[j]='\0';
+
+	return(s);
+}
+
+void send_int(int client_socket, int vald){
+
+	char buffer[512];
+	char * better_vald = i2a(vald);
+	memset(buffer, 0, sizeof(buffer));
+	sprintf(buffer, better_vald);
+	send(client_socket, buffer, strlen(buffer), 0);
+	free(better_vald);
+
+}
+int recive_ok(int client_socket){
+	char buffer[512];
+	memset(buffer, 0, sizeof(buffer));
+  recv(client_socket, buffer, 512,0);
+  if (strcmp(buffer, "ok"))
+  	return(1);
+  return(0);
+}
+
+
+//####################################################################
+
+
 int main ( void ){
 
 	int ma_socket;
@@ -150,7 +203,7 @@ int main ( void ){
 	struct sockaddr_in mon_address, client_address;
 	unsigned int mon_address_longueur, lg;
 	bzero(&mon_address,sizeof(mon_address));
-	mon_address.sin_port = htons(30407);
+	mon_address.sin_port = htons(30410);
 	mon_address.sin_family = AF_INET;
 	mon_address.sin_addr.s_addr = htonl(INADDR_ANY);
 
@@ -180,93 +233,94 @@ int main ( void ){
                          &mon_address_longueur);
 
 	//int quitter=0;
-
   //while(!quitter){
-		memset(buffer, 0, sizeof(buffer));
-		recv(client_socket, buffer, 512,0);
-/*
-		if(strncmp("Connection", buffer, 10)==0){
-			printf(YEL"[serveur] message de connection reçu : '%s'\n"RESET,buffer);
 
-			//printf("[serveur] envoi de la réponse ");
-			//sprintf(buffer,"REPONSE DU SERVEUR");
-			//envoyer_message(client_socket);
-			send(client_socket, serveur_id, strlen(serveur_id), 0);
-			//send(client_socket, buffer, 512, 0);
-		} else if(strncmp("QUITTER", buffer, 7) == 0) {
-			printf("[serveur] déconnexion demandée : '%s'\n",buffer);
-			shutdown(client_socket,2);
-			close(client_socket);
-			quitter=1;
-		} else if(strncmp("BONJOUR", buffer, 7) == 0){
-			printf("[serveur] BONJOUR d'un client\n");
-			send(client_socket, "BONJOUR", 7, 0);
-		} else {
-			printf("[serveur] message inconnu : '%s'\n", buffer);
-		}*/
+	/************************************************************/
 
-		//if(strncmp("Connection", buffer, 10)==0){
+	//connection !
+	memset(buffer, 0, sizeof(buffer));
+	recv(client_socket, buffer, 512,0);
 
-			//envoie du nom serveur
-      printf(YEL"[client] %s \n"RESET, buffer);
-      memset(buffer, 0, sizeof(buffer));
-			printf("envoie du serveur_id %s\n", serveur_id);
-			sprintf(buffer,"DaBoi");
-			send(client_socket, buffer, strlen(buffer), 0);
+	//envoie du nom serveur
+  printf(YEL"[client] %s \n"RESET, buffer);
+  memset(buffer, 0, sizeof(buffer));
+	printf("envoie du serveur_id %s\n", serveur_id);
+	sprintf(buffer,"DaBoi");
+	send(client_socket, buffer, strlen(buffer), 0);
 
-			//reception du nom du client
-			memset(buffer, 0, sizeof(buffer));
-      recv(client_socket, buffer, 512,0);
-      char client_id[512];
-	    strcpy(client_id, buffer);
-      printf("client_id : %s \n" , client_id);
+	//reception du nom du client
+  memset(buffer, 0, sizeof(buffer));
+  recv(client_socket, buffer, 512,0);
+  char client_id[512];
+	strcpy(client_id, buffer);
+  printf("client_id : %s \n" , client_id);
 
-      //Ready?
-      printf("Pret ? (o|y)\n");
-      getchar();
-      memset(buffer, 0, sizeof(buffer));
-			sprintf(buffer,"Ready ?");
-			send(client_socket, buffer, strlen(buffer), 0);
+  //Ready?
+  printf("Pret ? (o|y)\n");
+  getchar();
+  memset(buffer, 0, sizeof(buffer));
+  sprintf(buffer,"Ready ?");
+  send(client_socket, buffer, strlen(buffer), 0);
 
-			//Ready !
-			memset(buffer, 0, sizeof(buffer));
-      recv(client_socket, buffer, 512,0);
-      printf(YEL"[%s] %s \n"RESET, client_id, buffer);
-      
-      //nom fichier save à md5 ?
-      char * nomFichier = "p_save.txt";
-      memset(buffer, 0, sizeof(buffer));
-			sprintf(buffer, nomFichier);
-			send(client_socket, buffer, strlen(buffer), 0);
+  //Ready !
+  memset(buffer, 0, sizeof(buffer));
+  recv(client_socket, buffer, 512,0);
+  printf(YEL"[%s] %s \n"RESET, client_id, buffer);
+  
+  //nom fichier save à md5 ?
+  char * nomFichier = "p_save.txt";
+  memset(buffer, 0, sizeof(buffer));
+  sprintf(buffer, nomFichier);
+  send(client_socket, buffer, strlen(buffer), 0);
 
 
-			//md5 !
-      memset(buffer, 0, sizeof(buffer));
-      recv(client_socket, buffer, 512,0);
-      printf(YEL"[%s] %s \n"RESET, client_id, buffer);
-      printf(YEL"tst	\n"RESET);
+  //md5 !
+  memset(buffer, 0, sizeof(buffer));
+  recv(client_socket, buffer, 512,0);
+  printf(YEL"[%s] %s \n"RESET, client_id, buffer);
+  printf(YEL"tst	\n"RESET);
 
-      char * serveur_md5 = get_md5(nomFichier);
+  char * serveur_md5 = get_md5(nomFichier);
 
-			printf("hash du fichier %s : %s\n", nomFichier, serveur_md5);
-      
-      if(! strcmp(buffer,serveur_md5))
-      	printf(CYN"Sauvegarde valide\n"RESET);
-      else
-      	printf(RED"Sauvegarde Erronee\n"RESET);
+	printf("hash du fichier %s : %s\n", nomFichier, serveur_md5);
+  
+  if(! strcmp(buffer,serveur_md5))
+  	printf(CYN"Sauvegarde valide\n"RESET);
+  else
+  	printf(RED"Sauvegarde Erronee\n"RESET);
 
-			free(serveur_md5); //hé oui, faut free
+	free(serveur_md5); //hé oui, faut free
 
 		  
-		  //Start
-		  printf(RED"La partie commence\n"RESET);
+	//Start
+	printf(RED"La partie commence\n"RESET);
 
-  
-		//}
+	//va falloir enregistrer les retours avec des modulo
+	//l'Host va tj commancer pour l'instant
 
-	//printf("fin de boucle\n");
-	//}
+	//envoie d'une action
+	int id = 1;
+	send_int(client_socket, id);
+
+	recive_ok(client_socket);
+
+	int choix_menu = 1;
+	send_int(client_socket, choix_menu);
+
+	/*int numero_fonction = 3;
+	send_int(client_socket, numero_fonction);
+
+	int tx = 2;
+	send_int(client_socket, tx);
+
+	int ty = 1;
+	send_int(client_socket, ty);
+	*/
+
+
 	shutdown(ma_socket,2);
 	close(ma_socket);
 	return 0;
 }
+
+

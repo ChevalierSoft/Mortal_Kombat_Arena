@@ -115,6 +115,63 @@ char * get_md5(char * file_name){
   return(output);
 }
 
+static int nb_digit(char* s){
+	int nb=0;
+
+	while(*s){
+		nb++;
+		s++;
+	}
+
+	return(nb);
+}
+
+static int c2i(char i){
+
+	return(i-'0');
+}
+
+static int a2i(char* s){
+	
+	int i=0;
+	int neg=1;
+ 	int res=0;
+	int nb=nb_digit(s);
+
+ 	if ( *s == '-' ){
+ 		neg=-1;
+ 		i++;
+ 		(*s)++;
+ 	}
+ 	for(; i<nb ; i++){
+ 		res*=10;
+ 		res += c2i(s[i]);
+ 	}
+ 	printf("%d\n", neg*res);
+ 	return(neg*res);
+
+}
+
+void recive_int(int to_server_socket, int *id){
+
+	char buffer[512];
+	memset(buffer, 0, sizeof(buffer));
+	recv(to_server_socket, buffer, 512, 0);
+	*id = a2i(buffer);
+}
+
+void send_msg(int to_server_socket, char * msg){
+	char buffer[512];
+	memset(buffer, 0, sizeof(buffer));
+	strcpy(buffer, msg);
+	send(to_server_socket, client_id, strlen(client_id),0);
+
+}
+
+
+//####################################################################
+
+
 int main (  int argc, char** argv ){
 
 	struct sockaddr_in serveur_addr;
@@ -122,7 +179,7 @@ int main (  int argc, char** argv ){
 	long hostAddr;
 	char buffer[512];
 	int to_server_socket;
-	int port = 30407;
+	int port = 30410;
 
 	bzero(&serveur_addr,sizeof(serveur_addr));
 	hostAddr = inet_addr(SERVEURNAME);
@@ -202,26 +259,41 @@ int main (  int argc, char** argv ){
   //Start
   printf(RED"La partie commence\n"RESET);
 
+  //enregistrement d'une action
+  int id=0;
+  recive_int(to_server_socket, &id);
+  printf("id = %d\n", id);
 
-	//
-    /* Un menu pour faire differentes actions */
-	/*char choix;
-	do {
-		choix = menu();
-		switch(choix){
-			case 'm':
-				envoyer_message(to_server_socket);
-				break;
-			case 'q':
-				quitter(to_server_socket);
-				break;
-			default:
-				printf("Commande '%c' invalide... recommencez\n", choix);
-				break;
-		}
+  send_msg(to_server_socket, "ok");
 
-	} while (choix != 'q');
+	int choix_menu = 0;
+	recive_int(to_server_socket, &choix_menu);
+  if(choix_menu==1)
+  	printf("choix = attaque\n");
+  else if (choix_menu==2)
+  	printf("choix = deplacement\n");
+  else if (choix_menu==3)
+  	printf("choix = abandon\n");
+  else if (choix_menu==4)
+  	printf("choix = passe son tour\n");
+
+
+/*
+	int numero_fonction = 0;
+	recive_int(to_server_socket, &numero_fonction);
+  printf("numero_fonction = %d\n", numero_fonction);
+
+	int tx = 0;
+	recive_int(to_server_socket, &tx);
+  printf("tx = %d\n", tx);
+
+	int ty = 0;
+	recive_int(to_server_socket, &ty);
+  printf("ty = %d\n", ty);
 */
+
+
+
 	/* fermeture de la connexion */
 	shutdown(to_server_socket,2);
 	close(to_server_socket);
