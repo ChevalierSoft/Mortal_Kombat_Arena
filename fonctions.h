@@ -16,5 +16,6 @@
 #include "attaques.h"
 #include "init_structure.h"
 #include "load_perso.h"
+#include "reseau.h"
 
 #endif
