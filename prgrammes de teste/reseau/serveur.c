@@ -21,16 +21,24 @@
 #define RESET "\x1B[0m"
 
 //char * serveur_id = "DaBoi";
-#define serveur_id "DaBoi"
+//#define serveur_id "DaBoi"
+
+#define SERVEURNAME "127.0.1.1" // adresse IP de mon serveur
+#define QUITTER "QUITTER"
+
 
 typedef struct{
 	int id, choix_menu, numero_fonction, tx, ty;
 } action_t;
 
-char buffer[512];
-
 void fin(int sig){
+
 	printf("fin du serveur");
+}
+
+void quitter(int to_server_socket){
+	printf("[client] envoi message QUITTER au serveur\n");
+	send(to_server_socket,QUITTER,7,0);
 }
 
 int hostname_to_ip(char * hostname , char* ip){
@@ -79,19 +87,7 @@ void envoyer_message(int client_socket){
 	recv(client_socket,buffer,512,0);
 	printf("[client] reponse du serveur : '%s'\n", buffer);
 }
-/*
-void quick_send(int client_socket){
-	char msg[200], buffer[512];
-	printf("quel est votre message de reponse : ");
-	scanf(" %[^\n]s", buffer);
-	sprintf(msg, "MSG %s", buffer);
-	send(client_socket, msg, strlen(msg), 0); //on augmente la taille de 4 pour l'entête
-	// lecture de la réponse
-	memset(buffer, 0, sizeof(buffer));
-	recv(client_socket,buffer,512,0);
-	printf("[client] reponse du serveur : '%s'\n", buffer);
-}
-*/
+
 char *str2md5(const char * str, int length) {
     int n;
     MD5_CTX c;
@@ -152,7 +148,12 @@ static char i2c(int i){
 	return(i+'0');
 }
 
-char *i2a(int i/*,char *s*/){
+static int c2i(char i){
+
+	return(i-'0');
+}
+
+char *i2a(int i){
 	char *s;
 	s=malloc(sizeof(char)*6);
 	int neg=0;
@@ -177,6 +178,44 @@ char *i2a(int i/*,char *s*/){
 	return(s);
 }
 
+static int nb_digit(char* s){
+	int nb=0;
+
+	while(*s){
+		nb++;
+		s++;
+	}
+
+	return(nb);
+}
+
+int a2i(char* s){
+	
+	int i=0;
+	int neg=1;
+ 	int res=0;
+	int nb=nb_digit(s);
+
+ 	if ( *s == '-' ){
+ 		neg=-1;
+ 		i++;
+ 		(*s)++;
+ 	}
+ 	for(; i<nb ; i++){
+ 		res*=10;
+ 		res += c2i(s[i]);
+ 	}
+ 	return(neg*res);
+}
+
+void send_msg(int to_server_socket, char * msg){
+	char buffer[512];
+	memset(buffer, 0, sizeof(buffer));
+	sprintf(buffer, msg);
+	//printf("buffer : %s\n", buffer);
+	send(to_server_socket, buffer, strlen(buffer),0);
+}
+
 void send_int(int client_socket, int vald){
 
 	char buffer[512];
@@ -185,8 +224,8 @@ void send_int(int client_socket, int vald){
 	sprintf(buffer, better_vald);
 	send(client_socket, buffer, strlen(buffer), 0);
 	free(better_vald);
-
 }
+
 int recive_ok(int client_socket){
 	char buffer[512];
 	memset(buffer, 0, sizeof(buffer));
@@ -194,6 +233,13 @@ int recive_ok(int client_socket){
   if (strcmp(buffer, "ok"))
   	return(1);
   return(0);
+}
+
+int recive_int(int to_server_socket){
+	char buffer[512];
+	memset(buffer, 0, sizeof(buffer));
+	recv(to_server_socket, buffer, 512, 0);
+	return(a2i(buffer));
 }
 
 void send_action(int client_socket, action_t * action_serv){
@@ -212,16 +258,59 @@ void send_action(int client_socket, action_t * action_serv){
 
 	send_int(client_socket,action_serv->ty);
 	recive_ok(client_socket);
+}
 
+void recive_action(int to_server_socket, action_t *action_serv){
+	
+	printf(YEL"####reception####\n"RESET);
+
+	action_serv->id = recive_int(to_server_socket);
+  send_msg(to_server_socket, "ok");
+  action_serv->choix_menu = recive_int(to_server_socket);
+  send_msg(to_server_socket, "ok");
+  action_serv->numero_fonction = recive_int(to_server_socket);
+  send_msg(to_server_socket, "ok");
+	action_serv->tx = recive_int(to_server_socket);
+	send_msg(to_server_socket, "ok");
+	action_serv->ty = recive_int(to_server_socket);
+	send_msg(to_server_socket, "ok");
+
+	printf(YEL"###traitement###\n"RESET);
+  printf("id = %d\n", action_serv->id);
+	
+  if(action_serv->choix_menu==1){
+  	printf("choix = attaque\n");
+  	if (action_serv->numero_fonction > 0){
+  		printf("numero de la fonction d'attaque = %d\n", action_serv->numero_fonction);
+  		printf("nom du spell en : tx = %d ty = %d\n", action_serv->tx, action_serv->ty);
+  	}
+  	//faudra comparer avec nb_spell du perso's id
+  	//execute le spell[numero_fonction-1] du perso 
+  }
+  else if (action_serv->choix_menu==2){
+  	printf("choix = deplacement\n");
+  	printf("deplacement en : tx = %d ty = %d\n", action_serv->tx, action_serv->ty);
+  }
+  else if (action_serv->choix_menu==3){
+  	printf("choix = passe son tour\n");
+  	//ne rien faire
+  }
+  else if (action_serv->choix_menu==5){
+  	printf("choix = abandon\n");
+  	//gg(team2);
+  }
+
+  
+	printf(YEL"################\n"RESET);
 }
 
 
 //####################################################################
 
 
-int main ( void ){
+int hosting_game(void){
 
-	system("clear");
+	//csystem("clear");
 	int ma_socket;
 	int client_socket;
 	struct sockaddr_in mon_address, client_address;
@@ -233,6 +322,8 @@ int main ( void ){
 
 	char *hostname = "localhost";
   char ip[100];
+  char buffer[512];
+  char * serveur_id = "DaBoi";
 
   hostname_to_ip(hostname , ip);
 	fprintf(stderr, "%s resolved to %s" , hostname , ip);
@@ -292,7 +383,7 @@ int main ( void ){
   printf(YEL"[%s] %s \n"RESET, client_id, buffer);
   
   //nom fichier save à md5 ?
-  char * nomFichier = "p_save.txt";	//à changer
+  char * nomFichier = "lvl1.p";	//à changer
   memset(buffer, 0, sizeof(buffer));
   sprintf(buffer, nomFichier);
   send(client_socket, buffer, strlen(buffer), 0);
@@ -340,5 +431,119 @@ int main ( void ){
 	return 0;
 }
 
+int joining_game(void){
+
+	//system("clear");
+	struct sockaddr_in serveur_addr;
+	struct hostent *serveur_info;
+	long hostAddr;
+	char buffer[512];
+	int to_server_socket;
+	int port = 30410;
+	char * client_id = "Ash";
+
+	bzero(&serveur_addr,sizeof(serveur_addr));
+	hostAddr = inet_addr(SERVEURNAME);
+	if ( (long)hostAddr != (long)-1 ){
+		bcopy(&hostAddr,&serveur_addr.sin_addr,sizeof(hostAddr));
+	}
+	else {
+		serveur_info = gethostbyname(SERVEURNAME);
+	  	if (serveur_info == NULL) {
+			printf("Impossible de récupérer les infos du serveur\n");
+			exit(0);
+	  	}
+	  	bcopy(serveur_info->h_addr,&serveur_addr.sin_addr,serveur_info->h_length);
+	}
+	serveur_addr.sin_port = htons(port);
+	serveur_addr.sin_family = AF_INET;
+	/* creation de la socket */
+	if ( (to_server_socket = socket(AF_INET,SOCK_STREAM,0)) < 0) {
+		printf("Impossible de créer la socket client\n");
+	  	exit(0);
+	}
+	/* requete de connexion */
+	if(connect( to_server_socket, (struct sockaddr *)&serveur_addr, sizeof(serveur_addr)) < 0 ) {
+		printf("Impossible de se connecter au serveur\n");
+	  	exit(0);
+	}
+	/* envoie de données et reception */
 
 
+/*---------------------------------------------------------------------------------------*/
+	//printf("port : %d\n",port);
+
+	//connection !
+	send_msg(to_server_socket, "Connection client");
+
+	//nom du serveur?
+	memset(buffer, 0, sizeof(buffer));
+	recv(to_server_socket, buffer, 512, 0);
+	printf(YEL"[serveur] %s \n"RESET, buffer);
+	char server_id[512];
+	strcpy(server_id, buffer);
+
+	//nom client !
+	send_msg(to_server_socket, client_id);
+
+	//Ready ?
+	memset(buffer, 0, sizeof(buffer));
+	recv(to_server_socket, buffer, 512, 0);
+	printf(YEL"[%s] %s \n"RESET, server_id, buffer);
+
+	//Ready !
+	memset(buffer, 0, sizeof(buffer));
+	printf("Pret ? (o|y)\n");
+  //getchar();														<------
+  send_msg(to_server_socket, "Client pret");
+
+  //nom fichier save à md5 ?
+  memset(buffer, 0, sizeof(buffer));
+	recv(to_server_socket, buffer, 512, 0);
+	printf(YEL"[%s] %s \n"RESET, server_id, buffer);
+	char nomFichier[512];// = "p_save.txt";
+  strncpy(nomFichier, buffer, 512);
+  //printf("fichier a charger : %s\n", nomFichier);
+
+	//md5 !
+	char * client_md5 = get_md5(nomFichier);
+	printf("client_md5 : %s\n", client_md5);
+	send_msg(to_server_socket, client_md5);
+	free(client_md5); //hé oui, faut free
+  
+  //Start
+  printf(RED"La partie commence\n"RESET);
+
+  //enregistrement d'une action
+  action_t * action_serv = malloc(sizeof(action_serv));
+	recive_action(to_server_socket, action_serv);
+
+
+
+	/* fermeture de la connexion */
+	shutdown(to_server_socket,2);
+	close(to_server_socket);
+	return 0;
+}
+
+
+void main (){
+	int x;
+
+	system("clear");
+	printf(MAG"Partie en reseau\n"RESET);
+	
+	do{
+		printf("1) Heberger un partie \n2) Rejoindre une partie\n\n");
+		//x = getchar();
+		scanf("%d", &x);
+	}while(x > 3 || x < 1);
+
+	if (x==1)
+		hosting_game();
+	else if (x==2)
+		joining_game();
+	else
+		printf("retour\n");
+	printf("###\n");
+}

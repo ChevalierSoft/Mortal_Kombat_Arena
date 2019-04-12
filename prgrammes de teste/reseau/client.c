@@ -21,9 +21,8 @@
 #define WHT   "\x1B[37m"
 #define RESET "\x1B[0m"
 
-//#define SERVEURNAME "192.168.1.106" // adresse IP de mon serveur
 #define SERVEURNAME "127.0.1.1" // adresse IP de mon serveur
-#define client_id "Ash"
+//#define client_id "Ash"
 #define QUITTER "QUITTER"
 
 typedef struct{
@@ -106,7 +105,7 @@ static int c2i(char i){
 	return(i-'0');
 }
 
-static int a2i(char* s){
+int a2i(char* s){
 	
 	int i=0;
 	int neg=1;
@@ -138,7 +137,6 @@ void send_msg(int to_server_socket, char * msg){
 	sprintf(buffer, msg);
 	//printf("buffer : %s\n", buffer);
 	send(to_server_socket, buffer, strlen(buffer),0);
-
 }
 
 void recive_action(int to_server_socket, action_t *action_serv){
@@ -182,16 +180,14 @@ void recive_action(int to_server_socket, action_t *action_serv){
   }
 
   
-	printf(YEL"################\n"RESET);
-  
+	printf(YEL"################\n"RESET); 
 }
 
 
 
 //####################################################################
 
-
-int main (  int argc, char** argv ){
+int joining_game(void){
 
 	system("clear");
 	struct sockaddr_in serveur_addr;
@@ -200,6 +196,7 @@ int main (  int argc, char** argv ){
 	char buffer[512];
 	int to_server_socket;
 	int port = 30410;
+	char * client_id = "Ash";
 
 	bzero(&serveur_addr,sizeof(serveur_addr));
 	hostAddr = inet_addr(SERVEURNAME);
@@ -289,6 +286,23 @@ int main (  int argc, char** argv ){
 	return 0;
 }
 
+int main (){
+	int x;
+
+	system("clear");
+	printf(MAG"Partie en reseau\n"RESET);
+	
+	do{
+		printf("1) Heberger un partie \n2) Rejoindre une partie\n\n");
+		//x = getchar();
+		scanf("%d", &x);
+	}while(x > 3 || x < 1);
+
+	if (x==2)
+		joining_game();
+	printf("###\n");
+	return(0);
+}
 
 /*pensser à une sortie si on initialise un perso 
 en dehors de la map par faute de taille*/
