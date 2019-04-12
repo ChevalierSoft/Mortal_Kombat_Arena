@@ -60,8 +60,9 @@ int phase_premiere(personnage_t * _personnage, carte_t * pt_m){
       printf(RED"+++++++++++++++++++\n" );
       printf("+ 1) Attaquer \n");
       printf("+ 2) Se Deplacer \n");
-      printf("+ 3) Utiliser un objet \n");
-      printf("+ 4) Passer le tour \n");
+      printf("+ 3) Passer le tour \n");
+      printf("+ 4) sauvegarde rapide \n");
+      printf("+ 5) capituler \n");
       printf("++++++++++++++++++\n" RESET);
 
       scanf("%d",&choix);
@@ -122,8 +123,11 @@ void menu_choix(personnage_t * sasuke, carte_t * pt_m){
                     break;
         case 2: getXY(sasuke, pt_m,&deplacement_cb);break;
 
-        case 3: pas_fini();break;
-        case 4: printf(YEL"%s passe son tour\n"RESET, sasuke->nom);break;
+        case 3: printf(YEL"%s passe son tour\n"RESET, sasuke->nom);break;
+        case 4: pas_fini();
+                phase2 = 10;
+                break;
+        case 5: pas_fini();break;
         default: pas_fini();break;
       }
   }while(phase2 == 10);
