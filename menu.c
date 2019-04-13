@@ -106,7 +106,7 @@ action_t * menu_choix(personnage_t * sasuke, carte_t * pt_m, int web){
   //posXY->x = -1;
   do{ /*tant que le retour n'est pas demandé*/
     phase1 = phase_premiere(sasuke, pt_m);
-    phase2=0;
+    phase2=6;
       switch(phase1){
 
         case 1: phase2 = phase_attaque(sasuke, pt_m); /*si on choisi d'attaquer*/
@@ -117,11 +117,17 @@ action_t * menu_choix(personnage_t * sasuke, carte_t * pt_m, int web){
                       /*lel = sasuke->tab_spell[phase2-1];*/
                       /*getXY(sasuke, pt_m, lel);*/
                     }
-                    else if(phase2==sasuke->nb_spell+1) /*passe le tour*/
+                    else if(phase2==sasuke->nb_spell+1){ /*passe le tour*/
                       printf(YEL"%s passe son tour\n"RESET, sasuke->nom);
-                    else if(phase2==sasuke->nb_spell+2) /*un jour peut etre les objets*/
+                      //phase2=2;
+                    }
+                    else if(phase2==sasuke->nb_spell+2){ /*savestate*/
                       pas_fini();
-                  	else;
+                      //phase2=3;
+                    }
+                  	else{
+                      //phase2=4;
+                    }
                     break;
         case 2: posXY = getXY(sasuke, pt_m,web,&deplacement_cb);break;
 
@@ -135,20 +141,22 @@ action_t * menu_choix(personnage_t * sasuke, carte_t * pt_m, int web){
   }while(phase2 == 10);
 
   if (web){
-    action_t * nouvelle_action = malloc(sizeof(nouvelle_action));
-    nouvelle_action->id = sasuke->id;
-    nouvelle_action->choix_menu = phase1;
-    nouvelle_action->numero_fonction = phase2;
-
-    if(posXY->x == -1){
-      posXY = malloc(sizeof(posXY));
-      posXY->x=0;
-      posXY->y=0;
+    printf("on fait du web\n");
+    action_t * na = malloc(sizeof(na));
+    na->id = sasuke->id;
+    na->choix_menu = phase1;
+    na->numero_fonction = phase2;
+    na->tx=1;
+    na->ty=2;
+    if(phase1==1 || phase1==2){
+      printf("att ou dep\n");
+      na->tx = posXY->x;
+      na->ty = posXY->y;
+      free(posXY);
     }
-    nouvelle_action->tx = posXY->x;
-    nouvelle_action->ty = posXY->y;
-    //free(posXY);
-    return(nouvelle_action);
+    //aff_action(na);
+    printf("sortie\n");
+    return(na);
     
     
   }

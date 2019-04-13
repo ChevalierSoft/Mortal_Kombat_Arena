@@ -215,9 +215,13 @@ int recive_int(int to_server_socket){
 	recv(to_server_socket, buffer, 512, 0);
 	return(a2i(buffer));
 }
-
+void aff_action(action_t * a){
+	printf("action : %d %d %d %d %d\n",a->id, a->choix_menu, a->numero_fonction, a->tx, a->ty);
+}
 void send_action(int client_socket, action_t * a){
 
+	aff_action(a);
+	
 	send_int(client_socket,a->id);
 	recive_ok(client_socket);
 
@@ -283,6 +287,7 @@ void recive_action(int to_server_socket, action_t *a, carte_t * pt_m){
   
 	printf(YEL"################\n"RESET);
 }
+
 
 
 //####################################################################

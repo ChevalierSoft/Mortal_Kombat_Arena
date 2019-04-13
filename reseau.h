@@ -12,5 +12,6 @@
 #include <openssl/md5.h>
 
 void menu_online(carte_t * pt_m);
+void aff_action(action_t * a);
 
 #endif
