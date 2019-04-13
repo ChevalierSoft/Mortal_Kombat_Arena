@@ -1,5 +1,4 @@
-#include "fonctions.h"
-#include "personnage.h"
+#include "attaques.h"
 
 
 /*
@@ -11,7 +10,7 @@ fonctions à faire :
 */
 
 //prend un x et un y et les envoient dans les fonctions d'attaques
-void getXY(personnage_t * p, void * m, void f_cb(void * pp, void * map, int xi, int yi)){
+position_t * getXY(personnage_t * p, void * m, int web, void f_cb(void * pp, void * map, int xi, int yi)){
 
   int x=0,y=0,i=0;
 
@@ -27,11 +26,22 @@ void getXY(personnage_t * p, void * m, void f_cb(void * pp, void * map, int xi, 
       i++;
     }while((x <0 || x >N) || (y <0 || y >N));
   }
-  else{
+  else{ //si non c'est qu'on applique le spell sur le caster
     x = p->px;
     y = p->py;
   }
+
   f_cb(p, m, x, y);
+
+  if (web){
+    position_t * popo = malloc(sizeof(popo));
+    popo->x=x;
+    popo->y=y;
+    return(popo);
+  }
+  
+  return(NULL);
+
 
   /*on pourrait récupérer le code d'erreur de la fonction, en mode :
   si la renge ne le permet pas on revien ici et on recommence*/

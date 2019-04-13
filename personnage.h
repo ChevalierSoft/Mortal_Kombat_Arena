@@ -7,6 +7,10 @@ typedef enum {mage_blanc, mage_noir, chevalier, necromancien, tacticien, ninja, 
 
 typedef void (*attaque_t)(void *, void *, int, int);
 
+typedef struct{
+  int id, choix_menu, numero_fonction, tx, ty;
+} action_t;
+
 typedef struct personnage_s{
   char * nom;
   char * pp;

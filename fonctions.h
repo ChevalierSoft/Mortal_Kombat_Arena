@@ -13,9 +13,9 @@
 #include "map.h"
 #include "menu.h"
 #include "liste_ptr.h"
+#include "reseau.h"
 #include "attaques.h"
 #include "init_structure.h"
 #include "load_perso.h"
-#include "reseau.h"
 
 #endif

@@ -11,10 +11,6 @@
 #include <unistd.h>
 #include <openssl/md5.h>
 
-typedef struct{
-	int id, choix_menu, numero_fonction, tx, ty;
-} action_t;
-
-void menu_online();
+void menu_online(carte_t * pt_m);
 
 #endif

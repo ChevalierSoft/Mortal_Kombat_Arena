@@ -216,60 +216,66 @@ int recive_int(int to_server_socket){
 	return(a2i(buffer));
 }
 
-void send_action(int client_socket, action_t * action_serv){
+void send_action(int client_socket, action_t * a){
 
-	send_int(client_socket,action_serv->id);
+	send_int(client_socket,a->id);
 	recive_ok(client_socket);
 
-	send_int(client_socket,action_serv->choix_menu);
+	send_int(client_socket,a->choix_menu);
 	recive_ok(client_socket);
 
-	send_int(client_socket,action_serv->numero_fonction);
+	send_int(client_socket,a->numero_fonction);
 	recive_ok(client_socket);
 	
-	send_int(client_socket,action_serv->tx);
+	send_int(client_socket,a->tx);
 	recive_ok(client_socket);
 
-	send_int(client_socket,action_serv->ty);
+	send_int(client_socket,a->ty);
 	recive_ok(client_socket);
 }
 
-void recive_action(int to_server_socket, action_t *action_serv){
+void recive_action(int to_server_socket, action_t *a, carte_t * pt_m){
 	
 	printf(YEL"####reception####\n"RESET);
 
-	action_serv->id = recive_int(to_server_socket);
+	a->id = recive_int(to_server_socket);
   send_msg(to_server_socket, "ok");
-  action_serv->choix_menu = recive_int(to_server_socket);
+  a->choix_menu = recive_int(to_server_socket);
   send_msg(to_server_socket, "ok");
-  action_serv->numero_fonction = recive_int(to_server_socket);
+  a->numero_fonction = recive_int(to_server_socket);
   send_msg(to_server_socket, "ok");
-	action_serv->tx = recive_int(to_server_socket);
+	a->tx = recive_int(to_server_socket);
 	send_msg(to_server_socket, "ok");
-	action_serv->ty = recive_int(to_server_socket);
+	a->ty = recive_int(to_server_socket);
 	send_msg(to_server_socket, "ok");
 
 	printf(YEL"###traitement###\n"RESET);
-  printf("id = %d\n", action_serv->id);
+  printf("id = %d\n", a->id);
 	
-  if(action_serv->choix_menu==1){
+  if(a->choix_menu==1){
   	printf("choix = attaque\n");
-  	if (action_serv->numero_fonction > 0){
-  		printf("numero de la fonction d'attaque = %d\n", action_serv->numero_fonction);
-  		printf("nom du spell en : tx = %d ty = %d\n", action_serv->tx, action_serv->ty);
+  	if (a->numero_fonction > 0){
+  		printf("numero de la fonction d'attaque = %d\n", a->numero_fonction-1);
+  		printf("nom du spell en : tx = %d ty = %d\n", a->tx, a->ty);
+  		
+  		personnage_t * perso;
+			valeur_elt(&perso);	//ce serait bien de lechercher par son id avant
+			info_personnage(perso);
+			
+			perso->tab_spell[a->numero_fonction-1](perso,pt_m,a->tx,a->ty);
   	}
   	//faudra comparer avec nb_spell du perso's id
   	//execute le spell[numero_fonction-1] du perso 
   }
-  else if (action_serv->choix_menu==2){
+  else if (a->choix_menu==2){
   	printf("choix = deplacement\n");
-  	printf("deplacement en : tx = %d ty = %d\n", action_serv->tx, action_serv->ty);
+  	printf("deplacement en : tx = %d ty = %d\n", a->tx, a->ty);
   }
-  else if (action_serv->choix_menu==3){
+  else if (a->choix_menu==3){
   	printf("choix = passe son tour\n");
   	//ne rien faire
   }
-  else if (action_serv->choix_menu==5){
+  else if (a->choix_menu==5){
   	printf("choix = abandon\n");
   	//gg(team2);
   }
@@ -282,7 +288,7 @@ void recive_action(int to_server_socket, action_t *action_serv){
 //####################################################################
 
 
-int hosting_game(void){
+int hosting_game(carte_t * pt_m){
 
 	//csystem("clear");
 	int ma_socket;
@@ -299,10 +305,12 @@ int hosting_game(void){
   char buffer[512];
   char * serveur_id = "DaBoi";
 
-  hostname_to_ip(hostname , ip);
-	fprintf(stderr, "%s resolved to %s" , hostname , ip);
-	view_ip();
+  printf(MAG"Rejoindre une partie\n");
 
+  hostname_to_ip(hostname , ip);
+	printf("%s resolved to %s\n" CYN, hostname , ip);
+	view_ip();
+	printf(""RESET );
 	/* creation de socket */
 	if ((ma_socket = socket(AF_INET,SOCK_STREAM,0))== -1) {
 		printf("Impossible de créer la socket\n");
@@ -386,9 +394,18 @@ int hosting_game(void){
 	printf("Envoie d'une action --->\n");
 	//va falloir enregistrer les retours avec des modulo
 	//l'Host va tj commancer pour l'instant
+	
 
+	
 	//envoie d'une action
-	action_t * action_serv = malloc(sizeof(action_serv));
+	action_t * action_serv=NULL; // = malloc(sizeof(action_serv));
+	action_t * action_client=NULL; // = malloc(sizeof(action_client));
+
+	//position_t * pos_tmp=NULL;// = malloc(sizeof(pos_tmp));
+
+	int web = 1;
+	//position_t pos_tmp;
+	/*
 	//sera defini a la fin de getXY
 	action_serv->id = 1;
 	action_serv->choix_menu = 1;
@@ -396,16 +413,68 @@ int hosting_game(void){
 	action_serv->tx = 2;
 	action_serv->ty = 1;
 
-	
-
 	send_action(client_socket, action_serv);
+	*/
+	int ma_team = 1;
+	if (!liste_vide()){
+    /*bouleen de lancement de partie*/
+    int partie_en_cours = 1;
+    int team = 1;
+    /*barre de vie de la team*/
+    int hp_team1=1, hp_team2=1;
+    /*tmp prendra la valeur des personnages de la liste succecivement*/
+    personnage_t * tmp;
+
+    while(partie_en_cours){
+    	/*affiche la liste des perso à chaque tours*/
+  		afficher_liste();
+    	en_tete();
+      team = 1;
+  		/*boucle pour un tour*/
+      while(!hors_liste()){
+
+        detection_etat(pt_m);
+        hp_team1=get_hp_team(1);
+        hp_team2=get_hp_team(2);
+        /*condition d'arret de la partie*/
+        if (hp_team1<=0 || hp_team2<=0){
+          partie_en_cours=0;
+          break;
+        }
+        valeur_elt(&tmp);
+        if(!strcmp(tmp->pp, "👽")){    /*  /!\   probleme ici pour les poisons et autre qui font le double des degats du au delimiteur */
+          team = 2;
+        } 
+        else if(tmp->pv>0 && team == ma_team) {
+
+          afficher_map(pt_m);
+    		  info_personnage(tmp);
+          /*printf("infos affiches\n");*/
+    		  action_serv = menu_choix(tmp, pt_m, web);
+    		  if(web)
+    		  	send_action(client_socket, action_serv);
+    		  
+        }
+        suivant();
+      }
+
+    }
+
+
+  }
+  detection_etat(pt_m);
+  afficher_map(pt_m);
+
+  free(action_serv);
+  free(action_client);
 
 	shutdown(ma_socket,2);
 	close(ma_socket);
 	return 0;
 }
 
-int joining_game(void){
+
+int joining_game(carte_t * pt_m){
 
 	//system("clear");
 	struct sockaddr_in serveur_addr;
@@ -415,6 +484,8 @@ int joining_game(void){
 	int to_server_socket;
 	int port = 30410;
 	char * client_id = "Ash";
+
+	printf(MAG"Rejoindre une partie\n"RESET);
 
 	bzero(&serveur_addr,sizeof(serveur_addr));
 	hostAddr = inet_addr(SERVEURNAME);
@@ -491,9 +562,10 @@ int joining_game(void){
   //Start
   printf(RED"La partie commence\n"RESET);
 
+  en_tete();
   //enregistrement d'une action
   action_t * action_serv = malloc(sizeof(action_serv));
-	recive_action(to_server_socket, action_serv);
+	recive_action(to_server_socket, action_serv, pt_m);
 
 
 
@@ -504,7 +576,7 @@ int joining_game(void){
 }
 
 
-void menu_online(){
+void menu_online(carte_t * pt_m){
 	int x;
 
 	system("clear");
@@ -517,9 +589,9 @@ void menu_online(){
 	}while(x > 3 || x < 1);
 
 	if (x==1)
-		hosting_game();
+		hosting_game(pt_m);
 	else if (x==2)
-		joining_game();
+		joining_game(pt_m);
 	else
 		printf(MAG"retour\n"RESET);
 	printf("###\n");

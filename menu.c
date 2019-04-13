@@ -61,8 +61,8 @@ int phase_premiere(personnage_t * _personnage, carte_t * pt_m){
       printf("+ 1) Attaquer \n");
       printf("+ 2) Se Deplacer \n");
       printf("+ 3) Passer le tour \n");
-      printf("+ 4) sauvegarde rapide \n");
-      printf("+ 5) capituler \n");
+      printf("+ 4) Sauvegarde rapide \n");
+      printf("+ 5) Capituler \n");
       printf("++++++++++++++++++\n" RESET);
 
       scanf("%d",&choix);
@@ -100,8 +100,10 @@ int phase_attaque(personnage_t * _personnage, carte_t * pt_m){
       return(choix);
   }
 
-void menu_choix(personnage_t * sasuke, carte_t * pt_m){
+action_t * menu_choix(personnage_t * sasuke, carte_t * pt_m, int web){
   int phase1=0, phase2=0;
+  position_t * posXY; // = malloc(sizeof(posXY));
+  //posXY->x = -1;
   do{ /*tant que le retour n'est pas demandé*/
     phase1 = phase_premiere(sasuke, pt_m);
     phase2=0;
@@ -111,7 +113,7 @@ void menu_choix(personnage_t * sasuke, carte_t * pt_m){
                     if (phase2 <= sasuke->nb_spell){ /*lance le spell*/
                       /*void (*lel)(void *, void *);*/
                       /*sasuke->tab_spell[phase2-1](sasuke, pt_m);*/
-                      getXY(sasuke, pt_m, (sasuke)->tab_spell[phase2-1]);
+                      posXY = getXY(sasuke, pt_m, web, (sasuke)->tab_spell[phase2-1]);
                       /*lel = sasuke->tab_spell[phase2-1];*/
                       /*getXY(sasuke, pt_m, lel);*/
                     }
@@ -121,7 +123,7 @@ void menu_choix(personnage_t * sasuke, carte_t * pt_m){
                       pas_fini();
                   	else;
                     break;
-        case 2: getXY(sasuke, pt_m,&deplacement_cb);break;
+        case 2: posXY = getXY(sasuke, pt_m,web,&deplacement_cb);break;
 
         case 3: printf(YEL"%s passe son tour\n"RESET, sasuke->nom);break;
         case 4: pas_fini();
@@ -131,6 +133,28 @@ void menu_choix(personnage_t * sasuke, carte_t * pt_m){
         default: pas_fini();break;
       }
   }while(phase2 == 10);
+
+  if (web){
+    action_t * nouvelle_action = malloc(sizeof(nouvelle_action));
+    nouvelle_action->id = sasuke->id;
+    nouvelle_action->choix_menu = phase1;
+    nouvelle_action->numero_fonction = phase2;
+
+    if(posXY->x == -1){
+      posXY = malloc(sizeof(posXY));
+      posXY->x=0;
+      posXY->y=0;
+    }
+    nouvelle_action->tx = posXY->x;
+    nouvelle_action->ty = posXY->y;
+    //free(posXY);
+    return(nouvelle_action);
+    
+    
+  }
+  
+  return(NULL);
+
 }
 
 void info_personnage(personnage_t * p){
@@ -217,6 +241,7 @@ void kombat( carte_t * pt_m){
   if (!liste_vide()){
     /*bouleen de lancement de partie*/
     int partie_en_cours = 1;
+    int team = 1;
     /*barre de vie de la team*/
     int hp_team1=1, hp_team2=1;
     /*tmp prendra la valeur des personnages de la liste succecivement*/
@@ -226,6 +251,7 @@ void kombat( carte_t * pt_m){
     	/*affiche la liste des perso à chaque tours*/
   		afficher_liste();
     	en_tete();
+      team = 1;
   		/*boucle pour un tour*/
       while(!hors_liste()){
 
@@ -238,13 +264,15 @@ void kombat( carte_t * pt_m){
           break;
         }
         valeur_elt(&tmp);
-        if(!strcmp(tmp->pp, "👽"));    /*  /!\   probleme ici pour les poisons et autre qui font le double des degats du au delimiteur */
+        if(!strcmp(tmp->pp, "👽")){    /*  /!\   probleme ici pour les poisons et autre qui font le double des degats du au delimiteur */
+          team = 2;
+        } 
         else if(tmp->pv>0) {
 
           afficher_map(pt_m);
     		  info_personnage(tmp);
           /*printf("infos affiches\n");*/
-    		  menu_choix(tmp, pt_m);
+    		  menu_choix(tmp, pt_m,0);
 
         }
         suivant();

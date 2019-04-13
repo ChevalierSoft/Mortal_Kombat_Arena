@@ -1,8 +1,13 @@
 #ifndef H_A
 #define H_A
 
+#include "fonctions.h"
+//#include "reseau.h"
+typedef struct{
+	int x,y;
+} position_t;
 
-void getXY						(personnage_t * personnage, void * pt_m, void f_cb(void * pp, void * map, int x, int y));
+position_t * getXY						(personnage_t * personnage, void * pt_m, int web, void f_cb(void * pp, void * map, int x, int y));
 
 void soin_cb					(void * personnage, void * pt_m, int x, int y);
 
