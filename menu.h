@@ -6,6 +6,7 @@
 
 void menu_start(void);
 int  menu_main(void);
+void gg(char * nom);
 void pas_fini(void);
 action_t * menu_choix(personnage_t * sasuke, carte_t * pt_m, int web);
 void info_personnage(personnage_t *_personnage);

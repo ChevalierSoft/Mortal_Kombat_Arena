@@ -50,6 +50,21 @@ int menu_main(){
   return(choix-'0');
 }
 
+void gg(char * nom){
+  printf(MAG"  @@@@@@@@   @@@@@@@@  \n");
+  printf(MAG"@@@@@@@@@  @@@@@@@@@  \n");
+  printf(MAG"!@@        !@@        \n");
+  printf(MAG"!@!        !@!        \n");
+  printf(MAG"!@! @!@!@  !@! @!@!@  \n");
+  printf(CYN"!!! !!@!!  !!! !!@!!  \n");
+  printf(CYN":!!   !!:  :!!   !!:  \n");
+  printf(CYN":!:   !::  :!:   !::  \n");
+  printf(CYN" ::: ::::   ::: ::::  \n");
+  printf(CYN" :: :: :    :: :: :   \n");
+  printf(" %s Gagne la Partie\n", nom);
+  getchar();
+}
+
 int phase_premiere(personnage_t * _personnage, carte_t * pt_m){
   int choix = -1;
 

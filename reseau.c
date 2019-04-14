@@ -460,18 +460,31 @@ int hosting_game(carte_t * pt_m){
     		  	send_action(client_socket, action_serv);
     		  
         }
+        else if (tmp->pv>0 && team != ma_team){
+        	afficher_map(pt_m);
+    		  info_personnage(tmp);
+        	//enregistrement d'une action
+  				action_t * action_client = malloc(sizeof(action_client));
+					recive_action(client_socket, action_client, pt_m);
+					free(action_client);
+				}
         suivant();
       }
 
     }
+	  detection_etat(pt_m);
+	  afficher_map(pt_m);
 
+	  if (hp_team1>hp_team2)
+	    	gg(serveur_id);    
+	  else
+	    gg(client_id);
+
+	  free(action_serv);
+	  free(action_client);
 
   }
-  detection_etat(pt_m);
-  afficher_map(pt_m);
-
-  free(action_serv);
-  free(action_client);
+  
 
 	shutdown(ma_socket,2);
 	close(ma_socket);
@@ -530,8 +543,8 @@ int joining_game(carte_t * pt_m){
 	memset(buffer, 0, sizeof(buffer));
 	recv(to_server_socket, buffer, 512, 0);
 	printf(YEL"[serveur] %s \n"RESET, buffer);
-	char server_id[512];
-	strcpy(server_id, buffer);
+	char serveur_id[512];
+	strcpy(serveur_id, buffer);
 
 	//nom client !
 	send_msg(to_server_socket, client_id);
@@ -539,7 +552,7 @@ int joining_game(carte_t * pt_m){
 	//Ready ?
 	memset(buffer, 0, sizeof(buffer));
 	recv(to_server_socket, buffer, 512, 0);
-	printf(YEL"[%s] %s \n"RESET, server_id, buffer);
+	printf(YEL"[%s] %s \n"RESET, serveur_id, buffer);
 
 	//Ready !
 	memset(buffer, 0, sizeof(buffer));
@@ -550,7 +563,7 @@ int joining_game(carte_t * pt_m){
   //nom fichier save à md5 ?
   memset(buffer, 0, sizeof(buffer));
 	recv(to_server_socket, buffer, 512, 0);
-	printf(YEL"[%s] %s \n"RESET, server_id, buffer);
+	printf(YEL"[%s] %s \n"RESET, serveur_id, buffer);
 	char nomFichier[512];// = "p_save.txt";
   strncpy(nomFichier, buffer, 512);
 
@@ -568,10 +581,84 @@ int joining_game(carte_t * pt_m){
   printf(RED"La partie commence\n"RESET);
 
   en_tete();
+/*
   //enregistrement d'une action
   action_t * action_serv = malloc(sizeof(action_serv));
 	recive_action(to_server_socket, action_serv, pt_m);
+*/
 
+
+	//envoie d'une action
+	action_t * action_serv=NULL; // = malloc(sizeof(action_serv));
+	action_t * action_client=NULL; // = malloc(sizeof(action_client));
+
+	int web = 1;
+	
+	int ma_team = 2;
+	if (!liste_vide()){
+    /*bouleen de lancement de partie*/
+    int partie_en_cours = 1;
+    int team = 1;
+    /*barre de vie de la team*/
+    int hp_team1=1, hp_team2=1;
+    /*tmp prendra la valeur des personnages de la liste succecivement*/
+    personnage_t * tmp;
+
+    while(partie_en_cours){
+    	/*affiche la liste des perso à chaque tours*/
+  		afficher_liste();
+    	en_tete();
+      team = 1;
+  		/*boucle pour un tour*/
+      while(!hors_liste()){
+
+        detection_etat(pt_m);
+        hp_team1=get_hp_team(1);
+        hp_team2=get_hp_team(2);
+        /*condition d'arret de la partie*/
+        if (hp_team1<=0 || hp_team2<=0){
+          partie_en_cours=0;
+          break;
+        }
+        valeur_elt(&tmp);
+        if(!strcmp(tmp->pp, "👽")){    /*  /!\   probleme ici pour les poisons et autre qui font le double des degats du au delimiteur */
+          team = 2;
+        } 
+        else if(tmp->pv>0 && team == ma_team) {
+
+          afficher_map(pt_m);
+    		  info_personnage(tmp);
+          /*printf("infos affiches\n");*/
+    		  action_client = menu_choix(tmp, pt_m, web);
+    		  if(web)
+    		  	send_action(to_server_socket, action_client);
+    		  
+        }
+        else if (tmp->pv>0 && team != ma_team){
+        	afficher_map(pt_m);
+    		  info_personnage(tmp);
+        	//enregistrement d'une action
+  				action_t * action_serv = malloc(sizeof(action_serv));
+					recive_action(to_server_socket, action_serv, pt_m);
+				}
+        suivant();
+      }
+
+    }
+    detection_etat(pt_m);
+  	afficher_map(pt_m);
+
+	  if (hp_team1>hp_team2)
+	    	gg(serveur_id);    
+	  else
+	    gg(client_id);
+
+	  free(action_serv);
+	  free(action_client);
+    
+
+  }
+  
 
 
 	/* fermeture de la connexion */
