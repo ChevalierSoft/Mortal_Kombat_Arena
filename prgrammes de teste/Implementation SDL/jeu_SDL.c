@@ -8,16 +8,28 @@
 #include "map_SDL.h"
 #include "map.h"
 
+/**
+	* \file jeu_SDL.c
+	* \brief Programme d'affichage SDL
+	* \author EL KANDOUSSI Adnan
+	* \version	1.4
+	* \date 17 avril 2019
 
+*/
+
+/**
+* \fn int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m)
+* \brief Fonction contenant l'affichage et la gestion des evenements SDL
+* \param renderer 
+* \param personnage Le personnage en cours dans la liste
+* \param pt_m Le pointeur de la carte
+* \return 1 Si le tour se termine normalement, 0 si le joueur actuel quitte/abandonne.  
+*/
 int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
-	 /*en_tete();
-
-	 personnage_t * ex ;
-
-
-	 valeur_elt(&ex);*/
+	 
 	 SDL_RenderSetLogicalSize(renderer, HAUTEUR_FENETRE, LARGEUR_FENETRE);
+
 
 	//Variables TTF
 	TTF_Font * police = NULL;
@@ -71,13 +83,13 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 		SDL_Surface * surbrillance;
     SDL_Surface * sprites_s[6]= {NULL};
-		SDL_Surface * persos_s[5] = {NULL};
+		SDL_Surface * persos_s[7] = {NULL};
 		SDL_Surface * bouton[3] = {NULL};
 
 		SDL_Surface * cadreS;
 
 		SDL_Texture * sprite[6] = {NULL};
-		SDL_Texture * perso[5] = {NULL};
+		SDL_Texture * perso[7] = {NULL};
 
 		SDL_Texture * cadre = NULL;
 
@@ -114,6 +126,8 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 	persos_s[3]= IMG_Load("./sprite du projet/NECRO.png");
 	persos_s[0]= IMG_Load("./sprite du projet/VRAI_MARVIN.png");
 	persos_s[1]= IMG_Load("./sprite du projet/ZUL.png");
+	persos_s[5]= IMG_Load("./sprite du projet/sac.png");
+	persos_s[6]= IMG_Load("./sprite du projet/sheep.png");
 
 	surbrillance = IMG_Load("./sprite du projet/surbrillance.png");
 
@@ -138,6 +152,8 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 	 perso[2] = SDL_CreateTextureFromSurface(renderer,persos_s[2]);
 	 perso[3] = SDL_CreateTextureFromSurface(renderer,persos_s[3]);
 	 perso[4] = SDL_CreateTextureFromSurface(renderer,persos_s[4]);
+	 perso[5] = SDL_CreateTextureFromSurface(renderer,persos_s[5]);
+	 perso[6] = SDL_CreateTextureFromSurface(renderer,persos_s[6]);
 
 	 boutonPasSurvole = SDL_CreateTextureFromSurface(renderer,bouton[0]);
 	 boutonSurvole = SDL_CreateTextureFromSurface(renderer,bouton[1]);
@@ -236,6 +252,11 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 											personnage->tab_spell[numspell](personnage,pt_m,aMAP,bMAP);
 											spell_used = 1;
+											//sensé afficher une boite de message
+											/*SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION,
+                         					"Logs",
+                         					printf("%s utilisé sur %s !",personnage->nom_spell[numspell],pt_m->map[aMAP][bMAP]->personnage->nom),
+                         					NULL);*/
 											continuer = 0;
 
 
@@ -528,30 +549,78 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 				switch(personnage->classe){
 
 						case 0:
-								SDL_QueryTexture(perso[0], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
-								SDL_RenderCopy(renderer,perso[0],NULL,&aff_perso);
+								if(personnage->est_sheep == 1){
+									SDL_QueryTexture(perso[6], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+									SDL_RenderCopy(renderer,perso[6],NULL,&aff_perso);
+									break;
+								}
+								else{
+									SDL_QueryTexture(perso[0], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+									SDL_RenderCopy(renderer,perso[0],NULL,&aff_perso);
 								break;
+								}
+								
 						case 1:
-								SDL_QueryTexture(perso[1], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
-								SDL_RenderCopy(renderer,perso[1],NULL,&aff_perso);
+								if(personnage->est_sheep == 1){
+									SDL_QueryTexture(perso[6], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+									SDL_RenderCopy(renderer,perso[6],NULL,&aff_perso);
+									break;
+								}
+								else{
+									SDL_QueryTexture(perso[1], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+									SDL_RenderCopy(renderer,perso[1],NULL,&aff_perso);
 								break;
+								}
 						case 2:
-								SDL_QueryTexture(perso[2], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
-								SDL_RenderCopy(renderer,perso[2],NULL,&aff_perso);
+								if(personnage->est_sheep == 1){
+									SDL_QueryTexture(perso[6], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+									SDL_RenderCopy(renderer,perso[6],NULL,&aff_perso);
+									break;
+								}
+								else{
+									SDL_QueryTexture(perso[2], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+									SDL_RenderCopy(renderer,perso[2],NULL,&aff_perso);
 								break;
+								}
 						case 3:
-								SDL_QueryTexture(perso[3], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
-								SDL_RenderCopy(renderer,perso[3],NULL,&aff_perso);
+								if(personnage->est_sheep == 1){
+									SDL_QueryTexture(perso[6], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+									SDL_RenderCopy(renderer,perso[6],NULL,&aff_perso);
+									break;
+								}
+								else{
+									SDL_QueryTexture(perso[3], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+									SDL_RenderCopy(renderer,perso[3],NULL,&aff_perso);
 								break;
+								}
 						case 4:
-								SDL_QueryTexture(perso[4], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
-								SDL_RenderCopy(renderer,perso[4],NULL,&aff_perso);
+								if(personnage->est_sheep == 1){
+									SDL_QueryTexture(perso[6], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+									SDL_RenderCopy(renderer,perso[6],NULL,&aff_perso);
+									break;
+								}
+								else{
+									SDL_QueryTexture(perso[4], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+									SDL_RenderCopy(renderer,perso[4],NULL,&aff_perso);
 								break;
+								}
+						case 7:
+								if(personnage->est_sheep == 1){
+									SDL_QueryTexture(perso[6], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+									SDL_RenderCopy(renderer,perso[6],NULL,&aff_perso);
+									break;
+								}
+								else{
+									SDL_QueryTexture(perso[5], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
+									SDL_RenderCopy(renderer,perso[5],NULL,&aff_perso);
+								break;
+								}
 						default:
 								break;
 
 
 				}
+
 
 					//Affichage des infos du perso (nom/image/vie)
 				sprintf(nom_p,"%s",personnage->nom);
@@ -572,8 +641,8 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 				SDL_QueryTexture(pv_perso,NULL,NULL,&(pv_p.w), &(pv_p.h));
 				SDL_RenderCopy(renderer,pv_perso,NULL,&pv_p);
 
-					//Affichage des logs
-					if(spell_used == 1){
+					//Affichage des logs (en cours)
+					/*if(spell_used == 1){
 						aff_log.x=0;
 						aff_log.y=HAUTEUR_MAP + taille_sprite;
 
@@ -584,7 +653,9 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 						SDL_QueryTexture(log,NULL,NULL,&(aff_log.w), &(aff_log.h));
 						SDL_RenderCopy(renderer,log,NULL,&aff_log);
-					}
+						
+
+					}*/
 
 
 
@@ -599,7 +670,7 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 		SDL_DestroyTexture(sprite[i]);
 	}
 
-	for(i= 0;i < 5;i++) {
+	for(i= 0;i < 7;i++) {
 		SDL_DestroyTexture(perso[i]);
 	}
 
