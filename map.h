@@ -6,11 +6,20 @@
 
 #define N 10
 
+/**
+* \struct dalle_s
+* \brief Structure représentant une dalle
+*/
+
 typedef struct dalle_s{
   int land;
   personnage_t * personnage;
 }dalle_t;
 
+/**
+* \struct carte_s
+* \brief Structure de la carte
+*/
 typedef struct carte_s{
   int nb_dalles_x;
   int nb_dalles_y;

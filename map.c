@@ -3,6 +3,21 @@
 
 #define N 10
 
+/**
+	* \file map.c
+	* \brief Gestion de la carte
+	* \author EL KANDOUSSI Adnan
+	* \version	1.4
+	* \date 17 avril 2019
+
+*/
+
+/**
+* \fn void afficher_map(carte_t * pt_m)
+* \brief Affichage en version terminal de l'environnement et des personnages sur la carte
+* \param pt_m Pointeur sur la carte
+* \return void  
+*/
 
 void afficher_map(carte_t * pt_m){
   int i,j,k;
@@ -43,7 +58,12 @@ void afficher_map(carte_t * pt_m){
 
 }
 
-
+/**
+* \fn void init_map(carte_t * pt_m)
+* \brief Initialise la carte à 1 pour les cases land et NULL pour les pointeurs personnage sur ces cases
+* \param pt_m Pointeur sur la carte
+* \return void  
+*/
 
 void init_map(carte_t * pt_m){ /* changer le malloc du à la transformation de map */
   int i,j;
@@ -67,6 +87,13 @@ void init_map(carte_t * pt_m){ /* changer le malloc du à la transformation de m
 
 }*/
 
+/**
+* \fn void charger_partie(carte_t * pt_m)
+* \brief Charge un état de la carte depuis un fichier nommé "m_save.txt"
+* \param pt_m Pointeur sur la carte
+* \return void  
+*/
+
 void charger_partie(carte_t * pt_m){
   //Charge un etat de la map depuis un fichier
   init_map(pt_m);
@@ -83,6 +110,14 @@ void charger_partie(carte_t * pt_m){
 
 
 }
+
+/**
+* \fn void map_detruire(carte_t ** pt_m)
+* \brief Libère chaque dalle de la carte et le pointeur sur la carte 
+* \param pt_m Pointeur sur la carte
+* \return void  
+*/
+
 
 void map_detruire(carte_t ** pt_m){
   int i,j;
