@@ -4,7 +4,6 @@
 #define QUITTER "QUITTER"
 
 
-
 void fin(void){
 
 	printf("fin du serveur");
