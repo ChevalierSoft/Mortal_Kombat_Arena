@@ -1,5 +1,6 @@
-0 4 nom px py classe
-1 -marvin- 1 2 0
-2 -Solaire- 7 7 2
+0 5 nom px py classe
+1 -marvin- 1 3 0
+2 -Solaire- 2 6 2
 3 -delimiteur- -1 -1 8
-4 -Zeddicus Zul Zorander- 3 4 1
+4 -Zeddicus Zul Zorander- 7 5 1
+5 -DeepFakeJC- 6 8 3

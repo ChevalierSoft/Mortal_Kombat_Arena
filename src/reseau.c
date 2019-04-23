@@ -369,7 +369,7 @@ int hosting_game(carte_t * pt_m){
   printf(YEL"[%s] %s \n"RESET, client_id, buffer);
   
   //nom fichier save à md5 ?
-  char * nomFichier = "save/lvl1.p";	//à changer
+  char * nomFichier = "save/p_save.txt";	//à changer
   memset(buffer, 0, sizeof(buffer));
   sprintf(buffer, nomFichier);
   send(client_socket, buffer, strlen(buffer), 0);
@@ -475,7 +475,7 @@ int hosting_game(carte_t * pt_m){
 	  afficher_map(pt_m);
 
 	  if (hp_team1>hp_team2)
-	    	gg(serveur_id);    
+	    gg(serveur_id);    
 	  else
 	    gg(client_id);
 
