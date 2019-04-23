@@ -149,7 +149,7 @@ void backdash( personnage_t * ex){
   valeur_elt(&ex2);
   while(ex2 != ex && !liste_vide()){
 
-    printf("Nom perso : %s\n",ex2->nom);
+
     suivant();
     valeur_elt(&ex2);
     i++;
@@ -266,7 +266,7 @@ void kombat(carte_t * pt_m, int affSDL, ...){
     		  /*menu_choix(tmp, pt_m);*/
           if(affSDL){
             partie_en_cours = jouer(renderer,tmp,pt_m);
-            printf("Partie en cours : %d\n",partie_en_cours);
+
 
 
                 //la capitulation
@@ -290,9 +290,9 @@ void kombat(carte_t * pt_m, int affSDL, ...){
 
 
   }
-  printf("YOLOOOOOOOOOOOOOOOOOOOOOOOOOOOO\n");
+
   detection_etat(pt_m);
-  printf("Detection etat ?\n");
+  
   afficher_map(pt_m);
 }
 

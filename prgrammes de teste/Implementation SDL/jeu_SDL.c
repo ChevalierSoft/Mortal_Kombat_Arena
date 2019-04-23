@@ -20,14 +20,14 @@
 /**
 * \fn int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m)
 * \brief Fonction contenant l'affichage et la gestion des evenements SDL
-* \param renderer 
+* \param renderer
 * \param personnage Le personnage en cours dans la liste
 * \param pt_m Le pointeur de la carte
-* \return 1 Si le tour se termine normalement, 0 si le joueur actuel quitte/abandonne.  
+* \return 1 Si le tour se termine normalement, 0 si le joueur actuel quitte/abandonne.
 */
 int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
-	 
+
 	 SDL_RenderSetLogicalSize(renderer, HAUTEUR_FENETRE, LARGEUR_FENETRE);
 
 
@@ -191,7 +191,7 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 	boutonPos.y = HAUTEUR_MAP;
 
 
-	printf("Perso en cours : %s / Nombre de spells : %d\n",personnage->nom,personnage->nb_spell);
+
 
 
 
@@ -244,7 +244,7 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 										aMAP = x_cursMAP/taille_sprite;
 										bMAP = y_cursMAP/taille_sprite; //Récupère les coords de la case cliquée
 
-										printf("case cliquée : x = %d / y = %d\n",aMAP,bMAP);
+
 										//Si on a cliqué sur attaque
 										if(attaque == 1){
 											//Reconnaissance du perso clické
@@ -288,7 +288,7 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 											//Si on clique sur la surface d'un bouton de numéro i
 											if(event.button.y >= posyBouttons[i] && event.button.y <= posyBouttons[i] + boutonPos.h){
 												numspell = i;
-												printf("Numspell : %d\n",numspell);
+												
 												//printf("Passage boucle après if n°%d\n",i);
 												if(numspell == 4)
 													attaque = 1;
@@ -559,7 +559,7 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 									SDL_RenderCopy(renderer,perso[0],NULL,&aff_perso);
 								break;
 								}
-								
+
 						case 1:
 								if(personnage->est_sheep == 1){
 									SDL_QueryTexture(perso[6], NULL, NULL, &(aff_perso.w), &(aff_perso.h));
@@ -653,7 +653,7 @@ int jouer(SDL_Renderer * renderer,personnage_t * personnage,carte_t * pt_m){
 
 						SDL_QueryTexture(log,NULL,NULL,&(aff_log.w), &(aff_log.h));
 						SDL_RenderCopy(renderer,log,NULL,&aff_log);
-						
+
 
 					}*/
 
