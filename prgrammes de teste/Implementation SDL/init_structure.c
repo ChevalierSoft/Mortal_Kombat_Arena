@@ -53,8 +53,8 @@ void init_mage_noir(personnage_t * mage_noir ){
   mage_noir->pp = malloc(sizeof(char)*strlen(pp));
   strcpy(mage_noir->pp, pp);
 
-  mage_noir->nb_spell = 5; //5
-  init_spell(mage_noir,mage_noir->nb_spell,"Boule de feu", &boule_de_feu_cb, "Toxicite", &toxicite_cb, "Fait ton greu", &fait_ton_greu_cb,"summon",&summon_cb,"sheep",&sheep_cb );
+  mage_noir->nb_spell = 2; //5
+  init_spell(mage_noir,mage_noir->nb_spell,"Boule de feu", &boule_de_feu_cb, "Toxicite", &toxicite_cb);
 
   mage_noir->pv = 299;
   mage_noir->pv_max = 299;
@@ -83,12 +83,13 @@ void init_chevalier(personnage_t * chevalier ){
 }
 
 void init_necromancien(personnage_t * necromencien ){
-	char *pp = "👩‍🎓";
+	char *pp = "🤬";
   necromencien->pp = malloc(sizeof(char)*strlen(pp));
   strcpy(necromencien->pp, pp);
 
-  necromencien->nb_spell = 0;
-
+  necromencien->nb_spell = 2;
+  init_spell(necromencien,necromencien->nb_spell,"summon",&summon_cb,"sheep",&sheep_cb);
+  
   necromencien->pv = 330;
   necromencien->pv_max = 330;
   necromencien->pm = 320;

@@ -3,10 +3,23 @@
 #include "personnage.h"
 #include "liste_ptr.h"
 
+/**
+	* \file liste_ptr.c
+	* \brief Gestion des listes
+	* \author EL KANDOUSSI Adnan AIT ATMANE Daris
+	* \version	1.4
+	* \date 17 avril 2019
+
+*/
 
 t_element * ec;
 t_element * drapeau;
 
+/**
+* \fn void init_liste()
+* \brief Initialise la liste
+* \return void
+*/
 void init_liste(){
   drapeau = malloc(sizeof(t_element));
 
@@ -80,7 +93,7 @@ void oter_elt(){ //Free le pointeur sur un personnage de la liste
     popo->succ=ec;
 
     detruire_spell(&ec->p);
-    
+
     detruire_personnage(&ec->p);
 
     ec->pred->succ = ec->succ;
@@ -94,13 +107,19 @@ void oter_elt(){ //Free le pointeur sur un personnage de la liste
   }
 }
 
-void ajout_droit(personnage_t * p){ //Ajoute un personnage a la la suite de la liste
+/**
+* \fn void ajout_droit(personnage_t * p)
+* \brief Ajoute un personnage a la la suite de la liste
+* \return void
+*/
+
+void ajout_droit(personnage_t * p){
   t_element * nouv = malloc(sizeof(t_element));
 
   nouv->p = p;
 
   if(liste_vide()){
-    
+
     nouv->succ = drapeau;
     nouv->pred = drapeau;
     drapeau->succ=nouv;
@@ -114,15 +133,19 @@ void ajout_droit(personnage_t * p){ //Ajoute un personnage a la la suite de la l
   }
 }
 
-
+/**
+* \fn void afficher_liste()
+* \brief Affiche la liste de personnages dans le terminal
+* \return void
+*/
 
 void afficher_liste(){
   en_tete();
   printf(YEL"Affichage de la liste : \n"RESET);
-  
+
   if(!liste_vide()){
     printf(CYN"#Team1\n"RESET);
-    
+
     while(!hors_liste()){
       if(strcmp(ec->p->pp, "👽")){
         printf("| %s",ec->p->nom);
