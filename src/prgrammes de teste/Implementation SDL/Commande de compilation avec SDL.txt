@@ -1,0 +1,1 @@
+g++ -o sdl.exe sdl.c -lmingw32 -lSDLmain -lSDL -lSDL_image
