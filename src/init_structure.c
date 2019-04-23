@@ -83,7 +83,7 @@ void init_chevalier(personnage_t * chevalier ){
 }
 
 void init_necromancien(personnage_t * necromencien ){
-	char *pp = "👩‍🎓";
+	char *pp = "🤬";
   necromencien->pp = malloc(sizeof(char)*strlen(pp));
   strcpy(necromencien->pp, pp);
 
