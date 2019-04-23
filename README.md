@@ -13,4 +13,4 @@ Règles du jeu:
 
 Le jeu se joue avec 2 joueurs sur un plateau de jeu carré de dimension 10 par 10. Chaque joueur possède sa propre armée composée de différentes unités, chaque pion possède ses propres caractéristiques/classe. Les joueurs peuvent déplacer leurs pions, réfléchir à leur stratégie, restaurer la santé et l'énergie de leurs pions et attaquer les pions adverses à leur portée.
 
-Chaque unité peut lancer des sorts uniques à leurs classe. A chaque tour, un peut décider soit de déplacer son unité, soit d'attaquer ou supporter avec un sort. 
+Chaque unité peut lancer des sorts uniques à leurs classe. A chaque tour, le joueur peuvent décider soit de déplacer son unité, soit d'attaquer ou supporter avec un sort. 
