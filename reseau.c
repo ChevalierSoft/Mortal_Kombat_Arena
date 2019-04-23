@@ -1,6 +1,6 @@
 #include "reseau.h"
 
-#define SERVEURNAME "127.0.1.1" // adresse IP de mon serveur
+//#define SERVEURNAME "127.0.1.1" // adresse IP de mon serveur
 #define QUITTER "QUITTER"
 
 
@@ -309,7 +309,7 @@ int hosting_game(carte_t * pt_m){
   char buffer[512];
   char * serveur_id = "DaBoi";
 
-  printf(MAG"Rejoindre une partie\n");
+  printf(MAG"En attente d'un client port 30410\n");
 
   hostname_to_ip(hostname , ip);
 	printf("%s resolved to %s\n" CYN, hostname , ip);
@@ -503,7 +503,9 @@ int joining_game(carte_t * pt_m){
 	char * client_id = "Ash";
 
 	printf(MAG"Rejoindre une partie\n"RESET);
-
+	printf("donnre l'addresse ip :\n");
+	char SERVEURNAME[16];
+	scanf("%s", SERVEURNAME );
 	bzero(&serveur_addr,sizeof(serveur_addr));
 	hostAddr = inet_addr(SERVEURNAME);
 	if ( (long)hostAddr != (long)-1 ){
@@ -580,20 +582,15 @@ int joining_game(carte_t * pt_m){
   printf(RED"La partie commence\n"RESET);
 
   en_tete();
-/*
-  //enregistrement d'une action
-  action_t * action_serv = malloc(sizeof(action_serv));
-	recive_action(to_server_socket, action_serv, pt_m);
-*/
 
 
-	//envoie d'une action
+	//initialisation des actions
 	action_t * action_serv=NULL; // = malloc(sizeof(action_serv));
 	action_t * action_client=NULL; // = malloc(sizeof(action_client));
 
 	int web = 1;
-	
 	int ma_team = 2;
+
 	if (!liste_vide()){
     /*bouleen de lancement de partie*/
     int partie_en_cours = 1;
@@ -674,7 +671,7 @@ void menu_online(carte_t * pt_m){
 	printf(MAG"Partie en reseau\n"RESET);
 	
 	do{
-		printf("1) Heberger un partie \n2) Rejoindre une partie\n\n");
+		printf("1) Heberger un partie \n2) Rejoindre une partie\n3) Quitter\n\n");
 		//x = getchar();
 		scanf("%d", &x);
 	}while(x > 3 || x < 1);
